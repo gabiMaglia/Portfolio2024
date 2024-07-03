@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import NavLink from "./navLink";
+import { useUserStore } from "@/store/store";
 
 const links = [
   {
@@ -24,31 +25,11 @@ const links = [
     title: "Contact",
   },
 ];
-const socialMedia = [
-  {
-    url: "#",
-    img: "/github.png",
-    title: "Github",
-  },
-  {
-    url: "#",
-    img: "/linkedin.png",
-    title: "Linkedin",
-  },
-  {
-    url: "#",
-    img: "/instagram.png",
-    title: "Instagram",
-  },
-  {
-    url: "#",
-    img: "/facebook.png",
-    title: "Facebook",
-  },
-];
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
+
+  const socialMedia = useUserStore((state) => state.social);
 
   const topVariant = {
     closed: {
@@ -128,10 +109,10 @@ const NavBar = () => {
       {/* SOCIAL */}
       <div className=" hidden md:flex md:justify-center gap-4 w-1/3">
         {socialMedia.map((socialMedia) => (
-          <Link key={socialMedia.title} href={socialMedia.url}>
+          <Link key={socialMedia.id} href={socialMedia.url}>
             <Image
               src={socialMedia.img}
-              alt={socialMedia.title}
+              alt={socialMedia.name}
               width={24}
               height={24}
             />

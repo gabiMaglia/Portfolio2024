@@ -6,9 +6,14 @@ export const useUserStore = create((set) => ({
   experiences: [],
   skill: [],
   social: [],
+  phrases: [],
+
+
   setPersona: (newPersona) => set({ persona: newPersona }),
   setProjects: (newProjects) => set({ projects: newProjects }),
   setExperiences: (newExperiences) => set({ experiences: newExperiences }),
   setSkill: (newSkill) => set({ skill: newSkill }),
   setSocial: (newSocial) => set({ social: newSocial }),
+  setPhrases: (newPhrase) => set({ phrases: newPhrase }),
+  
 }));

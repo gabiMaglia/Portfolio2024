@@ -19,12 +19,11 @@ export default async function RootLayout({ children }) {
   const socialData = await getPersonalSocialMediaData()
   const restOfData  = await getAllData()
 
-
   return (
     <html lang="en">
       <body className={inter.className}>
       <ToasterProvider />
-      <StoreProvider data={[data, socialData, restOfData]} />
+      <StoreProvider data={{data, socialData, restOfData}} />
         <TransitionProvider>{children}</TransitionProvider>
     
       </body>

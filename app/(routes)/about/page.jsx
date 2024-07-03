@@ -1,53 +1,22 @@
 "use client";
-import { useRef } from "react";
+
+import { useRef, useState, useEffect } from "react";
 import Brain from "@/components/brain";
 import { motion, useInView, useScroll } from "framer-motion";
+import { useUserStore } from "@/store/store";
 import Image from "next/image";
 
-const skills = [
-  { img: "", skill: "Javascript" },
-  { img: "", skill: "HTML" },
-  { img: "", skill: "CSS" },
-  { img: "", skill: "React" },
-  { img: "", skill: "Redux" },
-  { img: "", skill: "NextJs" },
-  { img: "", skill: "Tailwind CSS" },
-  { img: "", skill: "Express" },
-  { img: "", skill: "Postgres SQL" },
-  { img: "", skill: "MongoDB" },
-];
-
-const experienceList = [
-  {
-    img: "",
-    company: "Genoma Studio",
-    title: "Full-stack Developer",
-    startDate: "Enero 2022",
-    endDate: "Junio 2023",
-    description:
-      "I contributed to upgrading the versions of both hosting services (Heroku and Firebase), assisted with simple tasks, and participated in the construction of some React.js components.",
-  },
-  {
-    img: "",
-    company: "Apple",
-    title: "Full-stack Developer",
-    startDate: "Enero 2022",
-    endDate: "Junio 2025",
-    description:
-      "I contributed to upgrading the versions of both hosting services (Heroku and Firebase), assisted with simple tasks, and participated in the construction of some React.js components.",
-  },
-  {
-    img: "",
-    company: "Genoma DAR",
-    title: "Front-stack Developer",
-    startDate: "Enero 2022",
-    endDate: "Junio 2023",
-    description:
-      "I contributed to upgrading the versions of both hosting services (Heroku and Firebase), assisted with simple tasks, and participated in the construction of some React.js components.",
-  },
-];
-
 const AboutPage = () => {
+  const [state, setState] = useState({
+    experiences: [],
+    skills: [],
+    phrases: [],
+  });
+
+  const userExperiences = useUserStore((state) => state.experiences);
+  const userSkills = useUserStore((state) => state.skill);
+  const userPhrases = useUserStore((state) => state.phrases);
+  
   const containerRef = useRef();
   const { scrollYProgress } = useScroll({ container: containerRef });
 
@@ -56,6 +25,18 @@ const AboutPage = () => {
 
   const experienceRef = useRef();
   const isExperienceRefInView = useInView(experienceRef, { margin: "-100px" });
+
+  useEffect(() => {
+    const sortedExperiences = userExperiences.sort(
+      (a, b) => a.startDate_exp.split(" ")[1] - b.startDate_exp.split(" ")[1]
+    );
+
+    setState({
+      experiences: sortedExperiences,
+      skills: userSkills,
+      phrases: userPhrases,
+    });
+  }, [userSkills, userPhrases, userExperiences]);
 
   return (
     <>
@@ -73,24 +54,12 @@ const AboutPage = () => {
           {/* TEXTCONTAINER */}
           <div className="p-8 sm:p-8 md:px-12 lg:px-20 xl:px-48 flex flex-col gap-24 md:gap-32 lg:gap-48 xl:gap-64 lg:w-2/3 lg:pr-0">
             {/* BIOGRAPHYCONTAINER */}
-            <div className="flex flex-col gap-12 pt-20 justify-center pb-48">
+            <div className="flex flex-col gap-12 pt-40 justify-center pb-32">
               <h2 className="font-bold text-2xl">About Me</h2>
-              <p className="text-lg">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industrys standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </p>
-              <span className="italic">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.{" "}
-              </span>
+              <p className="text-lg">{state.phrases.mainPhrase}</p>
+              <blockquote className="italic">
+                {` "${state.phrases.phrase1}"`}
+              </blockquote>
               <div className="self-end">
                 <svg
                   version="1.1"
@@ -135,7 +104,7 @@ const AboutPage = () => {
             </div>
             {/* SKILLSCONTAINER */}
             <div
-              className="flex flex-col gap-12 justify-center pb-48"
+              className="flex flex-col gap-12 pt-40 justify-center pb-32"
               ref={skillRef}
             >
               <motion.h2
@@ -147,19 +116,68 @@ const AboutPage = () => {
                 Skills
               </motion.h2>
               {/* SkillList */}
+              <motion.h4
+                className="font-semi-bold text-2xl"
+                initial={{ x: "-300px" }}
+                animate={isSkillRefInView ? { x: 0 } : {}}
+                transition={{ delay: 0.2 }}
+              >
+                HARD
+              </motion.h4>
               <motion.div
                 initial={{ x: "-300px" }}
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 className="flex flex-wrap gap-4"
               >
-                {skills.map((e, key) => (
-                  <div
-                    key={key}
-                    className="rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
-                  >
-                    {e.skill}
-                  </div>
-                ))}
+                {state.skills.map(
+                  (e, key) =>
+                    e.type === "hard" && (
+                      <div
+                        key={key}
+                        className="flex gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
+                      >
+                        <Image
+                          src={e.img_skill}
+                          alt={e.name}
+                          height={18}
+                          width={18}
+                        ></Image>
+                        <p>{e.name}</p>
+                      </div>
+                    )
+                )}
+              </motion.div>
+              <motion.h4
+                className="font-semi-bold text-2xl"
+                initial={{ x: "-300px" }}
+                animate={isSkillRefInView ? { x: 0 } : {}}
+                transition={{ delay: 0.2 }}
+              >
+                SOFT
+              </motion.h4>
+              <motion.div
+                initial={{ x: "-300px" }}
+                animate={isSkillRefInView ? { x: 0 } : {}}
+                className="flex flex-wrap gap-4"
+              >
+                {state.skills.map(
+                  (e, key) =>
+                    e.type === "soft" && (
+                      <div
+                        key={key}
+                        className="flex gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
+                      >
+                        <Image
+                          className="hover:backdrop-invert-0 p-1 bg-black"
+                          src={e.img_skill}
+                          alt={e.name}
+                          height={18}
+                          width={18}
+                        ></Image>
+                        <p>{e.name}</p>
+                      </div>
+                    )
+                )}
               </motion.div>
               {/* ScrollSVG */}
               <motion.svg
@@ -191,7 +209,7 @@ const AboutPage = () => {
             </div>
             {/* EXPERIENCECONTAINER */}
             <div
-              className="flex flex-col gap-12 justify-center pb-48"
+              className="flex flex-col gap-12  pt-40 justify-center pb-32"
               ref={experienceRef}
             >
               <motion.div
@@ -205,7 +223,7 @@ const AboutPage = () => {
 
                 {/* EXPERIENCE LIST ITEM */}
                 <div className="flex flex-col">
-                  {experienceList.map((item, index) => {
+                  {state.experiences.map((item, index) => {
                     const isOven = index % 2 === 0;
 
                     return (
@@ -215,19 +233,19 @@ const AboutPage = () => {
                           !isOven ? (
                             <div className="w-1/3 flex flex-col justify-between md:justify-evenly lg:justify-around ">
                               <div className="bg-white font-semibold rounded-b-lg rounded-s-lg">
-                                {item.title}
+                                {item.title_exp}
                               </div>
 
                               <div className="p-3 text-sm italic">
-                                {item.description}
+                                {item.description_exp}
                               </div>
 
                               <div className="p-3 text-red-400 text-sm font-semibold">
-                                {`${item.startDate} to ${item.endDate}`}
+                                {`${item.startDate_exp} to ${item.endDate_exp}`}
                               </div>
 
                               <div className="p-1 rounded bg-white text-sm font-semibold w-fit">
-                                {item.company}
+                                {item.institution_exp}
                               </div>
                             </div>
                           ) : (
@@ -247,19 +265,19 @@ const AboutPage = () => {
                           isOven ? (
                             <div className="w-1/3 flex flex-col justify-between ">
                               <div className="bg-white font-semibold rounded-b-lg rounded-s-lg">
-                                {item.title}
+                                {item.title_exp}
                               </div>
 
                               <div className="p-3 text-sm italic">
-                                {item.description}
+                                {item.description_exp}
                               </div>
 
                               <div className="p-3 text-red-400 text-sm font-semibold">
-                                {`${item.startDate} to ${item.endDate}`}
+                                {`${item.startDate_exp} to ${item.endDate_exp}`}
                               </div>
 
                               <div className="p-1 rounded bg-white text-sm font-semibold w-fit">
-                                {item.company}
+                                {item.institution_exp}
                               </div>
                             </div>
                           ) : (

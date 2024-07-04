@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/store";
 
 const StoreProvider = ({ data }) => {
   const setPersona = useUserStore((state) => state.setPersona);
-  const setProjects = useUserStore((state) => state.setProjects);
+  const setProyects = useUserStore((state) => state.setProyects);
   const setExperiences = useUserStore((state) => state.setExperiences);
   const setSkill = useUserStore((state) => state.setSkill);
   const setSocial = useUserStore((state) => state.setSocial);
@@ -12,10 +12,11 @@ const StoreProvider = ({ data }) => {
 
   setPersona(data?.data);
   setSocial(data?.socialData);
-  setProjects(data?.restOfData?.projects);
+  setProyects(data?.restOfData?.proyects);
   setExperiences(data?.restOfData?.experiences);
   setSkill(data?.restOfData?.skill);
   setPhrases({mainPhrase :data?.data?.main_phrase, phrase1: data?.data?.phrase1})
 };
+
 
 export default StoreProvider;

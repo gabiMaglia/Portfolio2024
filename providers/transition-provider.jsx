@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import NavBar from "./navbar";
+import NavBar from "../components/navbar";
 
 const pathBox = {
   "/": "Home",
@@ -36,7 +36,10 @@ const TransitionProvider = ({ children }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
+          <p className="text-sm font-bold md:text-text-xl lg:text-text-4xl ">
           {pathBox[pathname]}
+
+          </p>
         </motion.div>
         <motion.div
           className="h-screen w-screen fixed  bg-blur bg-black rounded-t-[100px] bottom-0 z-30"

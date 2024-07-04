@@ -1,37 +1,63 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
+import { useUserStore } from "@/store/store";
+import Link from "next/link";
 import Image from "next/image";
 
 const ContactPage = () => {
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [userMessage, setUserMessage] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [characters, setCharacters] = useState("");
+  const [formState, setFormState] = useState({
+    isFormValid: false,
+    userMessage: "",
+    userEmail: "",
+    characters: 0,
+  });
+
+  const [socialMedia, setSocialMedia] = useState([]);
+
+  const { isFormValid, userMessage, userEmail, characters } = formState;
+
+  const telephone = useUserStore((state) => state.persona.telephone_persona);
+  const userMedias = useUserStore((state) => state.social);
+  const email = userMedias.filter((e) => e.name === "Gmail");
+
+  useEffect(() => {
+    setSocialMedia(userMedias);
+  }, [userMedias]);
 
   const form = useRef();
   const letterAmount = useRef();
 
-  const validateForm = () => {
-    setCharacters(letterAmount.current.value.length);
+  const validateForm = useCallback(() => {
     const wordCount = userMessage.trim().split(/\s+/).length;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setIsFormValid(wordCount > 5 && emailPattern.test(userEmail));
-  };
+    setFormState((prevState) => ({
+      ...prevState,
+      isFormValid: wordCount > 5 && emailPattern.test(userEmail),
+      characters: userMessage.length,
+    }));
+  }, [userMessage, userEmail]);
 
   useEffect(() => {
-    validateForm();
-  }, [userMessage, userEmail]);
+    const handler = setTimeout(() => {
+      validateForm();
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [userMessage, userEmail, validateForm]);
 
   const sendEmail = (e) => {
     e.preventDefault();
-    setError(false);
-    setSuccess(false);
+    setFormState((prevState) => ({
+      ...prevState,
+      error: false,
+      success: false,
+    }));
 
     emailjs
       .sendForm(
@@ -42,92 +68,155 @@ const ContactPage = () => {
       )
       .then(
         () => {
-          setSuccess(true);
+          setFormState((prevState) => ({
+            ...prevState,
+            success: true,
+            userMessage: "",
+            userEmail: "",
+          }));
           toast.success("Email sent");
           form.current.reset();
-          setUserMessage("");
-          setUserEmail("");
         },
         () => {
-          setError(true);
+          setFormState((prevState) => ({ ...prevState, error: true }));
           toast.error("Your email could not be sent");
         }
       );
   };
 
   return (
-    <motion.div
-      className="h-full "
+    <motion.section
+      className="contact section container mx-auto py-16"
+      id="contact"
       initial={{ y: "-200vh" }}
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <div className="h-full flex flex-col pt-24 md:pt-14 lg:pt-0 gap-24 lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48">
-        {/* TEXT CONTAINER */}
-        <div className=" h-full w-full lg:w-2/4 flex items-center justify-center text-6xl max-w-md min-w-max mx-auto ">
-          <Image 
-            src="/mail.png" 
-            alt="Gabriel Maglia"
-            // fill
-            width={320}
-            height={320}
-            className="object-contain"
-          ></Image>
-        </div>
+      <span className="section-subtitle block text-center pb-3 font-semibold text-gray-500">
+        For projects and job proposals
+      </span>
+      <h2 className="pb-2 md:pb-10 section-title text-center text-2xl font-semibold text-red-900 mb-6">
+        Contact Me
+      </h2>
 
-        {/* FORM CONTAINER */}
-        <form
-          className="h-1/2 w-full lg:h-full lg:w-2/4 rounded-xl text-xl flex flex-col gap-8 justify-center p-8"
-          onSubmit={sendEmail}
-          ref={form}
-        >
-          <div className="flex flex-col">
-            <span className="font-semibold mb-7 text-2xl">Hi Gabriel,</span>
-            <textarea
-              ref={letterAmount}
-              required
-              rows={6}
-              className="relative w-full h-32 bg-gray-200 border-blue-200 border text-gray-900 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-              name="user_message"
-              value={userMessage}
-              onChange={(e) => setUserMessage(e.target.value)}
-            />
-            <span
-              className={`${
-                characters < 1 ? "opacity-0" : "opacity-100"
-              } self-end mt-1 text-lg font-bold text-gray-600`}
-            >
-              {characters}
+      <div className="contact__container flex flex-col md:flex-row gap-10">
+        <div className="contact__content grid gap-6 md:grid-cols-2">
+          <div className="contact__box flex flex-col justify-center bg-white rounded-lg p-6 text-center my-auto shadow-md hover:shadow-lg transition-shadow duration-300">
+            <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
+              Location
+            </h3>
+            <span className="text-sm md:text-md text-gray-700">
+              CP2000 Rosario - Argentina
             </span>
           </div>
 
-          <div className="flex flex-col gap-5">
-            <span className="font-semibold text-2xl">My mail address is:</span>
+          <div className="contact__box flex flex-col justify-center bg-white rounded-lg p-6 text-center py-auto shadow-md hover:shadow-lg transition-shadow duration-300">
+            <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
+              Phone
+            </h3>
+            <span className="text-sm md:text-md text-gray-700">
+              {telephone}
+            </span>
+          </div>
+
+          <div className="contact__box col-span-2 flex flex-col justify-center bg-white rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+            <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
+              Gmail
+            </h3>
+            <Link href={email[0].url}>
+              <span className="text-sm md:text-md text-gray-700">
+                {email[0]?.url?.split(":")[1].toString().toUpperCase()}
+              </span>
+            </Link>
+          </div>
+        </div>
+
+        <form
+          className="contact__form grid gap-6 md:max-w-xl md:mx-auto"
+          onSubmit={sendEmail}
+          ref={form}
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <input
+              required
+              type="text"
+              placeholder="Name"
+              className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+            />
             <input
               required
               name="user_email"
               type="email"
-              className="w-full bg-gray-200 border-blue-200 border text-gray-900  p-3 rounded-lg focus:outline-none focus:shadow-outline"
+              placeholder="Email"
+              className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
               value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
+              onChange={(e) =>
+                setFormState((prevState) => ({
+                  ...prevState,
+                  userEmail: e.target.value,
+                }))
+              }
             />
           </div>
-          <span className="self-center lg:self-start font-semibold  text-2xl">
-            Regards
+
+          <textarea
+            required
+            ref={letterAmount}
+            name="user_message"
+            cols="30"
+            rows="7"
+            placeholder="Message"
+            className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+            value={userMessage}
+            onChange={(e) =>
+              setFormState((prevState) => ({
+                ...prevState,
+                userMessage: e.target.value,
+              }))
+            }
+          />
+          <span
+            className={`${
+              characters < 1 ? "opacity-0" : "opacity-100"
+            } ms-auto mt-1 text-lg font-bold text-gray-600`}
+          >
+            {characters}
           </span>
+
           <button
             className={`${
               isFormValid
                 ? "bg-gray-400 text-gray-800 hover:bg-gray-700 hover:text-white"
                 : "bg-gray-400 text-gray-600 "
-            }  rounded font-semibold text-gray-600 p-4`}
+            } rounded font-semibold text-gray-600 p-4`}
             disabled={!isFormValid}
           >
             Send
           </button>
         </form>
+        <div className="flex justify-between gap-4 w-full md:hidden">
+          {socialMedia &&
+            socialMedia.map((socialMedia, index) => (
+              <div key={index}>
+                <Link
+                  className="flex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={socialMedia.url}
+                >
+                  <Image
+                    layout="fixed"
+                    src={socialMedia.img}
+                    alt={socialMedia.name}
+                    width={24}
+                    height={24}
+                  />
+                </Link>
+              </div>
+            ))}
+        </div>
       </div>
-    </motion.div>
+    </motion.section>
   );
 };
 

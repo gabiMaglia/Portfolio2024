@@ -16,7 +16,7 @@ const AboutPage = () => {
   const userExperiences = useUserStore((state) => state.experiences);
   const userSkills = useUserStore((state) => state.skill);
   const userPhrases = useUserStore((state) => state.phrases);
-  
+
   const containerRef = useRef();
   const { scrollYProgress } = useScroll({ container: containerRef });
 
@@ -54,9 +54,9 @@ const AboutPage = () => {
           {/* TEXTCONTAINER */}
           <div className="p-8 sm:p-8 md:px-12 lg:px-20 xl:px-48 flex flex-col gap-24 md:gap-32 lg:gap-48 xl:gap-64 lg:w-2/3 lg:pr-0">
             {/* BIOGRAPHYCONTAINER */}
-            <div className="flex flex-col gap-12 pt-40 justify-center pb-32">
-              <h2 className="font-bold text-2xl">About Me</h2>
-              <p className="text-lg">{state.phrases.mainPhrase}</p>
+            <div className="flex flex-col text-center md:text-left gap-12 pt-8 md:pt-32 justify-center pb-32">
+              <h2 className="font-bold text-xl md:text-2xl">About Me</h2>
+              <p className="text-base md:text-lg text-justify">{state.phrases.mainPhrase}</p>
               <blockquote className="italic">
                 {` "${state.phrases.phrase1}"`}
               </blockquote>
@@ -76,6 +76,7 @@ const AboutPage = () => {
               </div>
               {/* ScrollSVG */}
               <motion.svg
+              className="self-center md:self-start"
                 initial={{ opacity: 0.2, y: 0 }}
                 animate={{ opacity: 1, y: "10px" }}
                 transition={{
@@ -104,7 +105,7 @@ const AboutPage = () => {
             </div>
             {/* SKILLSCONTAINER */}
             <div
-              className="flex flex-col gap-12 pt-40 justify-center pb-32"
+              className="flex flex-col gap-12 text-center md:text-left  pt-8 md:pt-32  justify-center pb-32"
               ref={skillRef}
             >
               <motion.h2
@@ -113,7 +114,7 @@ const AboutPage = () => {
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 transition={{ delay: 0.2 }}
               >
-                Skills
+                <p className="font-bold uppercase">Skills</p>
               </motion.h2>
               {/* SkillList */}
               <motion.h4
@@ -122,19 +123,19 @@ const AboutPage = () => {
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 transition={{ delay: 0.2 }}
               >
-                HARD
+                <p className="font-semibold">Hard</p>
               </motion.h4>
               <motion.div
                 initial={{ x: "-300px" }}
                 animate={isSkillRefInView ? { x: 0 } : {}}
-                className="flex flex-wrap gap-4"
+                className="flex justify-center md:justify-normal flex-wrap gap-4"
               >
                 {state.skills.map(
                   (e, key) =>
                     e.type === "hard" && (
                       <div
                         key={key}
-                        className="flex gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
+                        className="flex  justify-evenly gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black z-10"
                       >
                         <Image
                           src={e.img_skill}
@@ -147,25 +148,26 @@ const AboutPage = () => {
                     )
                 )}
               </motion.div>
+              
               <motion.h4
                 className="font-semi-bold text-2xl"
                 initial={{ x: "-300px" }}
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 transition={{ delay: 0.2 }}
-              >
-                SOFT
+                >
+                <p className="font-semibold">Soft</p>
               </motion.h4>
               <motion.div
                 initial={{ x: "-300px" }}
                 animate={isSkillRefInView ? { x: 0 } : {}}
-                className="flex flex-wrap gap-4"
+                className="flex justify-center md:justify-normal flex-wrap gap-4"
               >
                 {state.skills.map(
                   (e, key) =>
                     e.type === "soft" && (
                       <div
                         key={key}
-                        className="flex gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
+                        className=" flex gap-3 rounded p-2 text-sm cursor-pointer bg-black text-white hover:bg-white hover:text-black"
                       >
                         <Image
                           className="hover:backdrop-invert-0 p-1 bg-black"
@@ -181,6 +183,7 @@ const AboutPage = () => {
               </motion.div>
               {/* ScrollSVG */}
               <motion.svg
+              className="self-center md:self-start"
                 initial={{ opacity: 0.2, y: 0 }}
                 animate={{ opacity: 1, y: "10px" }}
                 transition={{
@@ -209,7 +212,7 @@ const AboutPage = () => {
             </div>
             {/* EXPERIENCECONTAINER */}
             <div
-              className="flex flex-col gap-12  pt-40 justify-center pb-32"
+              className="flex flex-col text-center md:text-left gap-12  pt-8 md:pt-32 justify-center pb-32"
               ref={experienceRef}
             >
               <motion.div
@@ -219,7 +222,7 @@ const AboutPage = () => {
                 transition={{ delay: 0.2 }}
               >
                 {/* EXPERIENCE TITLE */}
-                <h2 className="font-bold  text-2xl">EXPERIENCE</h2>
+                <h2 className="font-bold pb-24 text-2xl">EXPERIENCE</h2>
 
                 {/* EXPERIENCE LIST ITEM */}
                 <div className="flex flex-col">
@@ -232,15 +235,15 @@ const AboutPage = () => {
                           /* LEFT */
                           !isOven ? (
                             <div className="w-1/3 flex flex-col justify-between md:justify-evenly lg:justify-around ">
-                              <div className="bg-white font-semibold rounded-b-lg rounded-s-lg">
+                              <div className=" p-1  bg-white font-semibold rounded-b-lg rounded-s-lg">
                                 {item.title_exp}
                               </div>
 
-                              <div className="p-3 text-sm italic">
+                              <div className="p-3 text-xs md:text-sm text-justify italic">
                                 {item.description_exp}
                               </div>
 
-                              <div className="p-3 text-red-400 text-sm font-semibold">
+                              <div className="py-3 text-red-400 text-sm font-semibold">
                                 {`${item.startDate_exp} to ${item.endDate_exp}`}
                               </div>
 
@@ -255,20 +258,20 @@ const AboutPage = () => {
                         {/* CENTER */}
                         <div className="w-1/6 flex justify-center">
                           {/* LINE */}
-                          <div className="w-1 h-full bg-black rounded relative">
+                          <div className="w-0.5 md:w-1 h-full bg-black rounded relative">
                             {/* LINE CIRCLE */}
-                            <div className="absolute w-5 h-5 rounded-full ring-4 ring-red-400 bg-white -left-2"></div>
+                            <div className="absolute w-4 h-4 md:w-5 md:h-5 rounded-full ring-4 ring-red-400 bg-white -left-2"></div>
                           </div>
                         </div>
                         {
                           /* RIGHT  */
                           isOven ? (
                             <div className="w-1/3 flex flex-col justify-between ">
-                              <div className="bg-white font-semibold rounded-b-lg rounded-s-lg">
+                              <div className=" p-1  bg-white font-semibold rounded-b-lg rounded-s-lg">
                                 {item.title_exp}
                               </div>
 
-                              <div className="p-3 text-sm italic">
+                              <div className="py-3 text-xs md:text-sm italic">
                                 {item.description_exp}
                               </div>
 
@@ -292,7 +295,7 @@ const AboutPage = () => {
             </div>
           </div>
           {/* SVGCONTAINER */}
-          <div className="hidden lg:block w-1/3 sticky top-10  z-30">
+          <div className="hidden lg:block w-1/3 sticky right-[-20px] top-10 z-30">
             <Brain scrollYProgress={scrollYProgress} />
           </div>
         </div>

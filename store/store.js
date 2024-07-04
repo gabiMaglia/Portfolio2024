@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const useUserStore = create((set) => ({
   persona: {},
-  projects: [],
+  proyects: [],
   experiences: [],
   skill: [],
   social: [],
@@ -10,7 +10,7 @@ export const useUserStore = create((set) => ({
 
 
   setPersona: (newPersona) => set({ persona: newPersona }),
-  setProjects: (newProjects) => set({ projects: newProjects }),
+  setProyects: (newProyects) => set({ proyects: newProyects }),
   setExperiences: (newExperiences) => set({ experiences: newExperiences }),
   setSkill: (newSkill) => set({ skill: newSkill }),
   setSocial: (newSocial) => set({ social: newSocial }),

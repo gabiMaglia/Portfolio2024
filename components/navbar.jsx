@@ -108,15 +108,23 @@ const NavBar = () => {
       </div>
       {/* SOCIAL */}
       <div className=" hidden md:flex md:justify-center gap-4 w-1/3">
-        {socialMedia.map((socialMedia) => (
-          <Link key={socialMedia.id} href={socialMedia.url}>
-            <Image
-              src={socialMedia.img}
-              alt={socialMedia.name}
-              width={24}
-              height={24}
-            />
-          </Link>
+        {socialMedia.map((socialMedia, index) => (
+          <div key={index}>
+            <Link
+              className="flex"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={socialMedia.url}
+            >
+              <Image
+                layout="fixed"
+                src={socialMedia.img}
+                alt={socialMedia.name}
+                width={24}
+                height={24}
+              />
+            </Link>
+          </div>
         ))}
       </div>
       {/* RESPONSIVEMENU */}

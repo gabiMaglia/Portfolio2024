@@ -123,7 +123,7 @@ const ContactPage = () => {
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Gmail
             </h3>
-            <Link href={email[0].url}>
+            <Link href={email[0]?.url}>
               <span className="text-sm md:text-md text-gray-700">
                 {email[0]?.url?.split(":")[1].toString().toUpperCase()}
               </span>

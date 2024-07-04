@@ -202,12 +202,12 @@ const ContactPage = () => {
                   className="flex"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={socialMedia.url}
+                  href={socialMedia?.url}
                 >
                   <Image
                     layout="fixed"
-                    src={socialMedia.img}
-                    alt={socialMedia.name}
+                    src={socialMedia?.img}
+                    alt={socialMedia?.name}
                     width={24}
                     height={24}
                   />

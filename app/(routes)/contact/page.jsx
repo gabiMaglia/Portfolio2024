@@ -9,6 +9,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 const ContactPage = () => {
+  const form = useRef();
+  const letterAmount = useRef();
   const [formState, setFormState] = useState({
     isFormValid: false,
     userMessage: "",
@@ -28,20 +30,18 @@ const ContactPage = () => {
     setSocialMedia(userMedias);
   }, [userMedias]);
 
-  const form = useRef();
-  const letterAmount = useRef();
 
-  const validateForm = useCallback(() => {
-    const wordCount = userMessage.trim().split(/\s+/).length;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setFormState((prevState) => ({
-      ...prevState,
-      isFormValid: wordCount > 5 && emailPattern.test(userEmail),
-      characters: userMessage.length,
-    }));
-  }, [userMessage, userEmail]);
-
+  
   useEffect(() => {
+    const validateForm =() => {
+      const wordCount = userMessage?.trim().split(/\s+/).length;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setFormState((prevState) => ({
+        ...prevState,
+        isFormValid: wordCount > 5 && emailPattern.test(userEmail),
+        characters: userMessage.length,
+      }));
+    }
     const handler = setTimeout(() => {
       validateForm();
     }, 300);
@@ -49,7 +49,7 @@ const ContactPage = () => {
     return () => {
       clearTimeout(handler);
     };
-  }, [userMessage, userEmail, validateForm]);
+  }, [userMessage, userEmail]);
 
   const sendEmail = (e) => {
     e.preventDefault();

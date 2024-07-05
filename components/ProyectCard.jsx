@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 
 const ProyectCard = ({ proyect }) => {
   return (
-    <Card className="group overflow-hidden relative  max-w-[320px]  h-[520px] xl:h-[620px] md:max-w-[620px] md:w-[620px] xl:max-w-[720px] xl:w-[720px] bg-gradient-to-b from-blue-50 to-red-50">
+    <Card className="group overflow-hidden relative  max-w-[320px] h-[520px] xl:h-[620px] md:max-w-[620px] md:w-[620px] xl:max-w-[720px] xl:w-[720px] bg-gradient-to-b from-blue-50 to-red-50">
       <CardHeader className="p-0 h-4/6">
         <Badge
           variant={"custom"}

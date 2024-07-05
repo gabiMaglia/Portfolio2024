@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useUserStore } from "@/store/store";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const Homepage = () => {
   const persona = useUserStore((state) => state.persona);
@@ -41,16 +42,16 @@ const Homepage = () => {
             touch in no time!
           </p>
           {/* BUTTONS */}
-          <div className=" w-full flex justify-center lg:justify-normal gap-4">
+          <div className=" w-full flex justify-center lg:justify-normal gap-4 z-50">
             <Link href="/contact">
-              <button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white">
+              <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white">
                 View my work
-              </button>
+              </Button>
             </Link>
             <Link href="/contact">
-              <button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white">
+              <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white" variant="custom" >
                 Contact Me
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from "@/store/store";
 import Link from "next/link";
@@ -49,27 +49,27 @@ const ContactPage = () => {
   const sendEmail = async (e) => {
     e.preventDefault();
 
-    try {
-      const result = await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_SERVICE_ID || "",
-        process.env.NEXT_PUBLIC_TEMPLATE_ID || "",
-        formRef.current,
-        process.env.NEXT_PUBLIC_PUBLIC_KEY || ""
-      );
+    // try {
+    //   const result = await emailjs.sendForm(
+    //     process.env.NEXT_PUBLIC_SERVICE_ID || "",
+    //     process.env.NEXT_PUBLIC_TEMPLATE_ID || "",
+    //     formRef.current,
+    //     process.env.NEXT_PUBLIC_PUBLIC_KEY || ""
+    //   );
 
-      console.log("Email successfully sent:", result.text);
-      setFormState({
-        isFormValid: false,
-        userMessage: "",
-        userEmail: "",
-        characters: 0,
-      });
-      toast.success("Email sent");
-      formRef.current.reset();
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      toast.error("Your email could not be sent");
-    }
+    //   console.log("Email successfully sent:", result.text);
+    //   setFormState({
+    //     isFormValid: false,
+    //     userMessage: "",
+    //     userEmail: "",
+    //     characters: 0,
+    //   });
+    //   toast.success("Email sent");
+    //   formRef.current.reset();
+    // } catch (error) {
+    //   console.error("Failed to send email:", error);
+    //   toast.error("Your email could not be sent");
+    // }
   };
 
   return (

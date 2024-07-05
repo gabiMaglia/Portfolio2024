@@ -1,87 +1,75 @@
-"use client";
+"use client"
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from "@/store/store";
 import Link from "next/link";
 import Image from "next/image";
 
 const ContactPage = () => {
-  const form = useRef();
-  const letterAmount = useRef();
+  const formRef = useRef();
   const [formState, setFormState] = useState({
     isFormValid: false,
     userMessage: "",
     userEmail: "",
     characters: 0,
   });
-
   const [socialMedia, setSocialMedia] = useState([]);
 
   const { isFormValid, userMessage, userEmail, characters } = formState;
 
   const telephone = useUserStore((state) => state.persona.telephone_persona);
   const userMedias = useUserStore((state) => state.social);
-  const email = userMedias.filter((e) => e.name === "Gmail");
+  const email = userMedias.find((e) => e.name === "Gmail");
 
   useEffect(() => {
     setSocialMedia(userMedias);
   }, [userMedias]);
 
-
-  
   useEffect(() => {
-    const validateForm =() => {
-      const wordCount = userMessage?.trim().split(/\s+/).length;
+    const validateForm = () => {
+      const wordCount = userMessage.trim().split(/\s+/).length;
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setFormState((prevState) => ({
         ...prevState,
         isFormValid: wordCount > 5 && emailPattern.test(userEmail),
         characters: userMessage.length,
       }));
-    }
-    const handler = setTimeout(() => {
-      validateForm();
-    }, 300);
+    };
+
+    const handler = setTimeout(validateForm, 300);
 
     return () => {
       clearTimeout(handler);
     };
   }, [userMessage, userEmail]);
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
-    setFormState((prevState) => ({
-      ...prevState,
-      error: false,
-      success: false,
-    }));
 
-    emailjs
-      .sendForm(
-        process.env.NEXT_PUBLIC_SERVICE_ID || '',
-        process.env.NEXT_PUBLIC_TEMPLATE_ID|| '',
-        form.current,
-        process.env.NEXT_PUBLIC_PUBLIC_KEY || ''
-      )
-      .then(
-        () => {
-          setFormState((prevState) => ({
-            ...prevState,
-            success: true,
-            userMessage: "",
-            userEmail: "",
-          }));
-          toast.success("Email sent");
-          form.current.reset();
-        },
-        () => {
-          setFormState((prevState) => ({ ...prevState, error: true }));
-          toast.error("Your email could not be sent");
-        }
+    try {
+      const result = await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_SERVICE_ID || "",
+        process.env.NEXT_PUBLIC_TEMPLATE_ID || "",
+        formRef.current,
+        process.env.NEXT_PUBLIC_PUBLIC_KEY || ""
       );
+
+      console.log("Email successfully sent:", result.text);
+      setFormState({
+        isFormValid: false,
+        userMessage: "",
+        userEmail: "",
+        characters: 0,
+      });
+      toast.success("Email sent");
+      formRef.current.reset();
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      toast.error("Your email could not be sent");
+    }
   };
 
   return (
@@ -92,6 +80,7 @@ const ContactPage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
+      <Toaster />
       <span className="section-subtitle block text-center pb-3 font-semibold text-gray-500">
         For projects and job proposals
       </span>
@@ -114,18 +103,16 @@ const ContactPage = () => {
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Phone
             </h3>
-            <span className="text-sm md:text-md text-gray-700">
-              {telephone}
-            </span>
+            <span className="text-sm md:text-md text-gray-700">{telephone}</span>
           </div>
 
           <div className="contact__box col-span-2 flex flex-col justify-center bg-white rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg transition-shadow duration-300">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Gmail
             </h3>
-            <Link href={email[0]?.url}>
+            <Link href={email?.url}>
               <span className="text-sm md:text-md text-gray-700">
-                {email[0]?.url?.split(":")[1].toString().toUpperCase()}
+                {email?.url?.split(":")[1].toString().toUpperCase()}
               </span>
             </Link>
           </div>
@@ -134,7 +121,7 @@ const ContactPage = () => {
         <form
           className="contact__form grid gap-6 md:max-w-xl md:mx-auto"
           onSubmit={sendEmail}
-          ref={form}
+          ref={formRef}
         >
           <div className="grid gap-4 md:grid-cols-2">
             <input
@@ -161,7 +148,6 @@ const ContactPage = () => {
 
           <textarea
             required
-            ref={letterAmount}
             name="user_message"
             cols="30"
             rows="7"
@@ -187,33 +173,32 @@ const ContactPage = () => {
             className={`${
               isFormValid
                 ? "bg-gray-400 text-gray-800 hover:bg-gray-700 hover:text-white"
-                : "bg-gray-400 text-gray-600 "
-            } rounded font-semibold text-gray-600 p-4`}
+                : "bg-gray-400 text-gray-600"
+            } rounded font-semibold p-4`}
             disabled={!isFormValid}
           >
             Send
           </button>
         </form>
         <div className="flex justify-between gap-4 w-full md:hidden">
-          {socialMedia &&
-            socialMedia.map((socialMedia, index) => (
-              <div key={index}>
-                <Link
-                  className="flex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={socialMedia?.url}
-                >
-                  <Image
-                    layout="fixed"
-                    src={socialMedia?.img}
-                    alt={socialMedia?.name}
-                    width={24}
-                    height={24}
-                  />
-                </Link>
-              </div>
-            ))}
+          {socialMedia.map((social, index) => (
+            <div key={index}>
+              <Link
+                className="flex"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={social?.url}
+              >
+                <Image
+                  layout="fixed"
+                  src={social?.img}
+                  alt={social?.name}
+                  width={24}
+                  height={24}
+                />
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </motion.section>

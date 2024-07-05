@@ -4,7 +4,6 @@ import Link from "next/link";
 import { CardHeader, Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Github, Link2Icon } from "lucide-react";
-import ParticleBackground from "./particles-js";
 import { Button } from "./ui/button";
 
 const ProyectCard = ({ proyect }) => {

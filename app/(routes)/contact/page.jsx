@@ -86,7 +86,7 @@ const ContactPage = () => {
 
   return (
     <motion.section
-      className="contact section container mx-auto py-16"
+      className="contact section container h-full mx-auto flex flex-col justify-center align-middle"
       id="contact"
       initial={{ y: "-200vh" }}
       animate={{ y: "0%" }}

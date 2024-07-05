@@ -18,26 +18,25 @@ const TransitionProvider = ({ children }) => {
 
   return (
     <AnimatePresence>
-       <div className="fixed inset-0 bg-fixed bg-gradient-to-b from-blue-50 to-red-100 z-[-10]"></div>
       <div
         key={pathname}
         className="w-screen h-screen"
       >
         <motion.div
-          className="h-screen w-screen fixed bg-black rounded-b-[100px] z-40"
+          className="h-screen w-screen fixed  bg-black rounded-b-[100px] z-40"
           animate={{ height: "0vh" }}
           exit={{ height: "110vh" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         />
         <motion.div
-          className=" fixed m-auto top-0 bottom-0 right-0 left-0 text-white cursor-default z-50 w-fit h-fit text-8xl "
+          className=" fixed  m-auto p-auto top-0 bottom-0 right-0 left-0 text-white cursor-default z-50 w-fit h-fit text-8xl "
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <p className="text-sm font-bold md:text-text-xl lg:text-text-4xl ">
-          {pathBox[pathname]}
+          <p className="text-md font-bold md:text-xl lg:text-4xl ">
+          {pathBox[pathname]} 
 
           </p>
         </motion.div>

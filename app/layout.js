@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-fixed bg-gradient-to-b from-blue-100 to-red-300 `}>
       <ToasterProvider />
       <StoreProvider data={{data, socialData, restOfData}} />
         <TransitionProvider>{children}</TransitionProvider>

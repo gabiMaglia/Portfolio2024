@@ -187,12 +187,12 @@ const ContactPage = () => {
                 className="flex"
                 target="_blank"
                 rel="noopener noreferrer"
-                href={social?.url}
+                href={social?.url || '/'}
               >
                 <Image
                   layout="fixed"
-                  src={social?.img}
-                  alt={social?.name}
+                  src={social?.img || '/'}
+                  alt={social?.name || 'loading'}
                   width={24}
                   height={24}
                 />

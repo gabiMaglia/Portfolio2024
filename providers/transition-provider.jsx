@@ -48,7 +48,7 @@ const TransitionProvider = ({ children }) => {
         <div className="h-24">
           <NavBar />
         </div>
-        <div className="h-[calc(100vh-6rem)] ">{children}</div>
+        <div className="h-[calc(100vh-6rem)] py-32 ">{children}</div>
       </div>
     </AnimatePresence>
   );

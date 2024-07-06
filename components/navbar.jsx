@@ -93,7 +93,7 @@ const NavBar = () => {
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link, index) => (
-          <span onClick={()=> router.push(link.url)} key={index} className={`rounded cursor-pointer p-1 ${pathName === link.url && "bg-black w-full text-white"}`} >{link.title}</span>
+          <span onClick={()=> router.push(link.url)} key={index} className={`rounded cursor-pointer p-1 ${pathName === link.url && "bg-black text-white"}`} >{link.title}</span>
         ))}
       </div>
       {/* LOGO */}

@@ -45,6 +45,7 @@ const Homepage = () => {
           <div className=" w-full flex justify-center lg:justify-normal gap-4 ">
             <Button
               className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
+              variant="custom"
               onClick={() => router.push("/portfolio")}
             >
               View my work

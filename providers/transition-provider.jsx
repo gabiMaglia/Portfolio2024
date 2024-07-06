@@ -19,7 +19,7 @@ const TransitionProvider = ({ children }) => {
     <AnimatePresence mode="wait">
     <div
       key={pathName}
-      className="w-screen h-screen  bg-[url('./public/fondo.gif')]"
+      className="w-screen h-screen  bg-[url('/public/fondo.gif')]"
     >
       <motion.div
         className="h-screen w-screen fixed bg-black rounded-b-[100px] z-40"
@@ -28,9 +28,9 @@ const TransitionProvider = ({ children }) => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
       <motion.div
-        className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-8xl cursor-default z-50 w-fit h-fit flex items-center justify-center"
+        className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-8xl cursor-default  w-fit h-fit flex items-center justify-center z-50"
         initial={{ opacity: 1 }}
-        animate={{ opacity: 0, height: '0vh'  }}
+        animate={{ opacity: 0, height: '0vh', display:'none', top: '-180dvh' }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >

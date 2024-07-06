@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { easeOut, motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import NavBar from "../components/navbar";
@@ -30,11 +30,11 @@ const TransitionProvider = ({ children }) => {
       <motion.div
         className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-8xl cursor-default  w-fit h-fit flex items-center justify-center z-50"
         initial={{ opacity: 1 }}
-        animate={{ opacity: 0, height: '0dvh', display:'none', top: '-60dvh' }}
+        animate={{ opacity: 0, height: '0dvh', display:'none', top: '-15dvh', ease: "easeOut" }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: "easeIn" }}
       >
-       <p className=" font-zootype">
+       <p className=" font-zootype lg:text-8xl md:text-6xl text-4xl ">
         {pathBox[pathName]}
         
         </p> 

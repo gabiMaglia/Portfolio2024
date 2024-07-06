@@ -43,16 +43,16 @@ const Homepage = () => {
           </p>
           {/* BUTTONS */}
           <div className=" w-full flex justify-center lg:justify-normal gap-4 z-50">
-            <Link href="/contact">
-              <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white">
-                View my work
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white" variant="custom" >
-                Contact Me
-              </Button>
-            </Link>
+          <Link href="/contact" passHref>
+        <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white">
+          View my work
+        </Button>
+      </Link>
+      <Link href="/contact" passHref>
+        <Button className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white" variant="custom">
+          Contact Me
+        </Button>
+      </Link>
           </div>
         </div>
       </div>

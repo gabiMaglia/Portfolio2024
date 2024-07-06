@@ -23,14 +23,14 @@ const TransitionProvider = ({ children }) => {
     >
       <motion.div
         className="h-screen w-screen fixed bg-black rounded-b-[100px] z-40"
-        animate={{ height: "0vh" }}
-        exit={{ height: "140vh" }}
+        animate={{ height: "0dvh" }}
+        exit={{ height: "140dvh" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
       <motion.div
         className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-8xl cursor-default  w-fit h-fit flex items-center justify-center z-50"
         initial={{ opacity: 1 }}
-        animate={{ opacity: 0, height: '0vh', display:'none', top: '-180dvh' }}
+        animate={{ opacity: 0, height: '0dvh', display:'none', top: '-180dvh' }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
@@ -38,8 +38,8 @@ const TransitionProvider = ({ children }) => {
       </motion.div>
       <motion.div
         className="h-screen w-screen fixed bg-black rounded-t-[100px] bottom-0 z-30"
-        initial={{ height: "140vh" }}
-        animate={{ height: "0vh", transition: { delay: 0.5 } }}
+        initial={{ height: "140dvh" }}
+        animate={{ height: "0dvh", transition: { delay: 0.5 } }}
       />
       <div className="h-24">
         <NavBar />

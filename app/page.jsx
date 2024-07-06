@@ -43,22 +43,22 @@ const Homepage = () => {
           </p>
           {/* BUTTONS */}
           <div className=" w-full flex justify-center lg:justify-normal gap-4 z-50">
-            <Link href="/contact" passHref>
-              <a
+            <Link href="/contact" >
+              <Button
                 className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
-                onTouchStart={handleTouchStart}
+             
               >
                 View my work
-              </a>
+              </Button>
             </Link>
-            <Link href="/contact" passHref>
-              <a
+            <Link href="/contact" >
+              <Button
                 className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
                 variant="custom"
-                onTouchStart={handleTouchStart}
+                
               >
                 Contact Me
-              </a>
+              </Button>
             </Link>
           </div>
         </div>

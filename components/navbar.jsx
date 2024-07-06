@@ -89,11 +89,11 @@ const NavBar = () => {
   };
 
   return (
-    <div className="h-full py-6 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl z-50">
+    <div className="h-full py-6 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl">
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link, index) => (
-          <span onClick={()=> router.push(link.url)} key={index} className={`rounded cursor-pointer p-1 z-10 ${pathName === link.url && "bg-black w-full text-white"}`} >{link.title}</span>
+          <span onClick={()=> router.push(link.url)} key={index} className={`rounded cursor-pointer p-1 ${pathName === link.url && "bg-black w-full text-white"}`} >{link.title}</span>
         ))}
       </div>
       {/* LOGO */}

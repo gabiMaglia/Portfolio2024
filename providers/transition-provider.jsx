@@ -23,19 +23,19 @@ const TransitionProvider = ({ children }) => {
         className="w-screen h-screen"
       >
         <motion.div
-          className="h-screen w-screen fixed bg-black rounded-b-[100px] z-40"
+          className="h-screen w-screen fixed bg-black rounded-b-[100px] z-30"
           animate={{ height: "0vh" }}
           exit={{ height: "110vh" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
         />
         <motion.div
-          className=" fixed m-auto p-auto top-0 bottom-0 right-0 left-0 text-white cursor-default z-50 w-fit h-fit text-8xl "
+          className="h-full fixed flex flex-col justify-center align-middle text-white cursor-default z-50 text-8xl "
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <p className="text-2xl my-auto font-bold md:text-4xl lg:text-8xl">
+          <p className="text-4xl font-bold md:text-6xl lg:text-8xl">
           {pathBox[pathname]} 
 
           </p>

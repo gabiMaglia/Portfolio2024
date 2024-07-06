@@ -16,7 +16,7 @@ const Homepage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <div className="h-full flex flex-col justify-center align-middle lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48">
+      <div className="h-full flex flex-col justify-center  align-middle lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 z-10">
         {/* IMAGE CONTAINER */}
         <div className="h-1/2 mx-auto w-[240px] md:w-[420px] lg:h-full lg:w-1/2 relative">
           <Image
@@ -42,7 +42,7 @@ const Homepage = () => {
             touch in no time!
           </p>
           {/* BUTTONS */}
-          <div className=" w-full flex justify-center lg:justify-normal gap-4 z-50">
+          <div className=" w-full flex justify-center lg:justify-normal gap-4 ">
             <Button
               className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
               onClick={() => router.push("/portfolio")}

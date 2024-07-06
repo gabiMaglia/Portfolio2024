@@ -66,6 +66,18 @@
   }
 }
 
+body {
+  background-image: url('../public/fondo.gif')!important;
+  background-position: center
+}
+@media screen and (max-width : 640px) {
+  body {
+    background-position: 65.5% 52%;
+    
+  }
+  
+}
+
 @layer base {
   * {
     @apply border-border;

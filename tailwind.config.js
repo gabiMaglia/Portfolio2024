@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'background1': 'url(/public/fondo.gif)'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -20,6 +20,9 @@ module.exports = {
       backgroundImage: {
         'background1': 'url(/public/fondo.gif)'
       },
+      fontFamily: {
+        'zootype': ['"Linotype Zootype W01 Regular"', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

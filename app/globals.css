@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+/* app/globals.css */
+body {
+  font-family: 'Linotype Zootype W01 Regular', sans-serif;
+}
+
+.custom-font {
+  font-family: 'Linotype Zootype W01 Regular', sans-serif;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

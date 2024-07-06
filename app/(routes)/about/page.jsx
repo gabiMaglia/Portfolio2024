@@ -42,7 +42,7 @@ const AboutPage = () => {
     <>
       <motion.div
         className="h-full md:flex"
-        initial={{ y: "-200vh" }}
+        initial={{ y: "-200dvh" }}
         animate={{ y: "0%" }}
         transition={{ duration: 1 }}
       >
@@ -54,7 +54,7 @@ const AboutPage = () => {
           {/* TEXTCONTAINER */}
           <div className="p-8 sm:p-8 md:px-12 lg:px-20 xl:px-48 flex flex-col gap-24 md:gap-32 lg:gap-48 xl:gap-64 lg:w-2/3 lg:pr-0">
             {/* BIOGRAPHYCONTAINER */}
-            <div className="flex flex-col text-center md:text-left gap-12 pt-8 md:pt-32 justify-center pb-32">
+            <div className="flex flex-col text-center md:text-left gap-12 pt-8 md:pt-32 justify-center pb-14 md:pb-24 lg:pb-32">
               <h2 className="font-bold text-xl md:text-2xl">About Me</h2>
               <p className="text-base md:text-lg text-justify">{state.phrases.mainPhrase}</p>
               <blockquote className="italic">
@@ -105,7 +105,7 @@ const AboutPage = () => {
             </div>
             {/* SKILLSCONTAINER */}
             <div
-              className="flex flex-col gap-12 text-center md:text-left  pt-8 md:pt-32  justify-center pb-32"
+              className="flex flex-col gap-12 text-center md:text-left  pt-8 md:pt-32  justify-center pb-14 md:pb-24 lg:pb-32"
               ref={skillRef}
             >
               <motion.h2
@@ -212,7 +212,7 @@ const AboutPage = () => {
             </div>
             {/* EXPERIENCECONTAINER */}
             <div
-              className="flex flex-col text-center md:text-left gap-12  pt-8 md:pt-32 justify-center pb-32"
+              className="flex flex-col text-center md:text-left gap-12  pt-8 md:pt-32 justify-center pb-14 md:pb-24 lg:pb-32"
               ref={experienceRef}
             >
               <motion.div

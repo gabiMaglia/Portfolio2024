@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useUserStore } from "@/store/store";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const Homepage = () => {
   const persona = useUserStore((state) => state.persona);
-
+  const router = useRouter();
   return (
     <motion.div
       className="h-full"
@@ -16,9 +16,9 @@ const Homepage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <div className="h-full flex flex-col z-40  justify-center align-middle lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48">
+      <div className="h-full flex flex-col justify-center align-middle lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48">
         {/* IMAGE CONTAINER */}
-        <div className="h-1/2 lg:h-full lg:w-1/2 relative">
+        <div className="h-1/2 mx-auto w-[240px] md:w-[420px] lg:h-full lg:w-1/2 relative">
           <Image
             src="/gabi2.png"
             alt="Gabriel Maglia"
@@ -43,23 +43,19 @@ const Homepage = () => {
           </p>
           {/* BUTTONS */}
           <div className=" w-full flex justify-center lg:justify-normal gap-4 z-50">
-            <Link href="/contact" >
-              <Button
-                className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
-             
-              >
-                View my work
-              </Button>
-            </Link>
-            <Link href="/contact" >
-              <Button
-                className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
-                variant="custom"
-                
-              >
-                Contact Me
-              </Button>
-            </Link>
+            <Button
+              className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
+              onClick={() => router.push("/portfolio")}
+            >
+              View my work
+            </Button>
+            <Button
+              className="p-4 rounded-lg ring-1 ring-black hover:bg-black hover:text-white"
+              variant="custom"
+              onClick={() => router.push("/contact")}
+            >
+              Contact Me
+            </Button>
           </div>
         </div>
       </div>

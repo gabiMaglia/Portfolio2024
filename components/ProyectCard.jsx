@@ -18,7 +18,7 @@ const ProyectCard = ({ proyect }) => {
         </Badge>
         <div className="relative mx-auto w-[320px] h-full md:max-w-[420px] md:w-[420px] xl:max-w-[520px] xl:w-[520px]  ">
           <Image
-            className=" shadow-2xl w-full max-h-[280px]"
+            className=" shadow-2xl w-full py-4 max-h-[280px]"
             alt={proyect.title_pro}
             src={proyect.img1_pro}
             fill

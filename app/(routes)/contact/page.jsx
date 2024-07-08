@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from "@/store/store";
@@ -15,9 +15,9 @@ const ContactPage = () => {
   const [userEmail, setUserEmail] = useState("");
   const [characters, setCharacters] = useState(0);
   const [socialMedia, setSocialMedia] = useState([]);
-  const telephone = useUserStore((state) => state.persona.telephone_persona);
-  const userMedias = useUserStore((state) => state.social);
-  const email = userMedias.find((e) => e.name === "Gmail");
+  const telephone = useUserStore((state) => state.persona?.telephone_persona);
+  const userMedias = useUserStore((state) => state.social || []);
+  const email = userMedias.find((e) => e.name === "Gmail") || {};
 
   useEffect(() => {
     setSocialMedia(userMedias);
@@ -94,9 +94,9 @@ const ContactPage = () => {
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Gmail
             </h3>
-            <Link href={email?.url}>
+            <Link href={email?.url || "/"}>
               <span className="text-sm md:text-md text-gray-700">
-                {email?.url?.split(":")[1].toString().toUpperCase()}
+                {email?.url?.split(":")[1]?.toUpperCase() || ""}
               </span>
             </Link>
           </div>

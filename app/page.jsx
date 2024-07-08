@@ -35,7 +35,7 @@ const Homepage = () => {
             <Image src={logo} alt={` I am ${persona?.name_persona} ${persona?.surname_persona}`} width={320} height={220} />
           </span>
           {/* DESCRIPTION */}
-          <p className="text-justify max-w-80 md:max-w-96  md:text-xl mix-blend-difference">
+          <p className="text-justify text-sm max-w-80 md:max-w-96 ">
             Welcome to my personal portfolio where you can learn something about
             me and look for my works, you can also contact with me, I will be in
             touch in no time!

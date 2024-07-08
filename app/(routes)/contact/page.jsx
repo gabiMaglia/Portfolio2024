@@ -29,7 +29,7 @@ const ContactPage = () => {
 
   useEffect(() => {
     const validateForm = () => {
-      const wordCount = userMessage.trim().split(/\s+/).length;
+      const wordCount = userMessage?.trim().split(/\s+/).length;
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setFormState((prevState) => ({
         ...prevState,

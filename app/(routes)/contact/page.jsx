@@ -10,15 +10,11 @@ import Image from "next/image";
 
 const ContactPage = () => {
   const formRef = useRef();
-  const [formState, setFormState] = useState({
-    isFormValid: false,
-    userMessage: "",
-    userEmail: "",
-    characters: 0,
-  });
-
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [userMessage, setUserMessage] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [characters, setCharacters] = useState(0);
   const [socialMedia, setSocialMedia] = useState([]);
-  const { isFormValid, userMessage, userEmail, characters } = formState;
   const telephone = useUserStore((state) => state.persona.telephone_persona);
   const userMedias = useUserStore((state) => state.social);
   const email = userMedias.find((e) => e.name === "Gmail");
@@ -28,21 +24,10 @@ const ContactPage = () => {
   }, [userMedias]);
 
   useEffect(() => {
-    const validateForm = () => {
-      const wordCount = userMessage?.trim().split(/\s+/).length;
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      setFormState((prevState) => ({
-        ...prevState,
-        isFormValid: wordCount > 5 && emailPattern.test(userEmail),
-        characters: userMessage.length,
-      }));
-    };
-
-    const handler = setTimeout(validateForm, 300);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    const wordCount = userMessage.trim().split(/\s+/).length;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsFormValid(wordCount > 5 && emailPattern.test(userEmail));
+    setCharacters(userMessage.length);
   }, [userMessage, userEmail]);
 
   const sendEmail = async (e) => {
@@ -57,20 +42,18 @@ const ContactPage = () => {
       );
 
       console.log("Email successfully sent:", result.text);
-      setFormState({
-        isFormValid: false,
-        userMessage: "",
-        userEmail: "",
-        characters: 0,
-      });
+      setUserMessage("");
+      setUserEmail("");
+      setCharacters(0);
       toast.success("Email sent");
       formRef.current.reset();
     } catch (error) {
       console.error("Failed to send email:", error);
       toast.error("Your email could not be sent");
     }
-
   };
+
+  const handleInputChange = (setter) => (e) => setter(e.target.value);
 
   return (
     <motion.section
@@ -80,7 +63,6 @@ const ContactPage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-
       <span className="section-subtitle block text-center pb-3 font-semibold text-gray-500">
         For projects and job proposals
       </span>
@@ -90,7 +72,7 @@ const ContactPage = () => {
 
       <div className="contact__container flex flex-col md:flex-row gap-10">
         <div className="contact__content grid gap-6 md:grid-cols-2">
-          <div className="contact__box flex flex-col justify-center  rounded-lg p-6 text-center my-auto shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="contact__box flex flex-col justify-center rounded-lg p-6 text-center my-auto shadow-md hover:shadow-lg transition-shadow duration-300">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Location
             </h3>
@@ -108,7 +90,7 @@ const ContactPage = () => {
             </span>
           </div>
 
-          <div className="contact__box col-span-2 flex flex-col justify-center  rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="contact__box col-span-2 flex flex-col justify-center rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg transition-shadow duration-300">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Gmail
             </h3>
@@ -139,12 +121,7 @@ const ContactPage = () => {
               placeholder="Email"
               className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
               value={userEmail}
-              onChange={(e) =>
-                setFormState((prevState) => ({
-                  ...prevState,
-                  userEmail: e.target.value,
-                }))
-              }
+              onChange={handleInputChange(setUserEmail)}
             />
           </div>
 
@@ -156,12 +133,7 @@ const ContactPage = () => {
             placeholder="Message"
             className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
             value={userMessage}
-            onChange={(e) =>
-              setFormState((prevState) => ({
-                ...prevState,
-                userMessage: e.target.value,
-              }))
-            }
+            onChange={handleInputChange(setUserMessage)}
           />
           <span
             className={`${
@@ -205,6 +177,6 @@ const ContactPage = () => {
       </div>
     </motion.section>
   );
-}
+};
 
 export default ContactPage;

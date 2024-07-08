@@ -48,7 +48,7 @@ const AboutPage = () => {
       >
         {/* CONTAINER */}
         <div
-          className="h-full w-full  overflow-scroll overflow-x-hidden lg:flex "
+          className="h-full w-full   overflow-scroll overflow-x-hidden lg:flex "
           ref={containerRef}
         >
           {/* TEXTCONTAINER */}
@@ -56,7 +56,7 @@ const AboutPage = () => {
             {/* BIOGRAPHYCONTAINER */}
             <div className="flex flex-col text-center md:text-left gap-12 pt-8 md:pt-32 justify-center pb-14 md:pb-24 lg:pb-32">
               <h2 className="font-bold text-xl md:text-2xl">About Me</h2>
-              <p className="text-base md:text-lg text-justify">{state.phrases.mainPhrase}</p>
+              <p className="text-base md:text-lg  text-justify">{state.phrases.mainPhrase}</p>
               <blockquote className="italic">
                 {` "${state.phrases.phrase1}"`}
               </blockquote>

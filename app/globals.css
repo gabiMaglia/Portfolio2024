@@ -1,17 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* Lion */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+/* sourSerifPro */
 
 /* app/globals.css */
-body {
-  font-family: 'Linotype Zootype W01 Regular', sans-serif;
-}
 
-.custom-font {
-  font-family: 'Linotype Zootype W01 Regular', sans-serif;
-}
 
 @layer base {
   :root {
@@ -77,10 +72,17 @@ body {
   }
 }
 
+*{
+  font-family: inherit;
+}
+
 body {
   background-image: url('../public/fondo.gif')!important;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   background-position: center
 }
+
 @media screen and (max-width : 640px) {
   body {
     background: fixed;
@@ -95,6 +97,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background  text-foreground;
   }
 }

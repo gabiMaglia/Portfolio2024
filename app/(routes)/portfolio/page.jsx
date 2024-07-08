@@ -38,7 +38,7 @@ const PortfolioPage = () => {
                 {proyects.map((proyect, index) => (
                   <div
                     key={index}
-                    className="h-screen w-screen flex items-center justify-center "
+                    className="h-screen w-screen flex items-center gap-6 justify-center "
                   >
                     <ProyectCard proyect={proyect} />
                   </div>
@@ -49,8 +49,8 @@ const PortfolioPage = () => {
           </div>
         </div>
 
-        <div className="w-screen h-screen flex flex-col gap-16 items-center text-center py-48">
-          <h2 className="text-8xl">Do you like my work?</h2>
+        <div className="w-screen h-screen flex flex-col gap-16 items-center text-center justify-center">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl">Do you like my work?</h2>
           <div className="relative">
             <motion.svg
               animate={{ rotate: 360 }}

@@ -31,11 +31,11 @@ const Homepage = () => {
         <div className="h-1/2 lg:h-full lg:w-1/2 flex flex-col gap-8 items-center justify-center lg:items-start">
           {/* TITLE */}
           <span className="text-justify mb-[-50px] flex flex-col justify-start lg:text-left text-4xl md:text-6xl font-bold">
-            <h2 className="mb-[-20px] font-zootype">I am</h2>
+            <h2 className="mb-[-20px] text-white font-zootype">I am</h2>
             <Image src={logo} alt={` I am ${persona?.name_persona} ${persona?.surname_persona}`} width={320} height={220} />
           </span>
           {/* DESCRIPTION */}
-          <p className="text-justify max-w-80 md:max-w-96  md:text-xl">
+          <p className="text-justify max-w-80 md:max-w-96  md:text-xl mix-blend-difference">
             Welcome to my personal portfolio where you can learn something about
             me and look for my works, you can also contact with me, I will be in
             touch in no time!

@@ -9,6 +9,20 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+
+    fontSize: {
+      sm: '1rem',
+      base: '1.4rem',
+      xl: '1.6rem',
+      '2xl': '1.90rem',
+      '3xl': '2.44rem',
+      '4xl': '3.052rem',
+      '5xl': '3.998rem',
+      '6xl': '4.352rem',
+      '7xl': '4.998rem',
+      '8xl': '5.298rem',
+    },
+
     container: {
       center: true,
       padding: "2rem",
@@ -22,6 +36,7 @@ module.exports = {
       },
       fontFamily: {
         'zootype': ['"Linotype Zootype W01 Regular"', 'sans-serif'],
+        'sourSerif': ['"Sour Serif 4"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -1,71 +1,69 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { CardHeader, Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Github, Link2Icon } from "lucide-react";
 import { Button } from "./ui/button";
 
 const ProyectCard = ({ proyect }) => {
   return (
-    <Card className="group overflow-hidden relative  max-w-[320px] h-[520px] xl:h-[620px] md:max-w-[620px] md:w-[620px] xl:max-w-[720px] xl:w-[720px] bg-gradient-to-b from-blue-50 to-red-50">
-      <CardHeader className="p-0 h-4/6">
-        <Badge
-          variant={"custom"}
-          className="p-3 uppercase text-sm justify-center font-medium mb-2 top-4 left-5"
-        >
-          {proyect.title_pro}
-        </Badge>
-        <div className="relative mx-auto w-[320px] h-full md:max-w-[420px] md:w-[420px] xl:max-w-[520px] xl:w-[520px]  ">
-          <Image
-            className=" shadow-2xl w-full py-4 max-h-[280px]"
-            alt={proyect.title_pro}
-            src={proyect.img1_pro}
-            fill
-            priority
-          />
+
+    <div className="h-screen w-screen">
+      <div className="flex flex-col h-full w-full justify-evenly md:justify-start  gap-8  bg-none">
+          <h2
+  
+           className=" h-1/6 uppercase font-extrabold text-2xl md:text=6xl lg:text-8xl "
+         >
+           {proyect.title_pro}
+         </h2>
+        <div className=" relative w-[320px] h-[220px] md:w-[620px] md:h-[420px]  lg:w-[820px] lg:h-[620px] ">
+          <Image src={proyect.img1_pro} alt={proyect.title_pro} fill />
         </div>
-        <Badge
-          variant={"custom"}
-          className="uppercase w-full justify-center text-sm font-medium mb-2 top-4 left-5"
-        >
-          {proyect.technologies_pro}
-        </Badge>
-      </CardHeader>
-      {/* DESCRIPTION */}
-      <div className="h-1/6 max-h-32 overflow-scroll px-8 py-6">
-        <p className=" text-muted-foreground text-center text-sm">
-          {proyect.description_pro}
-        </p>
+        <span className="h-2/6 flex flex-col justify-around gap-6">
+          <p className="w-80  md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">
+            {proyect.description_pro}
+          </p>
+          <Badge
+            variant={"custom"}
+            className="p-3 uppercase w-fit"
+          >
+          <i>{proyect.technologies_pro}</i>
+          </Badge>
+        </span>
+        <span className="h-1/6 flex gap-7 ">
+          <span className="flex gap-2  my-auto">
+            <Link2Icon className="self-center" />
+            <Link
+              target="_blank"
+              className="flex justify-end"
+              href={proyect.githubLink_pro}
+            >
+              <Button
+                variant="custom"
+                className="p-2 px-4 flex flex-col text-sm  bg-black text-white font-semibold rounded"
+              >
+                Deploy
+              </Button>
+            </Link>
+          </span>
+          <span className="flex gap-2  my-auto">
+            <Github className="self-center" />
+            <Link
+              target="_blank"
+              className="flex justify-end"
+              href={proyect.deployLink_pro}
+            >
+              <Button
+                variant="custom"
+                className="p-2 px-4 flex flex-col text-sm bg-black text-white font-semibold  rounded"
+              >
+                Github
+              </Button>
+            </Link>
+          </span>
+        </span>
       </div>
-      {/* LINKS */}
-      <span className="h-1/6 flex gap-11 justify-center">
-        <span className="flex gap-2  my-auto">
-          <Link2Icon className="self-center" />
-          <Link
-            target="_blank"
-            className="flex justify-end"
-            href={proyect.githubLink_pro}
-          >
-            <Button variant="custom" className="p-2 px-4 flex flex-col text-sm  bg-black text-white font-semibold rounded">
-              Deploy
-            </Button>
-          </Link>
-        </span>
-        <span className="flex gap-2  my-auto">
-          <Github className="self-center" />
-          <Link
-            target="_blank"
-            className="flex justify-end"
-            href={proyect.deployLink_pro}
-          >
-            <Button variant="custom" className="p-2 px-4 flex flex-col text-sm bg-black text-white font-semibold  rounded">
-              Github
-            </Button>
-          </Link>
-        </span>
-      </span>
-    </Card>
+    </div>
   );
 };
 

@@ -16,11 +16,11 @@ const ProyectCard = ({ proyect }) => {
          >
            {proyect.title_pro}
          </h2>
-        <div className=" relative w-[320px] h-[220px] md:w-[620px] md:h-[420px]  lg:w-[820px] lg:h-[620px] ">
-          <Image src={proyect.img1_pro} alt={proyect.title_pro} fill />
+        <div className=" relative bg-slate-400  w-[320px] h-[220px] rounded-xl md:w-[620px] md:h-[420px]  lg:w-[820px] lg:h-[620px] ">
+          <Image className="rounded-xl p-1 ring-slate-100 ring-4" src={proyect.img1_pro} alt={proyect.title_pro} fill />
         </div>
         <span className="h-2/6 flex flex-col justify-around gap-6">
-          <p className="w-80  md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">
+          <p className="w-80   md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">
             {proyect.description_pro}
           </p>
           <Badge

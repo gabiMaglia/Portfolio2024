@@ -22,7 +22,7 @@ const TransitionProvider = ({ children }) => {
       className="w-screen h-screen  bg-[url('/public/fondo.gif')]"
     >
       <motion.div
-        className="h-screen w-screen fixed bg-black rounded-b-[100px] z-40"
+        className="h-screen w-screen fixed bg-black rounded-b-[100px] z-50"
         animate={{ height: "0dvh" }}
         exit={{ height: "140dvh" }}
         transition={{ duration: 0.5, ease: "easeOut" }}

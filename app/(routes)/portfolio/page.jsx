@@ -33,7 +33,7 @@ const PortfolioPage = () => {
           </div>
           <div className="sticky top-0 flex h-screen gap-4 items-center overflow-hidden isolate rounded-xl bg-white/20 shadow-lg ring-2 ring-black/5">
             <div>
-              <motion.div style={{ x }} className="flex">
+              <motion.div style={{ x }} className="flex  will-change-transform">
                 <div className="h-screen w-screen flex items-center justify-center px-10 z-10" />
                 {proyects.map((proyect, index) => (
                   <div

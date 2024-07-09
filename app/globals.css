@@ -76,7 +76,10 @@
 *{
   font-family: inherit;
 }
-
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
 .bg{
   background-image: url('../public/fondo.gif')!important;
   background-repeat: no-repeat;
@@ -90,7 +93,6 @@
 
 @media screen and (max-width : 640px) {
   .bg {
-
     background-position: 65.5% 52%;
     
   }

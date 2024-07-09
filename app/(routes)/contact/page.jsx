@@ -57,7 +57,7 @@ const ContactPage = () => {
 
   return (
     <motion.section
-      className="contact section container h-full pt-16 mx-auto flex flex-col align-middle"
+      className="contact section container h-full pt-10 md:pt-0 mx-auto flex flex-col items-center md:justify-center"
       id="contact"
       initial={{ y: "-200vh" }}
       animate={{ y: "0%" }}
@@ -154,7 +154,7 @@ const ContactPage = () => {
             Send
           </button>
         </form>
-        <div className="flex justify-between gap-4 w-full md:hidden">
+        <div className="flex pb-10 justify-between gap-4 w-full md:hidden">
           {socialMedia.map((social, index) => (
             <div key={index}>
               <Link

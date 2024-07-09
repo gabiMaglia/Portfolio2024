@@ -32,6 +32,7 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} flex align-middle `}>
+        <span className='bg'/>
         <ToasterProvider />
         <StoreProvider data={{ data, socialData, restOfData }} />
         <TransitionProvider>{children}</TransitionProvider>

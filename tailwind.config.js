@@ -9,20 +9,6 @@ module.exports = {
   ],
   prefix: "",
   theme: {
-
-    fontSize: {
-      sm: '1rem',
-      base: '1.4rem',
-      xl: '1.6rem',
-      '2xl': '1.80rem',
-      '3xl': '2.30rem',
-      '4xl': '2.70rem',
-      '5xl': '3.50rem',
-      '6xl': '4 rem',
-      '7xl': '4.998rem',
-      '8xl': '5.298rem',
-    },
-
     container: {
       center: true,
       padding: "2rem",
@@ -33,6 +19,20 @@ module.exports = {
     extend: {
       backgroundImage: {
         'background1': 'url(/public/fondo.gif)'
+      },
+      fontSize: {
+        sm: ['0.875rem', { lineHeight: '1.25rem' }], // 14px
+        base: ['1rem', { lineHeight: '1.5rem' }], // 16px
+        md: ['1.125rem', { lineHeight: '1.75rem' }], // 18px
+        lg: ['1.25rem', { lineHeight: '1.75rem' }], // 20px
+        xl: ['1.5rem', { lineHeight: '2rem' }], // 24px
+        '2xl': ['1.875rem', { lineHeight: '2.25rem' }], // 30px
+        '3xl': ['2.25rem', { lineHeight: '2.5rem' }], // 36px
+        '4xl': ['3rem', { lineHeight: '1' }], // 48px
+        '5xl': ['3.75rem', { lineHeight: '1' }], // 60px
+        '6xl': ['4.5rem', { lineHeight: '1' }], // 72px
+        '7xl': ['5.25rem', { lineHeight: '1' }], // 84px
+        '8xl': ['6rem', { lineHeight: '1' }], // 96px
       },
       fontFamily: {
         'zootype': ['"Linotype Zootype W01 Regular"', 'sans-serif'],

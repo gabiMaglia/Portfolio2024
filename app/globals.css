@@ -77,27 +77,23 @@
   font-family: inherit;
 }
 
-body::before {
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center
-}
 .bg{
   background-image: url('../public/fondo.gif')!important;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: fit;
   height: 100vh;
   width: 100vw;
   position: fixed;
   z-index: -10;
 }
+
 @media screen and (max-width : 640px) {
-  body {
-    background: fixed;
+  .bg {
+
     background-position: 65.5% 52%;
     
   }
-  
 }
 
 @layer base {

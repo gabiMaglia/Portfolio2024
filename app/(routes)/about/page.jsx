@@ -49,7 +49,7 @@ const AboutPage = () => {
       >
         {/* CONTAINER */}
         <div
-          className="h-full w-full overflow-scroll overflow-x-hidden lg:flex "
+          className="h-window w-full overflow-scroll overflow-x-hidden lg:flex "
           ref={containerRef}
         >
           {/* TEXTCONTAINER */}

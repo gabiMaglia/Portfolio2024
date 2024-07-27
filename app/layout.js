@@ -10,6 +10,7 @@ import {
 } from "@/serevices/fetchUserData";
 import StoreProvider from "@/providers/store-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
+import { ScrollToTop } from "@/components/scrollToTop";
 
 const inter = Maven_Pro({ weight: "500", subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }) {
       <body className={`${inter.className} w-screen h-screen flex align-middle `}>
         <span className='bg'/>
         <ToasterProvider />
+        <ScrollToTop />
         <StoreProvider data={{ data, socialData, restOfData }} />
         <TransitionProvider>{children}</TransitionProvider>
       </body>

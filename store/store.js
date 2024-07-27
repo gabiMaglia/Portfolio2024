@@ -9,6 +9,7 @@ export const useUserStore = create((set) => ({
   phrases: [],
 
 
+
   setPersona: (newPersona) => set({ persona: newPersona }),
   setProyects: (newProyects) => set({ proyects: newProyects }),
   setExperiences: (newExperiences) => set({ experiences: newExperiences }),

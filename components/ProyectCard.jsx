@@ -12,12 +12,12 @@ const ProyectCard = ({ proyect }) => {
       <div className="flex flex-col h-full w-full justify-evenly md:justify-start  gap-8  bg-none">
           <h2
   
-           className=" h-1/6 uppercase font-extrabold text-2xl md:text=6xl lg:text-8xl "
+           className=" h-1/6 pt-6 uppercase font-extrabold text-2xl md:text=6xl lg:text-8xl "
          >
            {proyect.title_pro}
          </h2>
-        <div className=" relative bg-slate-400  w-[320px] h-[220px] rounded-xl md:w-[620px] md:h-[420px]  lg:w-[820px] lg:h-[620px] ">
-          <Image className="rounded-xl p-1 ring-slate-100 ring-4" src={proyect.img1_pro} alt={proyect.title_pro} fill />
+        <div className=" relative border-x-slate-100 drop-shadow-lg shadow-xl w-[320px] h-[220px] rounded-xl md:w-[620px] md:h-[420px]  lg:w-[820px] lg:h-[620px] ">
+          <Image className="rounded-xl p-1 " src={proyect.img1_pro} alt={proyect.title_pro} fill />
         </div>
         <span className="h-2/6 flex flex-col justify-around gap-6">
           <p className="w-80   md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">

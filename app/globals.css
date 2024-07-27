@@ -81,12 +81,13 @@
   transform: translateZ(0); /* Force hardware acceleration */
 }
 .bg{
+  filter: blur(.4rem);
   background-image: url('../public/fondo.gif')!important;
   background-repeat: no-repeat;
+  background-size: contain;
   background-position: center;
-  background-size: fit;
   height: 100vh;
-  width: 100vw;
+  width: 80vw;
   position: fixed;
   z-index: -10;
 }

@@ -89,11 +89,11 @@ const NavBar = () => {
   };
 
   return (
-  <div className="h-full pt-4 pb-0 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl z-50">
+  <div className="h-full pt-4 pb-4 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl z-50">
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link, index) => (
-          <span onClick={()=> router.push(link.url)} key={index} className={`rounded cursor-pointer p-1 ${pathName === link.url && "bg-black text-white"}`} >{link.title}</span>
+          <span onClick={()=> router.push(link.url)} key={index} className={`rounded-xl cursor-pointer backdrop-blur-sm p-2 ${pathName === link.url && "bg-black text-white"}`} >{link.title}</span>
         ))}
       </div>
       {/* LOGO */}
@@ -113,7 +113,7 @@ const NavBar = () => {
         {socialMedia.map((socialMedia, index) => (
           <div key={index}>
             <Link
-              className="flex"
+              className="flex backdrop-blur-lg"
               target="_blank"
               rel="noopener noreferrer"
               href={socialMedia.url}
@@ -134,7 +134,7 @@ const NavBar = () => {
         {/* MENUBUTTON */}
         <button
           onClick={() => setOpen((prev) => !prev)}
-          className="w-10 h-8 flex flex-col justify-between z-50 relative"
+          className="w-10 h-8 flex flex-col justify-between z-50 relative backdrop-blur-lg"
         >
           <motion.div
             variants={topVariant}

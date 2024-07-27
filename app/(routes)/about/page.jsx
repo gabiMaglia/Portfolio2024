@@ -56,9 +56,9 @@ const AboutPage = () => {
           <div className="p-8 sm:p-8 md:px-12 lg:px-20 xl:px-48 flex flex-col gap-20 md:gap-32 lg:gap-48 xl:gap-64 lg:w-2/3 lg:pr-0">
             {/* BIOGRAPHYCONTAINER */}
             <div className="flex flex-col justify-center text-center md:text-left gap-12 pt-6 pb-14 md:pt-36 lg:pt-24  ">
-              <h2 className="font-bold text-xl md:text-2xl">About Me</h2>
-              <p className="text-sm md:text-base  text-justify">{state.phrases.mainPhrase}</p>
-              <blockquote className="italic mt-[-30px] mb-[-10px] md:mt-0 md:mb-0">
+              <h2 className="font-bold text-xl md:text-2xl backdrop-blur-sm ">About Me</h2>
+              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state.phrases.mainPhrase}</p>
+              <blockquote className="italic mt-[-30px] mb-[-10px] md:mt-0 md:mb-0 backdrop-blur-sm">
                 {` "${state.phrases.phrase1}"`}
               </blockquote>
               <div className="self-end">
@@ -66,7 +66,7 @@ const AboutPage = () => {
               </div>
               {/* ScrollSVG */}
               <motion.svg
-              className="self-center md:self-start"
+              className="self-center md:self-start backdrop-blur-sm"
                 initial={{ opacity: 0.2, y: 0 }}
                 animate={{ opacity: 1, y: "10px" }}
                 transition={{

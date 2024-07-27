@@ -63,7 +63,7 @@ const ContactPage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <span className="section-subtitle block text-center pb-3 font-semibold text-gray-500">
+      <span className="section-subtitle block text-center pb-3 font-bold text-gray-500">
         For projects and job proposals
       </span>
       <h2 className="pb-2 md:pb-10 section-title text-center text-2xl font-semibold text-red-900 mb-6">
@@ -71,8 +71,8 @@ const ContactPage = () => {
       </h2>
 
       <div className="contact__container flex flex-col md:flex-row gap-10">
-        <div className="contact__content grid gap-6 md:grid-cols-2">
-          <div className="contact__box flex flex-col justify-center rounded-lg p-6 text-center my-auto shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="contact__content grid gap-6 md:grid-cols-2 ">
+          <div className="contact__box flex flex-col justify-center rounded-lg p-6 text-center my-auto shadow-md hover:shadow-lg font-normal transition-shadow duration-300 bg-black/10">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Location
             </h3>
@@ -81,7 +81,7 @@ const ContactPage = () => {
             </span>
           </div>
 
-          <div className="contact__box flex flex-col justify-center rounded-lg p-6 text-center py-auto shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="contact__box flex flex-col justify-center rounded-lg p-6 text-center py-auto shadow-md hover:shadow-lg font-normal transition-shadow duration-300 bg-black/10">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Phone
             </h3>
@@ -90,7 +90,7 @@ const ContactPage = () => {
             </span>
           </div>
 
-          <div className="contact__box col-span-2 flex flex-col justify-center rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div className="contact__box col-span-2 flex flex-col justify-center rounded-lg p-6 my-auto text-center shadow-md hover:shadow-lg font-normal transition-shadow duration-300 bg-black/10">
             <h3 className="text-md md:text-lg font-semibold text-red-900 my-2">
               Gmail
             </h3>
@@ -112,14 +112,14 @@ const ContactPage = () => {
               required
               type="text"
               placeholder="Name"
-              className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+              className="contact__input w-full p-3 border border-gray-400 shadow-md rounded-md focus:outline-none focus:ring-2 focus:ring-red-300 bg-white/40 "
             />
             <input
               required
               name="user_email"
               type="email"
               placeholder="Email"
-              className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+              className="contact__input w-full p-3 border border-gray-400 shadow-md rounded-md focus:outline-none focus:ring-2 focus:ring-red-300 bg-white/40 "
               value={userEmail}
               onChange={handleInputChange(setUserEmail)}
             />
@@ -131,7 +131,7 @@ const ContactPage = () => {
             cols="30"
             rows="7"
             placeholder="Message"
-            className="contact__input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300"
+            className="contact__input w-full p-3 border border-gray-400 shadow-md rounded-md focus:outline-none focus:ring-2 focus:ring-red-300 bg-white/40 "
             value={userMessage}
             onChange={handleInputChange(setUserMessage)}
           />

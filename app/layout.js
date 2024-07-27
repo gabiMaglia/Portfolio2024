@@ -31,7 +31,7 @@ export default async function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} flex align-middle `}>
+      <body className={`${inter.className} w-screen h-screen flex align-middle `}>
         <span className='bg'/>
         <ToasterProvider />
         <StoreProvider data={{ data, socialData, restOfData }} />
@@ -40,3 +40,9 @@ export default async function RootLayout({ children }) {
     </html>
   );
 }
+
+
+
+
+
+

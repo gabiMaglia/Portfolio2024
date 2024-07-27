@@ -20,7 +20,6 @@ export const getAllData = async () => {
    
       objData[e.endpoint] = e.data;
     });
-
     return objData;
   } catch (error) {
     console.log(error);
@@ -32,6 +31,7 @@ export const getPersonalData = async () => {
   try {
     const { data } = await axios.get(`${API}get/persona`);
     return data;
+    console.log(data)
   } catch (error) {
     console.log(error);
     return [];

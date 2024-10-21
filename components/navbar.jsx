@@ -27,69 +27,70 @@ const links = [
   },
 ];
 
+const topVariant = {
+  closed: {
+    rotate: 0,
+    backgroundColor: "rgb(0,0,0)",
+  },
+  opened: {
+    rotate: 45,
+    backgroundColor: "rgb(255,255,255)",
+  },
+};
+const centerVariant = {
+  closed: {
+    opacity: 1,
+    backgroundColor: "rgb(0,0,0)",
+  },
+  opened: {
+    opacity: 0,
+    rotate: 45,
+    backgroundColor: "rgb(255,255,255)",
+  },
+};
+const bottomVariant = {
+  closed: {
+    rotate: 0,
+    backgroundColor: "rgb(0,0,0)",
+  },
+  opened: {
+    rotate: -45,
+    backgroundColor: "rgb(255,255,255)",
+  },
+};
+
+const listVariants = {
+  closed: {
+    x: "100vw",
+  },
+  opened: {
+    x: 0,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+};
+const listItemsVariants = {
+  closed: {
+    x: -10,
+    opacity: 0,
+  },
+  opened: {
+    x: 0,
+    opacity: 1,
+  },
+};
+
 const NavBar = () => {
   const [open, setOpen] = useState(false);
   const pathName = usePathname()
   const router = useRouter()
   const socialMedia = useUserStore((state) => state.social);
 
-  const topVariant = {
-    closed: {
-      rotate: 0,
-      backgroundColor: "rgb(0,0,0)",
-    },
-    opened: {
-      rotate: 45,
-      backgroundColor: "rgb(255,255,255)",
-    },
-  };
-  const centerVariant = {
-    closed: {
-      opacity: 1,
-      backgroundColor: "rgb(0,0,0)",
-    },
-    opened: {
-      opacity: 0,
-      rotate: 45,
-      backgroundColor: "rgb(255,255,255)",
-    },
-  };
-  const bottomVariant = {
-    closed: {
-      rotate: 0,
-      backgroundColor: "rgb(0,0,0)",
-    },
-    opened: {
-      rotate: -45,
-      backgroundColor: "rgb(255,255,255)",
-    },
-  };
-
-  const listVariants = {
-    closed: {
-      x: "100vw",
-    },
-    opened: {
-      x: 0,
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.1,
-      },
-    },
-  };
-  const listItemsVariants = {
-    closed: {
-      x: -10,
-      opacity: 0,
-    },
-    opened: {
-      x: 0,
-      opacity: 1,
-    },
-  };
 
   return (
-  <div className="h-full pt-4 pb-4 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl z-50">
+  <div className="h-full pt-4 pb-4 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20  text-xl z-50">
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link, index) => (

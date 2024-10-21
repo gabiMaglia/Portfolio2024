@@ -36,7 +36,7 @@ const PortfolioPage = () => {
               <motion.div style={{ x }} className="flex  will-change-transform">
                 <div className="h-screen w-screen flex items-center justify-center px-10 z-10" />
                 <div className="h-screen w-screen flex items-center justify-center "></div>
-                {proyects.map((proyect, index) => (
+                {proyects?.map((proyect, index) => (
                   <div
                     key={index}
                     className="h-screen w-screen flex items-center gap-6 justify-center "

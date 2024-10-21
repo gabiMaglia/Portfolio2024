@@ -36,12 +36,12 @@ const ProyectCard = ({ proyect }) => {
             <Link
               target="_blank"
               className="flex justify-end"
-              href={proyect.githubLink_pro}
-            >
+              href={proyect.deployLink_pro}
+              >
               <Button
                 variant="custom"
                 className="p-2 px-4 flex flex-col text-sm  bg-black text-white font-semibold rounded"
-              >
+                >
                 Deploy
               </Button>
             </Link>
@@ -49,9 +49,9 @@ const ProyectCard = ({ proyect }) => {
           <span className="flex gap-2  my-auto">
             <Github className="self-center" />
             <Link
+              href={proyect.githubLink_pro}
               target="_blank"
               className="flex justify-end"
-              href={proyect.deployLink_pro}
             >
               <Button
                 variant="custom"

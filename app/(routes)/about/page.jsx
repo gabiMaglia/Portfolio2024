@@ -28,15 +28,20 @@ const AboutPage = () => {
   const isExperienceRefInView = useInView(experienceRef, { margin: "-100px" });
 
   useEffect(() => {
-    const sortedExperiences = userExperiences.sort(
-      (a, b) => a.startDate_exp.split(" ")[1] - b.startDate_exp.split(" ")[1]
-    );
-
-    setState({
-      experiences: sortedExperiences,
-      skills: userSkills,
-      phrases: userPhrases,
-    });
+    try {
+      const sortedExperiences = userExperiences?.sort(
+        (a, b) => a.startDate_exp.split(" ")[1] - b.startDate_exp.split(" ")[1]
+      );
+  
+      setState({
+        experiences: sortedExperiences,
+        skills: userSkills,
+        phrases: userPhrases,
+      });
+      
+    } catch (error) {
+      console.error(error)
+    }
   }, [userSkills, userPhrases, userExperiences]);
 
   return (
@@ -57,9 +62,9 @@ const AboutPage = () => {
             {/* BIOGRAPHYCONTAINER */}
             <div className="flex flex-col justify-center text-center md:text-left gap-12 pt-6 pb-14 md:pt-36 lg:pt-24  ">
               <h2 className="font-bold text-xl md:text-2xl backdrop-blur-sm ">About Me</h2>
-              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state.phrases.mainPhrase}</p>
+              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state?.phrases?.mainPhrase}</p>
               <blockquote className="italic mt-[-30px] mb-[-10px] md:mt-0 md:mb-0 backdrop-blur-sm">
-                {` "${state.phrases.phrase1}"`}
+                {` "${state?.phrases?.phrase1}"`}
               </blockquote>
               <div className="self-end">
                 <Signature/>
@@ -120,7 +125,7 @@ const AboutPage = () => {
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 className="flex justify-center md:justify-normal flex-wrap gap-4"
               >
-                {state.skills.map(
+                {state?.skills?.map(
                   (e, key) =>
                     e.type === "hard" && (
                       <div
@@ -152,7 +157,7 @@ const AboutPage = () => {
                 animate={isSkillRefInView ? { x: 0 } : {}}
                 className="flex justify-center md:justify-normal flex-wrap gap-4"
               >
-                {state.skills.map(
+                {state?.skills?.map(
                   (e, key) =>
                     e.type === "soft" && (
                       <div
@@ -216,7 +221,7 @@ const AboutPage = () => {
 
                 {/* EXPERIENCE LIST ITEM */}
                 <div className="flex flex-col">
-                  {state.experiences.map((item, index) => {
+                  {state?.experiences?.map((item, index) => {
                     const isOven = index % 2 === 0;
 
                     return (

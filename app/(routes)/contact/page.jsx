@@ -60,18 +60,20 @@ const ContactPage = () => {
 
   return (
     <motion.section
-      className="contact section container h-full pt-10 md:pt-0 mx-auto flex flex-col items-center md:justify-center"
+      className="contact section container h-full pt-10 md:pt-0  flex flex-col md:justify-evenly"
       id="contact"
       initial={{ y: "-200vh" }}
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <span className="section-subtitle block text-center pb-3 font-bold text-gray-500">
-        For projects and job proposals
+      <span>
+        <span className="section-subtitle block text-center pb-3 font-bold text-gray-500">
+          For projects and job proposals
+        </span>
+        <h2 className="pb-2 md:pb-10 section-title text-center text-2xl font-semibold text-red-900 mb-6">
+          Contact Me
+        </h2>
       </span>
-      <h2 className="pb-2 md:pb-10 section-title text-center text-2xl font-semibold text-red-900 mb-6">
-        Contact Me
-      </h2>
 
       <div className="contact__container flex flex-col md:flex-row gap-10">
         <div className="contact__content grid gap-6 md:grid-cols-2 ">

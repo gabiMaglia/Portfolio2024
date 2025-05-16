@@ -17,7 +17,7 @@ const AboutPage = () => {
   const userExperiences = useUserStore((state) => state.experiences);
   const userSkills = useUserStore((state) => state.skill);
   const userPhrases = useUserStore((state) => state.phrases);
-
+  console.log(userPhrases)
   const containerRef = useRef();
   const { scrollYProgress } = useScroll({ container: containerRef });
 

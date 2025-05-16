@@ -4,10 +4,14 @@ import TransitionProvider from "@/providers/transition-provider";
 import "./globals.css";
 
 import {
-  getAllData,
-  getPersonalData,
-  getPersonalSocialMediaData,
-} from "@/serevices/fetchUserData";
+  fetchExperiences,
+  fetchProyects,
+  fetchSkills,
+  fetchSocials,
+  fetchStudies,
+  fetchUserPhrases,
+} from "@/lib/queries";
+
 import StoreProvider from "@/providers/store-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
 import { ScrollToTop } from "@/components/scrollToTop";
@@ -20,9 +24,23 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const data = await getPersonalData();
-  const socialData = await getPersonalSocialMediaData();
-  const restOfData = await getAllData();
+  const [experiences, proyects, skills, socials, phrases] = await Promise.all([
+    fetchExperiences(),
+    fetchProyects(),
+    fetchSkills(),
+    fetchSocials(),
+    fetchUserPhrases(),
+  ])
+
+  const data = {
+    data: phrases,
+    socialData: socials,
+    restOfData: {
+      experiences,
+      proyects,
+      skills,
+    },
+  }
 
   return (
     <html lang="en">
@@ -32,19 +50,13 @@ export default async function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} w-screen h-screen flex align-middle `}>
+      <body className={`${inter.className} w-screen h-screen flex align-middle`}>
         <span className='bg'/>
         <ToasterProvider />
         <ScrollToTop />
-        <StoreProvider data={{ data, socialData, restOfData }} />
+        <StoreProvider data={data} />
         <TransitionProvider>{children}</TransitionProvider>
       </body>
     </html>
   );
 }
-
-
-
-
-
-

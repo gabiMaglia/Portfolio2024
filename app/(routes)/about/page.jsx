@@ -62,7 +62,7 @@ const AboutPage = () => {
             {/* BIOGRAPHYCONTAINER */}
             <div className="flex flex-col justify-center text-center md:text-left gap-12 pt-6 pb-14 md:pt-36 lg:pt-24  ">
               <h2 className="font-bold text-xl md:text-2xl backdrop-blur-sm ">About Me</h2>
-              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state?.phrases?.main_phrase}</p>
+              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state?.phrases?.mainPhrase}</p>
               <blockquote className="italic mt-[-30px] mb-[-10px] md:mt-0 md:mb-0 backdrop-blur-sm">
                 {` "${state?.phrases?.phrase1}"`}
               </blockquote>

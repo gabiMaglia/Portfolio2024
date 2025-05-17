@@ -17,16 +17,16 @@ const AboutPage = () => {
   const userExperiences = useUserStore((state) => state.experiences);
   const userSkills = useUserStore((state) => state.skill);
   const userPhrases = useUserStore((state) => state.phrases);
-  console.log(userPhrases)
+
   const containerRef = useRef();
   const { scrollYProgress } = useScroll({ container: containerRef });
-
+ 
   const skillRef = useRef();
   const isSkillRefInView = useInView(skillRef, { margin: "-100px" });
 
   const experienceRef = useRef();
   const isExperienceRefInView = useInView(experienceRef, { margin: "-100px" });
-
+ 
   useEffect(() => {
     try {
       const sortedExperiences = userExperiences?.sort(
@@ -62,7 +62,7 @@ const AboutPage = () => {
             {/* BIOGRAPHYCONTAINER */}
             <div className="flex flex-col justify-center text-center md:text-left gap-12 pt-6 pb-14 md:pt-36 lg:pt-24  ">
               <h2 className="font-bold text-xl md:text-2xl backdrop-blur-sm ">About Me</h2>
-              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state?.phrases?.mainPhrase}</p>
+              <p className="text-sm md:text-base  text-justify backdrop-blur-sm ">{state?.phrases?.main_phrase}</p>
               <blockquote className="italic mt-[-30px] mb-[-10px] md:mt-0 md:mb-0 backdrop-blur-sm">
                 {` "${state?.phrases?.phrase1}"`}
               </blockquote>

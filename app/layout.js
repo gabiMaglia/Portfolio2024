@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
   ])
 
   const data = {
-    data: phrases,
+    data: phrases[0],
     socialData: socials,
     restOfData: {
       experiences,

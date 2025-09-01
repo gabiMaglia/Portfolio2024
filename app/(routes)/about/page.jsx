@@ -1,9 +1,9 @@
 "use client";
 
+import { useUserStore } from "@/store/store";
 import { useRef, useState, useEffect } from "react";
 import Brain from "@/components/brain";
 import { motion, useInView, useScroll } from "framer-motion";
-import { useUserStore } from "@/store/store";
 import Image from "next/image";
 import Signature from "@/components/signature";
 
@@ -45,7 +45,7 @@ const AboutPage = () => {
   }, [userSkills, userPhrases, userExperiences]);
 
   return (
-    <>
+   
       <motion.div
         className="h-full md:flex"
         initial={{ y: "-200dvh" }}
@@ -295,7 +295,7 @@ const AboutPage = () => {
           </div>
         </div>
       </motion.div>
-    </>
+   
   );
 };
 

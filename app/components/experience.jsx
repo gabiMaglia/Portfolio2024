@@ -8,7 +8,7 @@ const Experience = () => {
       <h4 className="text-center mb-2 text-lg font-Ovo">My Job history</h4>
       <h2 className="text-center text-5xl font-Ovo">Experience</h2>
       <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        Here are some of the companies I've worked for in the past
+        Here are some of the companies I&apos;ve worked for in the past
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

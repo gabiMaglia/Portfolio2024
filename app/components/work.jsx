@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useUserStore } from "@/store/store";
 import { IconSend, IconArrowMoveDown, IconArrowMoveUp } from "@tabler/icons-react";
 import ProjectModal from "./project-modal";
@@ -13,29 +13,30 @@ const Work = () => {
   const gridRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(0);
 
-  // Modal state
+  // Modal
   const [selectedProject, setSelectedProject] = useState(null);
   const openProject = (proyect) => setSelectedProject(proyect);
   const closeProject = () => setSelectedProject(null);
 
-  const recalcHeights = () => {
+  // ✅ useCallback para usar como dependencia
+  const recalcHeights = useCallback(() => {
     const grid = gridRef.current;
     if (!grid) return;
     const firstCard = grid.firstElementChild;
     const collapsed = firstCard ? firstCard.offsetHeight : 0;
     const expandedHeight = grid.scrollHeight;
     setMaxHeight(expanded ? expandedHeight : collapsed);
-  };
+  }, [expanded]);
 
   useLayoutEffect(() => {
     recalcHeights();
-  }, [expanded, userProyects]);
+  }, [recalcHeights, userProyects]); // ✅ incluye recalcHeights
 
   useEffect(() => {
     const onResize = () => recalcHeights();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, []);
+  }, [recalcHeights]); // ✅ incluye recalcHeights
 
   const toggleShowMore = () => setExpanded((e) => !e);
 
@@ -48,7 +49,6 @@ const Work = () => {
         showcasing my expertise in front-end development
       </p>
 
-      {/* Grid con colapso/expand */}
       <div
         className="overflow-hidden transition-[max-height] duration-500 ease-in-out"
         style={{ maxHeight: maxHeight ? `${maxHeight}px` : undefined }}
@@ -91,7 +91,6 @@ const Work = () => {
         </div>
       )}
 
-      {/* Modal */}
       <ProjectModal open={!!selectedProject} onClose={closeProject}>
         <ProjectDetail project={selectedProject} />
       </ProjectModal>

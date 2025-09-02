@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import gabiPic from '../../public/gabi.png'
+import { IconDownload, IconContract } from '@tabler/icons-react';
 
 const Header = () => {
     return (
@@ -24,17 +25,19 @@ const Header = () => {
                     <a
                         className="px-10 py-3 border border-white rounded-full bg-black text-white flex items-center gap-2"
                         href="#contact"
-                        // onClick={() => router.push("/contact")}
+                     
                     >
                         Contact Me
+                    <IconContract stroke={1} />
                     </a>
                     <a
                         className="px-10 py-3 border rounded-full border-gray-500 flex items-center gap-2"
-                        href="/resume.pdf"
+                        href="/Gabriel Maglia - Fullstack Developer ESP.pdf"
                         download
-                        // onClick={() => router.push("/contact")}
+                       
                     >
                         My Resume
+                    <IconDownload stroke={1} />
                     </a>
                 </div>
             </div>

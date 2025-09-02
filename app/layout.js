@@ -43,14 +43,15 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en" className="scroll-smooth">
-      <head>
+    <html lang="en" className="scroll-smooth dark:">
+      <head >
         <link
           href="https://db.onlinewebfonts.com/c/20ed319043dc56ddb162f273742b0cbd?family=Linotype+Zootype+W01+Regular"
           rel="stylesheet"
+         
         />
       </head>
-      <body className={`${ovo.className} ${outfit.className} w-[100vw] h-screen flex align-middle antialiased leading-8 overflow-x-hidden `}>
+      <body className={`${ovo.className} ${outfit.className} w-[100vw] h-screen flex align-middle antialiased leading-8 overflow-x-hidden dark:bg-darkTheme dark:text-white `}>
         <ToasterProvider />
         <ScrollToTop />
         <StoreProvider data={data} />

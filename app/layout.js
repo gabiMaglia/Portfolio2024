@@ -1,6 +1,5 @@
-import { Gamja_Flower } from "next/font/google";
-import { Maven_Pro } from "next/font/google";
-import TransitionProvider from "@/providers/transition-provider";
+import { Outfit, Ovo } from "next/font/google";
+
 import "./globals.css";
 
 import {
@@ -8,7 +7,6 @@ import {
   fetchProyects,
   fetchSkills,
   fetchSocials,
-  fetchStudies,
   fetchUserPhrases,
 } from "@/lib/queries";
 
@@ -16,7 +14,9 @@ import StoreProvider from "@/providers/store-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
 import { ScrollToTop } from "@/components/scrollToTop";
 
-const inter = Maven_Pro({ weight: "500", subsets: ["latin"] });
+const outfit = Outfit({ weight: ["400", "500", "600", "700"], subsets: ["latin"] });
+const ovo = Ovo({ weight: ["400"], subsets: ["latin"] });
+
 
 export const metadata = {
   title: "Gabriel Maglia",
@@ -43,19 +43,19 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en">
-      <head>
+    <html lang="en" className="scroll-smooth dark:">
+      <head >
         <link
           href="https://db.onlinewebfonts.com/c/20ed319043dc56ddb162f273742b0cbd?family=Linotype+Zootype+W01+Regular"
           rel="stylesheet"
+         
         />
       </head>
-      <body className={`${inter.className} w-screen h-screen flex align-middle`}>
-        <span className='bg'/>
+      <body className={`${ovo.className} ${outfit.className} w-[100vw] h-screen flex align-middle antialiased leading-8 overflow-x-hidden dark:bg-darkTheme dark:text-white `}>
         <ToasterProvider />
         <ScrollToTop />
         <StoreProvider data={data} />
-        <TransitionProvider>{children}</TransitionProvider>
+        {children}
       </body>
     </html>
   );

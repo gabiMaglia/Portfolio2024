@@ -15,7 +15,7 @@ const StoreProvider = ({ data }) => {
   setProyects(data?.restOfData?.proyects);
   setExperiences(data?.restOfData?.experiences);
   setSkill(data?.restOfData?.skills);
-  setPhrases({mainPhrase :data.data.main_phrase, phrase1: data?.data.phrase1})
+  setPhrases({mainPhrase :data?.data?.main_phrase, phrase1: data?.data?.phrase1})
 };
 
 

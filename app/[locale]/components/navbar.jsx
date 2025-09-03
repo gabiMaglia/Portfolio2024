@@ -3,7 +3,7 @@
 import PropTypes from "prop-types";
 import {React, useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import logo from "../../public/Logo.png";
+import logo from "../../../public/Logo.png";
 import Link from "next/link";
 import { useUserStore } from "@/store/store";
 import { IconMoon, IconSun, IconMenuDeep, IconSquareRoundedX } from "@tabler/icons-react";

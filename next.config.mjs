@@ -1,14 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: 'res.cloudinary.com',
-            pathname: '**',
-          },
-        ],
+  i18n: {
+    locales: ["en", "es"],
+    defaultLocale: "es",
+    localeDetection: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "**",
       },
+    ],
+  },
 };
 
 export default nextConfig;

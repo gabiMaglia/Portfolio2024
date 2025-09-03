@@ -1,6 +1,6 @@
 import { useUserStore } from "@/store/store";
 import Image from "next/image";
-import gabiPic from "../../public/gabi.png";
+import gabiPic from "../../../public/gabi.png";
 
 const About = () => {
   const userSkills = useUserStore((state) => state.skill);

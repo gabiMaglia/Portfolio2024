@@ -1,0 +1,449 @@
+{
+  "id": "bec978dc-de2c-473d-8efe-2aba24acc6d7",
+  "prevId": "ba57d023-1730-4f1f-8ca7-c9b512e57de5",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Experiences": {
+      "name": "Experiences",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title_exp": {
+          "name": "title_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "institution_exp": {
+          "name": "institution_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "startDate_exp": {
+          "name": "startDate_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endDate_exp": {
+          "name": "endDate_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_exp": {
+          "name": "description_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img_exp": {
+          "name": "img_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Experiences_es": {
+      "name": "Experiences_es",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title_exp": {
+          "name": "title_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "institution_exp": {
+          "name": "institution_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "startDate_exp": {
+          "name": "startDate_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endDate_exp": {
+          "name": "endDate_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_exp": {
+          "name": "description_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img_exp": {
+          "name": "img_exp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Proyects": {
+      "name": "Proyects",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title_pro": {
+          "name": "title_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "technologies_pro": {
+          "name": "technologies_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_pro": {
+          "name": "description_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deployLink_pro": {
+          "name": "deployLink_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "githubLink_pro": {
+          "name": "githubLink_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img1_pro": {
+          "name": "img1_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img2_pro": {
+          "name": "img2_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img3_pro": {
+          "name": "img3_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "own": {
+          "name": "own",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Proyects_es": {
+      "name": "Proyects_es",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title_pro": {
+          "name": "title_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "technologies_pro": {
+          "name": "technologies_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description_pro": {
+          "name": "description_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deployLink_pro": {
+          "name": "deployLink_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "githubLink_pro": {
+          "name": "githubLink_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img1_pro": {
+          "name": "img1_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img2_pro": {
+          "name": "img2_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img3_pro": {
+          "name": "img3_pro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "own": {
+          "name": "own",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Skills": {
+      "name": "Skills",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img_skill": {
+          "name": "img_skill",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.SocialMedia": {
+      "name": "SocialMedia",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "img": {
+          "name": "img",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.UserPhrases": {
+      "name": "UserPhrases",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "main_phrase": {
+          "name": "main_phrase",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase1": {
+          "name": "phrase1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase2": {
+          "name": "phrase2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase3": {
+          "name": "phrase3",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.UserPhrases_es": {
+      "name": "UserPhrases_es",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "main_phrase": {
+          "name": "main_phrase",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase1": {
+          "name": "phrase1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase2": {
+          "name": "phrase2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phrase3": {
+          "name": "phrase3",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../../public/Logo.png";
+import logo from "../../../public/Logo.png";
 import { IconMailForward } from '@tabler/icons-react';
 import Link from "next/link";
 import { useUserStore } from "@/store/store";

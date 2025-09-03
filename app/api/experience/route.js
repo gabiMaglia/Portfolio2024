@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server'
 import { fetchExperiences } from '@/lib/queries'
 
-export async function GET() {
+export async function GET(req) {
+  const { searchParams } = new URL(req.url)
+  const locale = searchParams.get('locale') || 'es'
+
   try {
-    const experiences = await fetchExperiences()
+    const experiences = await fetchExperiences(locale)
     return NextResponse.json(experiences)
   } catch (err) {
     console.error(err)

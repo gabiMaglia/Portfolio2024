@@ -8,6 +8,7 @@ import Work from "./components/work";
 import Contact from "./components/contact";
 import Experience from "./components/experience";
 import Footer from "./components/footer";
+
 const Homepage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -18,6 +19,7 @@ const Homepage = () => {
       setIsDarkMode(false);
     }
   }, []);
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -27,6 +29,7 @@ const Homepage = () => {
       localStorage.setItem('theme', 'dark');
     }
   }, [isDarkMode]);
+
   return (
     <main>
       <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />

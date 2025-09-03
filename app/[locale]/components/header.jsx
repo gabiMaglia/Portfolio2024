@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import gabiPic from '../../public/gabi.png'
+import gabiPic from '../../../public/gabi.png'
 import { IconDownload, IconContract } from '@tabler/icons-react';
 
 const Header = () => {

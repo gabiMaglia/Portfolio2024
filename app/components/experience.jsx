@@ -1,14 +1,16 @@
 import { useUserStore } from "@/store/store";
+import { useTranslations } from "next-intl";
 
 const Experience = () => {
   const userExperiences = useUserStore((state) => state.experiences);
+  const t = useTranslations('Experience');
 
   return (
     <div id="experience" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">My Job history</h4>
-      <h2 className="text-center text-5xl font-Ovo">Experience</h2>
+      <h4 className="text-center mb-2 text-lg font-Ovo">{t('subtitle')}</h4>
+      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
       <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        Here are some of the companies I&apos;ve worked for in the past
+        {t('description')}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react'
-import Navbar from "./components/navbar";
-import Header from "./components/header";
-import About from "./components/about";
-import Work from "./components/work";
-import Contact from "./components/contact";
-import Experience from "./components/experience";
-import Footer from "./components/footer";
+import Navbar from "../components/navbar";
+import Header from "../components/header";
+import About from "../components/about";
+import Work from "../components/work";
+import Contact from "../components/contact";
+import Experience from "../components/experience";
+import Footer from "../components/footer";
 const Homepage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
 

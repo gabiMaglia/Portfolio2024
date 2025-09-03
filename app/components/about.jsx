@@ -1,10 +1,12 @@
 import { useUserStore } from "@/store/store";
 import Image from "next/image";
 import gabiPic from "../../public/gabi.png";
+import { useTranslations } from "next-intl";
 
 const About = () => {
   const userSkills = useUserStore((state) => state.skill);
   const userPhrases = useUserStore((state) => state.phrases);
+  const t = useTranslations('About');
   const hardSkillsList = userSkills.map(
     (e) =>
       e.type === "hard" && (
@@ -19,8 +21,8 @@ const About = () => {
   );
   return (
     <div id="about" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">Introduction</h4>
-      <h2 className="text-center text-5xl font-Ovo">About Me</h2>
+      <h4 className="text-center mb-2 text-lg font-Ovo">{t('intro')}</h4>
+      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
       <div className="flex w-full flex-col lg:flex-row items-center gap-20 my-20">
         <div className="w-64 sm:w-80 rounded-3xl max-w-none">
           <Image
@@ -31,7 +33,7 @@ const About = () => {
         </div>
         <div className="flex-1">
           <p className="mb-10 max-w-2xl font-Ovo">{userPhrases.mainPhrase}</p>
-          <h4 className="text-center mb-4 text-lg font-Ovo">Technologies</h4>
+          <h4 className="text-center mb-4 text-lg font-Ovo">{t('technologies')}</h4>
           <ul
             className="grid grid-cols-2 sm:grid-cols-3 gap-7 max-w-2xl md:border-[0.5px] border-gray-400 rounded-xl p-6 
              cursor-pointer hover:bg-lightHover hover:-translate-y-1 duration-500 hover:shadow-black 

@@ -7,11 +7,15 @@ import logo from "../../public/Logo.png";
 import Link from "next/link";
 import { useUserStore } from "@/store/store";
 import { IconMoon, IconSun, IconMenuDeep, IconSquareRoundedX } from "@tabler/icons-react";
+import { useTranslations, useLocale } from "next-intl";
 
 const Navbar = ({isDarkMode, setIsDarkMode}) => {
     const [isScroll, setIsScroll] = useState(false);
     const socialMedia = useUserStore((state) => state.social);
     const sideMenuRef = useRef(null);
+    const t = useTranslations('Navbar');
+    const locale = useLocale();
+    const otherLocale = locale === 'en' ? 'es' : 'en';
 
     const openMenu = () => {
         sideMenuRef.current.style.transform = "translateX(-16rem)";
@@ -66,28 +70,28 @@ const Navbar = ({isDarkMode, setIsDarkMode}) => {
                 <ul className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 dark:border dark:border-white/50 dark:bg-transparent ${!isScroll ? "bg-white shadow-sm bg-opacity-50 " : ""}`}>
                     <li>
                         <a className="font-Ovo" href="#top">
-                            Home
+                            {t('home')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#about">
-                            About
+                            {t('about')}
                         </a>
                     </li>
                   
                     <li>
                         <a className="font-Ovo" href="#work">
-                            My Work
+                            {t('work')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#experience">
-                            Experience
+                            {t('experience')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#contact">
-                            Contact Me
+                            {t('contact')}
                         </a>
                     </li>
                 </ul>
@@ -98,6 +102,9 @@ const Navbar = ({isDarkMode, setIsDarkMode}) => {
                     <div className={`hidden lg:flex gap-3 items-center px-10 py-2.5  rounded-full ml-4 shadow-sm  ${isDarkMode ? " bg-white shadow-sm bg-opacity-20" : ""} ${isScroll ? "bg-none border-none shadow-none" : ""} ${!isScroll ? "bg-white shadow-sm bg-opacity-50" : ""} font-Ovo`}>
                         {socialMediaList}
                     </div>
+                    <Link href="/" locale={otherLocale} className="font-Ovo">
+                        {otherLocale.toUpperCase()}
+                    </Link>
                     <button onClick={openMenu} className="block md:hidden ml-3">
                         <IconMenuDeep stroke={1} />
                     </button>
@@ -110,28 +117,33 @@ const Navbar = ({isDarkMode, setIsDarkMode}) => {
                     
                     <li>
                         <a className="font-Ovo" href="#top">
-                            Home
+                            {t('home')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#about">
-                            About
+                            {t('about')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#work">
-                            My Work
+                            {t('work')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#experience">
-                            Experience
+                            {t('experience')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#contact">
-                            Contact Me
+                            {t('contact')}
                         </a>
+                    </li>
+                    <li>
+                        <Link href="/" locale={otherLocale} className="font-Ovo">
+                            {otherLocale.toUpperCase()}
+                        </Link>
                     </li>
                 </ul>
             </nav>

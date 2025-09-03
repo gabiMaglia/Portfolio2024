@@ -5,10 +5,12 @@ import { useUserStore } from "@/store/store";
 import { IconSend, IconArrowMoveDown, IconArrowMoveUp } from "@tabler/icons-react";
 import ProjectModal from "./project-modal";
 import ProjectDetail from "./project-detail";
+import { useTranslations } from "next-intl";
 
 const Work = () => {
   const userProyects = useUserStore((state) => state.proyects);
   const [expanded, setExpanded] = useState(false);
+  const t = useTranslations('Work');
 
   const gridRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(0);
@@ -42,11 +44,10 @@ const Work = () => {
 
   return (
     <div id="work" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">My portfolio</h4>
-      <h2 className="text-center text-5xl font-Ovo">My latest work</h2>
+      <h4 className="text-center mb-2 text-lg font-Ovo">{t('portfolio')}</h4>
+      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
       <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        Welcome to my development porfolio! explore a collection of projects
-        showcasing my expertise in front-end development
+        {t('description')}
       </p>
 
       <div
@@ -85,7 +86,7 @@ const Work = () => {
             onClick={toggleShowMore}
             className="w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover font-Ovo"
           >
-            {expanded ? "Show less" : "Show more"}
+            {expanded ? t('showLess') : t('showMore')}
             {expanded ? <IconArrowMoveUp stroke={2} /> : <IconArrowMoveDown stroke={2} />}
           </button>
         </div>

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import { IconX } from '@tabler/icons-react';
+import { useTranslations } from 'next-intl';
 
 export default function ProjectModal({ open, onClose, children }) {
   const overlayRef = useRef(null);
   const dialogRef = useRef(null);
+  const t = useTranslations('ProjectModal');
 
   // Cerrar con ESC
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function ProjectModal({ open, onClose, children }) {
       >
         {/* Header modal */}
         <div className="flex items-center justify-between mb-4">
-          <div className="text-sm text-gray-500 dark:text-gray-400">Project Details</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">{t('title')}</div>
           <button
             onClick={onClose}
             aria-label="Close"

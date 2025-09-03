@@ -3,8 +3,10 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { IconBrandGithub, IconExternalLink, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { useTranslations } from 'next-intl';
 
 export default function ProjectDetail({ project }) {
+  const t = useTranslations('ProjectDetail');
   const images = useMemo(() => {
     if (!project) return [];
     return [project.img1_pro, project.img2_pro, project.img3_pro].filter(Boolean);
@@ -50,7 +52,7 @@ export default function ProjectDetail({ project }) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
-              No images available
+              {t('noImages')}
             </div>
           )}
         </div>
@@ -103,7 +105,7 @@ export default function ProjectDetail({ project }) {
             className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 border border-gray-700 dark:border-white text-gray-800 dark:text-white hover:bg-lightHover dark:hover:bg-darkHover transition"
           >
             <IconExternalLink size={20} />
-            Live Demo
+            {t('liveDemo')}
           </a>
         )}
         {project.githubLink_pro && (
@@ -114,7 +116,7 @@ export default function ProjectDetail({ project }) {
             className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 border border-gray-700 dark:border-white text-gray-800 dark:text-white hover:bg-lightHover dark:hover:bg-darkHover transition"
           >
             <IconBrandGithub size={20} />
-            GitHub
+            {t('github')}
           </a>
         )}
       </div>

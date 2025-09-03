@@ -1,19 +1,18 @@
+// app/layout.jsx
 import { Outfit, Ovo } from 'next/font/google';
 import './globals.css';
-import { getLocale } from 'next-intl/server';
 
-const outfit = Outfit({ weight: ['400', '500', '600', '700'], subsets: ['latin'] });
+const outfit = Outfit({ weight: ['400','500','600','700'], subsets: ['latin'] });
 const ovo = Ovo({ weight: ['400'], subsets: ['latin'] });
 
 export const metadata = {
   title: 'Gabriel Maglia',
-  description: 'Gabriel Maglia personal page',
+  description: 'Gabriel Maglia personal page'
 };
 
-export default async function RootLayout({ children }) {
-  const locale = await getLocale();
+export default function RootLayout({ children }) {
   return (
-    <html lang={locale} className="scroll-smooth dark:">
+    <html lang="es" className="scroll-smooth">
       <head>
         <link
           href="https://db.onlinewebfonts.com/c/20ed319043dc56ddb162f273742b0cbd?family=Linotype+Zootype+W01+Regular"

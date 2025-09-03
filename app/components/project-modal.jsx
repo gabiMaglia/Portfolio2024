@@ -30,10 +30,10 @@ export default function ProjectModal({ open, onClose, children }) {
   };
 
   return (
-    <div
+    <dialog
       ref={overlayRef}
       onClick={onOverlayClick}
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[1px] flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 backdrop-blur-[1px] flex items-center justify-center rounded-3xl"
       aria-modal="true"
       role="dialog"
     >
@@ -54,10 +54,10 @@ export default function ProjectModal({ open, onClose, children }) {
         </div>
 
         {/* Content */}
-        <div className="max-h-[75vh] overflow-y-auto pr-1">
+        <div className="max-h-[75vh] overflow-y-auto pr-1 scrollbar-nice">
           {children}
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }

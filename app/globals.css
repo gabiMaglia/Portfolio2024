@@ -7,4 +7,40 @@
  }
 
 
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hidden {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+}
+/* Ocultar scrollbar pero dejar scroll activo */
+.scrollbar-none {
+  -ms-overflow-style: none;    /* IE/Edge antiguo */
+  scrollbar-width: none;       /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar { /* Chrome/Safari/Edge */
+  display: none;
+}
 
+/* (Opcional) scrollbar lindo, finito y con dark mode */
+.scrollbar-nice {
+  scrollbar-width: thin; 
+  scrollbar-color: rgba(100,100,100,.5) transparent; /* Firefox */
+}
+.scrollbar-nice::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-nice::-webkit-scrollbar-thumb {
+  background-color: rgba(100,100,100,.5);
+  border-radius: 9999px;
+}
+.scrollbar-nice::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100,100,100,.7);
+}
+.dark .scrollbar-nice::-webkit-scrollbar-thumb {
+  background-color: rgba(200,200,200,.3);
+}
+.dark .scrollbar-nice::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(200,200,200,.5);
+}

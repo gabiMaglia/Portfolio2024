@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { IconBrandGithub, IconExternalLink, IconChevronLeft, IconChevronRight, IconDots } from '@tabler/icons-react';
+import { IconBrandGithub, IconExternalLink, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 export default function ProjectDetail({ project }) {
   const images = useMemo(() => {
@@ -11,12 +11,12 @@ export default function ProjectDetail({ project }) {
   }, [project]);
 
   const [index, setIndex] = useState(0);
-  useEffect(() => setIndex(0), [project]); // reset cuando cambia el proyecto
+  useEffect(() => setIndex(0), [project]); 
 
   const prev = useCallback(() => setIndex((i) => (i - 1 + images.length) % images.length), [images.length]);
   const next = useCallback(() => setIndex((i) => (i + 1) % images.length), [images.length]);
 
-  // Flechas del teclado
+
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'ArrowLeft') prev();
@@ -121,3 +121,18 @@ export default function ProjectDetail({ project }) {
     </div>
   );
 }
+
+import PropTypes from 'prop-types';
+
+ProjectDetail.propTypes = {
+  project: PropTypes.shape({
+    title_pro: PropTypes.string,
+    technologies_pro: PropTypes.string,
+    img1_pro: PropTypes.string,
+    img2_pro: PropTypes.string,
+    img3_pro: PropTypes.string,
+    description_pro: PropTypes.string,
+    deployLink_pro: PropTypes.string,
+    githubLink_pro: PropTypes.string,
+  }),
+};

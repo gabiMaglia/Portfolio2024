@@ -17,7 +17,8 @@ const Experience = () => {
             <article
               key={item.id}
               className="
-                  relative z-[1]
+                  relative z-[1]  
+                  flex flex-col justify-between
                   bg-white dark:bg-neutral-900
                   text-neutral-900 dark:text-neutral-100
                   w-full
@@ -33,13 +34,14 @@ const Experience = () => {
                 {item.description_exp}
               </p>
 
-              <div className="mt-3 text-sm font-semibold text-rose-600 dark:text-rose-400">
-                {`${item.startDate_exp} to ${item.endDate_exp}`}
-              </div>
-
-              <div className="mt-2 p-1 rounded bg-neutral-100 dark:bg-neutral-800 text-sm font-semibold w-fit">
-                {item.institution_exp}
-              </div>
+              <span>
+                <div className="mt-3 text-sm font-semibold text-rose-600 dark:text-rose-400">
+                  {`${item.startDate_exp} to ${item.endDate_exp}`}
+                </div>
+                <div className="mt-2 p-1 rounded bg-neutral-100 dark:bg-neutral-800 text-sm font-semibold w-fit">
+                  {item.institution_exp}
+                </div>
+              </span>
             </article>
           );
         })}

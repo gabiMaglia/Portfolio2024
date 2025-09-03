@@ -1,2 +1,46 @@
 {
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "work": "My Work",
+    "experience": "Experience",
+    "contact": "Contact Me"
+  },
+  "Header": {
+    "greeting": "Hi I am Gabriel Maglia",
+    "title": "frontend web developer based in Rosario",
+    "description": "Welcome to my personal portfolio where you can learn something about me and look for my works, you can also contact with me, I will be in touch in no time!",
+    "contactMe": "Contact Me",
+    "myResume": "My Resume"
+  },
+  "About": {
+    "introduction": "Introduction",
+    "aboutMe": "About Me",
+    "technologies": "Technologies"
+  },
+  "Work": {
+    "portfolio": "My portfolio",
+    "latestWork": "My latest work",
+    "description": "Welcome to my development portfolio! explore a collection of projects showcasing my expertise in front-end development",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "Experience": {
+    "jobHistory": "My Job history",
+    "title": "Experience",
+    "description": "Here are some of the companies I've worked for in the past"
+  },
+  "Contact": {
+    "connect": "Connect with me",
+    "title": "Get in touch",
+    "description": "If you have any questions or would like to collaborate on a project, feel free to reach out!",
+    "namePlaceholder": "Enter your name",
+    "emailPlaceholder": "Enter your email",
+    "messagePlaceholder": "Message",
+    "send": "Send",
+    "sending": "sending..."
+  },
+  "Footer": {
+    "rights": "© 2025 Gabriel Maglia. All rights reserved."
+  }
 }

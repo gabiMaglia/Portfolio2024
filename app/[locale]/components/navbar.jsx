@@ -7,8 +7,10 @@ import logo from "../../../public/Logo.png";
 import Link from "next/link";
 import { useUserStore } from "@/store/store";
 import { IconMoon, IconSun, IconMenuDeep, IconSquareRoundedX } from "@tabler/icons-react";
+import {useTranslations} from "@/i18n/client";
 
 const Navbar = ({isDarkMode, setIsDarkMode}) => {
+    const t = useTranslations('Navbar');
     const [isScroll, setIsScroll] = useState(false);
     const socialMedia = useUserStore((state) => state.social);
     const sideMenuRef = useRef(null);
@@ -66,28 +68,28 @@ const Navbar = ({isDarkMode, setIsDarkMode}) => {
                 <ul className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 dark:border dark:border-white/50 dark:bg-transparent ${!isScroll ? "bg-white shadow-sm bg-opacity-50 " : ""}`}>
                     <li>
                         <a className="font-Ovo" href="#top">
-                            Home
+                            {t('home')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#about">
-                            About
+                            {t('about')}
                         </a>
                     </li>
                   
                     <li>
                         <a className="font-Ovo" href="#work">
-                            My Work
+                            {t('work')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#experience">
-                            Experience
+                            {t('experience')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#contact">
-                            Contact Me
+                            {t('contact')}
                         </a>
                     </li>
                 </ul>
@@ -110,27 +112,27 @@ const Navbar = ({isDarkMode, setIsDarkMode}) => {
                     
                     <li>
                         <a className="font-Ovo" href="#top">
-                            Home
+                            {t('home')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#about">
-                            About
+                            {t('about')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#work">
-                            My Work
+                            {t('work')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#experience">
-                            Experience
+                            {t('experience')}
                         </a>
                     </li>
                     <li>
                         <a className="font-Ovo" href="#contact">
-                            Contact Me
+                            {t('contact')}
                         </a>
                     </li>
                 </ul>

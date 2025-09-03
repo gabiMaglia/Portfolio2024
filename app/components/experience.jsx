@@ -1,3 +1,5 @@
+'use client';
+
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
 

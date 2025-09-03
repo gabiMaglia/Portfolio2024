@@ -1,5 +1,6 @@
 // app/[locale]/layout.jsx
 import {NextIntlClientProvider} from 'next-intl';
+import {notFound} from 'next/navigation';
 import {
   fetchExperiences,
   fetchProyects,
@@ -11,6 +12,13 @@ import StoreProvider from '@/providers/store-provider';
 
 export default async function LocaleLayout({children, params}) {
   const locale = params?.locale || 'es';
+
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    notFound();
+  }
 
   // Datos por locale (de tus tablas _es / en)
   const [experiences, proyects, skills, socials, phrases] = await Promise.all([
@@ -28,7 +36,7 @@ export default async function LocaleLayout({children, params}) {
   };
 
   return (
-    <NextIntlClientProvider locale={locale}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       <StoreProvider data={storeData} locale={locale}>
         {children}
       </StoreProvider>

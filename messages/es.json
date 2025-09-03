@@ -1,2 +1,46 @@
 {
+  "Navbar": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "work": "Mi trabajo",
+    "experience": "Experiencia",
+    "contact": "Contáctame"
+  },
+  "Header": {
+    "greeting": "Hola soy Gabriel Maglia",
+    "title": "desarrollador web frontend con base en Rosario",
+    "description": "Bienvenido a mi portafolio personal donde puedes conocer algo sobre mí y ver mis trabajos, también puedes contactarme y estaré en contacto en poco tiempo!",
+    "contactMe": "Contáctame",
+    "myResume": "Mi CV"
+  },
+  "About": {
+    "introduction": "Introducción",
+    "aboutMe": "Sobre mí",
+    "technologies": "Tecnologías"
+  },
+  "Work": {
+    "portfolio": "Mi portafolio",
+    "latestWork": "Mis últimos trabajos",
+    "description": "¡Bienvenido a mi portafolio de desarrollo! Explora una colección de proyectos que muestran mi experiencia en desarrollo front-end",
+    "showMore": "Ver más",
+    "showLess": "Ver menos"
+  },
+  "Experience": {
+    "jobHistory": "Mi historial laboral",
+    "title": "Experiencia",
+    "description": "Estas son algunas de las empresas para las que he trabajado"
+  },
+  "Contact": {
+    "connect": "Conecta conmigo",
+    "title": "Ponerse en contacto",
+    "description": "Si tenés alguna pregunta o te gustaría colaborar en un proyecto, no dudes en contactarme",
+    "namePlaceholder": "Ingresá tu nombre",
+    "emailPlaceholder": "Ingresá tu email",
+    "messagePlaceholder": "Mensaje",
+    "send": "Enviar",
+    "sending": "enviando..."
+  },
+  "Footer": {
+    "rights": "© 2025 Gabriel Maglia. Todos los derechos reservados."
+  }
 }

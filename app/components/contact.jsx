@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { CONTACT, VIEWPORT } from "@/lib/motion-config";
+
 const Contact = () => {
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -28,22 +30,14 @@ const Contact = () => {
       const res = await fetch("/api/send_email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: userName,
-          userEmail,
-          userMessage,
-        }),
+        body: JSON.stringify({ name: userName, userEmail, userMessage }),
       });
-
       if (!res.ok) throw new Error("Email send failed");
       toast.success("Email sent");
       formRef.current.reset();
-      setUserMessage("");
-      setUserEmail("");
-      setUserName("");
-      setCharacters(0);
-    } catch (error) {
-      console.error("❌ Failed to send email:", error);
+      setUserMessage(""); setUserEmail(""); setUserName(""); setCharacters(0);
+    } catch (err) {
+      console.error("❌ Failed to send email:", err);
       toast.error("Your email could not be sent");
     } finally {
       setIsSending(false);
@@ -51,67 +45,28 @@ const Contact = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }} id="contact" className="w-full px-[12%] py-10 scroll-mt-20  overflow-x-hidden">
+    <motion.div {...CONTACT.section} viewport={VIEWPORT} id="contact" className="w-full px-[12%] py-10 scroll-mt-20 overflow-x-hidden">
+      <motion.h2 {...CONTACT.h2} viewport={VIEWPORT} className="text-center text-5xl mt-20 font-Ovo">
+        {t('title')}
+      </motion.h2>
 
-      <motion.h2 initial={{ y: -20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.5 }} className="text-center text-5xl mt-20 font-Ovo">{t('title')}</motion.h2>
-      <motion.p initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }} className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
+      <motion.p {...CONTACT.p} viewport={VIEWPORT} className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
         {t('description')}
       </motion.p>
 
-      <motion.form
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
-        className="max-w-2xl mx-auto dark:text-black"
-        onSubmit={sendEmail}
-        ref={formRef}
-      >
-        {/* Inputs: stack en mobile, fila en >= sm */}
+      <motion.form {...CONTACT.form} viewport={VIEWPORT} className="max-w-2xl mx-auto dark:text-black" onSubmit={sendEmail} ref={formRef}>
         <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-6 mb-10">
-          <input
-            required
-            type="text"
-            placeholder={t('namePlaceholder')}
-            className="w-full sm:flex-1 min-w-0 box-border p-3 h-12 outline-none border-[0.5px] border-gray-400 rounded-md"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-          <input
-            required
-            type="email"
-            placeholder={t('emailPlaceholder')}
-            className="w-full sm:flex-1 min-w-0 box-border p-3 h-12 outline-none border-[0.5px] border-gray-400 rounded-md"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-          />
+          <input required type="text" placeholder={t('namePlaceholder')} className="w-full sm:flex-1 min-w-0 box-border p-3 h-12 outline-none border-[0.5px] border-gray-400 rounded-md" value={userName} onChange={(e) => setUserName(e.target.value)} />
+          <input required type="email" placeholder={t('emailPlaceholder')} className="w-full sm:flex-1 min-w-0 box-border p-3 h-12 outline-none border-[0.5px] border-gray-400 rounded-md" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
         </div>
 
-        <textarea
-          required
-          cols="30"
-          rows="6"
-          placeholder={t('messagePlaceholder')}
-          className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white mb-6"
-          value={userMessage}
-          onChange={(e) => setUserMessage(e.target.value)}
-        />
+        <textarea required cols="30" rows="6" placeholder={t('messagePlaceholder')} className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white mb-6" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} />
 
-        <div
-          className={`${characters < 1 ? "opacity-0" : "opacity-100"} ml-auto flex justify-end mt-1 text-lg font-bold text-gray-600`}
-        >
+        <div className={`${characters < 1 ? "opacity-0" : "opacity-100"} ml-auto flex justify-end mt-1 text-lg font-bold text-gray-600`}>
           {characters}
         </div>
 
-        <button
-          className={`w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover font-Ovo ${isFormValid ? "cursor-pointer" : "cursor-not-allowed"}`}
-          disabled={!isFormValid}
-        >
+        <button className={`w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover font-Ovo ${isFormValid ? "cursor-pointer" : "cursor-not-allowed"}`} disabled={!isFormValid || isSending}>
           {t('send')}
           <IconArrowNarrowRight stroke={1} />
         </button>

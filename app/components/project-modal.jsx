@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IconX } from '@tabler/icons-react';
-import { useTranslations } from 'next-intl';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
-export default function ProjectModal({ open, onClose, children }) {
+export default function ProjectModal({ open, onClose, title, children }) {
   const overlayRef = useRef(null);
-  const dialogRef = useRef(null);
-  const t = useTranslations('ProjectModal');
+  const titleId = 'project-modal-title';
+  const prefersReduced = useReducedMotion();
 
-  // Cerrar con ESC
+  // ESC para cerrar
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === 'Escape' && onClose?.();
@@ -25,41 +25,78 @@ export default function ProjectModal({ open, onClose, children }) {
     return () => { document.body.style.overflow = original; };
   }, [open]);
 
-  if (!open) return null;
-
   const onOverlayClick = (e) => {
     if (e.target === overlayRef.current) onClose?.();
   };
 
-  return (
-    <dialog
-      ref={overlayRef}
-      onClick={onOverlayClick}
-      className="fixed inset-0 z-50 backdrop-blur-[1px] flex items-center justify-center rounded-3xl"
-      aria-modal="true"
-      role="dialog"
-    >
-      <div
-        ref={dialogRef}
-        className="w-full max-w-3xl rounded-2xl bg-white dark:bg-neutral-950 border border-gray-200 dark:border-white/10 shadow-2xl p-6 animate-in fade-in duration-150"
-      >
-        {/* Header modal */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="text-sm text-gray-500 dark:text-gray-400">{t('title')}</div>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-neutral-800 transition text-gray-600 dark:text-gray-300"
-          >
-            <IconX size={18} />
-          </button>
-        </div>
+  // Duraciones y easings “fluid + smooth”
+  const tOverlayIn  = { duration: 0.16, ease: [0.4, 0, 0.2, 1] };
+  const tOverlayOut = { duration: 0.14, ease: [0.4, 0, 1, 1] };
+  const tPanelIn    = { duration: 0.22, ease: [0.16, 1, 0.3, 1] };
 
-        {/* Content */}
-        <div className="max-h-[75vh] overflow-y-auto pr-1 scrollbar-nice">
-          {children}
-        </div>
-      </div>
-    </dialog>
+  // Variantes
+  const overlayVariants = { hidden: { opacity: 0 }, visible: { opacity: 1 }, exit: { opacity: 0 } };
+
+  const panelVariants = prefersReduced
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
+        exit: { opacity: 0 }
+      }
+    : {
+        hidden: { opacity: 0, y: 10, scale: 0.985 },
+        visible: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, y: 10, scale: 0.985 }
+      };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.dialog
+          ref={overlayRef}
+          onClick={onOverlayClick}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-[1px] rounded-3xl"
+          aria-modal="true"
+          role="dialog"
+          aria-labelledby={titleId}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={overlayVariants}
+          transition={open ? tOverlayIn : tOverlayOut}
+        >
+          <motion.div
+            className="w-full max-w-3xl rounded-2xl bg-white dark:bg-neutral-950 border border-gray-200 dark:border-white/10 shadow-2xl p-6 will-change-transform"
+            variants={panelVariants}
+            transition={tPanelIn}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div id={titleId} className="text-sm text-gray-500 dark:text-gray-400">
+                {title}
+              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close"
+                className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-neutral-800 transition text-gray-600 dark:text-gray-300"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <motion.div
+              className="max-h-[75vh] overflow-y-auto pr-1 scrollbar-nice"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              {children}
+            </motion.div>
+          </motion.div>
+        </motion.dialog>
+      )}
+    </AnimatePresence>
   );
 }

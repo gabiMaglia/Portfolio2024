@@ -1,19 +1,50 @@
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const Experience = () => {
   const userExperiences = useUserStore((state) => state.experiences);
-  const t = useTranslations('Experience');
+  const t = useTranslations("Experience");
 
   return (
-    <div id="experience" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">{t('subtitle')}</h4>
-      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
-      <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        {t('description')}
-      </p>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      id="experience"
+      className="w-full px-[12%] py-10 scroll-mt-20"
+    >
+      <motion.h4
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+        className="text-center mb-2 text-lg font-Ovo"
+      >
+        {t("subtitle")}
+      </motion.h4>
+      <motion.h2
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="text-center text-5xl font-Ovo"
+      >
+        {t("title")}
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo"
+      >
+        {t("description")}
+      </motion.p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {userExperiences.map((item) => {
           return (
             <article
@@ -40,15 +71,15 @@ const Experience = () => {
                 <div className="mt-3 text-sm font-semibold text-rose-600 dark:text-rose-400">
                   {`${item.startDate_exp} to ${item.endDate_exp}`}
                 </div>
-                <div className="mt-2 p-1 rounded bg-neutral-100 dark:bg-neutral-800 text-sm font-semibold w-fit">
+                <div className="mt-2 p-1 rounded text-sm font-semibold w-fit">
                   {item.institution_exp}
                 </div>
               </span>
             </article>
           );
         })}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -45,7 +45,7 @@ const Footer = ({ isDarkMode }) => {
             </div>
 
             <div className="text-center sm:flex items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-2">
-                <p>© 2025 Gabriel Maglia. {t('rights')}</p>
+                <p>© 2025 Gabriel Maglia.</p>
                 <div className={`flex gap-3 items-center justify-evenly px-4 py-2 rounded-full shadow-sm  ${isDarkMode ? " bg-white shadow-sm bg-opacity-20" : ""}  font-Ovo`}>
                     {socialMediaList}
                 </div>

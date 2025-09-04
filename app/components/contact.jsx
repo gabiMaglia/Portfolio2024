@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import { useTranslations } from "next-intl";
-
+import { motion } from "framer-motion";
 const Contact = () => {
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -51,14 +51,23 @@ const Contact = () => {
   };
 
   return (
-    <div id="contact" className="w-full px-[12%] py-10 scroll-mt-20 overflow-x-hidden">
-      <h4 className="text-center mb-2 text-lg font-Ovo">{t('subtitle')}</h4>
-      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
-      <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        {t('description')}
-      </p>
+    <motion.div initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }} id="contact" className="w-full px-[12%] py-10 scroll-mt-20  overflow-x-hidden">
 
-      <form
+      <motion.h2 initial={{ y: -20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }} className="text-center text-5xl mt-20 font-Ovo">{t('title')}</motion.h2>
+      <motion.p initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }} className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
+        {t('description')}
+      </motion.p>
+
+      <motion.form
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
         className="max-w-2xl mx-auto dark:text-black"
         onSubmit={sendEmail}
         ref={formRef}
@@ -96,7 +105,7 @@ const Contact = () => {
         <div
           className={`${characters < 1 ? "opacity-0" : "opacity-100"} ml-auto flex justify-end mt-1 text-lg font-bold text-gray-600`}
         >
-            {characters}
+          {characters}
         </div>
 
         <button
@@ -110,8 +119,8 @@ const Contact = () => {
         <div className="h-10">
           {isSending && <p className="text-center mt-4">{t('sending')}</p>}
         </div>
-      </form>
-    </div>
+      </motion.form>
+    </motion.div>
   );
 };
 

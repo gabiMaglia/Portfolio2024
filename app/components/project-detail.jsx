@@ -3,10 +3,10 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { IconBrandGithub, IconExternalLink, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useTranslations } from 'next-intl';
+
 
 export default function ProjectDetail({ project }) {
-  const t = useTranslations('ProjectDetail');
+
   const images = useMemo(() => {
     if (!project) return [];
     return [project.img1_pro, project.img2_pro, project.img3_pro].filter(Boolean);

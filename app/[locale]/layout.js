@@ -1,4 +1,3 @@
-// app/[locale]/layout.jsx
 import { NextIntlClientProvider } from 'next-intl';
 import es from '@/messages/es.json';
 import en from '@/messages/en.json';
@@ -19,10 +18,18 @@ export function generateStaticParams() {
   return [{ locale: 'es' }, { locale: 'en' }];
 }
 
+import PropTypes from 'prop-types';
+
+LocaleLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+  params: PropTypes.shape({
+    locale: PropTypes.string.isRequired
+  }).isRequired
+};
+
 export default async function LocaleLayout({ children, params: { locale } }) {
   const messages = locale === 'en' ? en : es;
 
-  // tus datos YA localizados (plan A de DB)
   const [experiences, proyects, skills, socials, phrases] = await Promise.all([
     fetchExperiences(locale),
     fetchProyects(locale),

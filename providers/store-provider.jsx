@@ -9,7 +9,6 @@ const StoreProvider = ({ data }) => {
   const setSkill = useUserStore((state) => state.setSkill);
   const setSocial = useUserStore((state) => state.setSocial);
   const setPhrases = useUserStore((state) => state.setPhrases);
-  // console.log({mainPhrase :data.data.main_phrase, phrase1: data.data.phrase1})
   setPersona(data?.data);
   setSocial(data?.socialData);
   setProyects(data?.restOfData?.proyects);

@@ -1,26 +1,25 @@
-'use client'
-
+"use client";
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { useUserStore } from "@/store/store";
 import { IconSend, IconArrowMoveDown, IconArrowMoveUp } from "@tabler/icons-react";
 import ProjectModal from "./project-modal";
 import ProjectDetail from "./project-detail";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+import { WORK, VIEWPORT } from "@/lib/motion-config";
 
 const Work = () => {
-  const userProyects = useUserStore((state) => state.proyects);
+  const userProyects = useUserStore((s) => s.proyects);
   const [expanded, setExpanded] = useState(false);
-  const t = useTranslations('Work');
-
+  const t = useTranslations("Work");
+  const tm = useTranslations("ProjectModal");
   const gridRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(0);
-
-  // Modal
   const [selectedProject, setSelectedProject] = useState(null);
-  const openProject = (proyect) => setSelectedProject(proyect);
+
+  const openProject = (p) => setSelectedProject(p);
   const closeProject = () => setSelectedProject(null);
 
-  // ✅ useCallback para usar como dependencia
   const recalcHeights = useCallback(() => {
     const grid = gridRef.current;
     if (!grid) return;
@@ -30,36 +29,33 @@ const Work = () => {
     setMaxHeight(expanded ? expandedHeight : collapsed);
   }, [expanded]);
 
-  useLayoutEffect(() => {
-    recalcHeights();
-  }, [recalcHeights, userProyects]); // ✅ incluye recalcHeights
-
+  useLayoutEffect(() => { recalcHeights(); }, [recalcHeights, userProyects]);
   useEffect(() => {
     const onResize = () => recalcHeights();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [recalcHeights]); // ✅ incluye recalcHeights
+  }, [recalcHeights]);
 
   const toggleShowMore = () => setExpanded((e) => !e);
 
   return (
-    <div id="work" className="w-full px-[12%] py-10 scroll-mt-20">
-      <h4 className="text-center mb-2 text-lg font-Ovo">{t('portfolio')}</h4>
-      <h2 className="text-center text-5xl font-Ovo">{t('title')}</h2>
-      <p className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
-        {t('description')}
-      </p>
+    <motion.div {...WORK.section} viewport={VIEWPORT} id="work" className="w-full px-[12%] py-10 scroll-mt-20">
+      <motion.h4 {...WORK.h4} viewport={VIEWPORT} className="text-center mb-2 text-lg font-Ovo">
+        {t("portfolio")}
+      </motion.h4>
 
-      <div
-        className="overflow-hidden transition-[max-height] duration-500 ease-in-out"
-        style={{ maxHeight: maxHeight ? `${maxHeight}px` : undefined }}
-      >
-        <div
-          ref={gridRef}
-          className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 dark:text-black"
-        >
+      <motion.h2 {...WORK.h2} viewport={VIEWPORT} className="text-center text-5xl font-Ovo">
+        {t("title")}
+      </motion.h2>
+
+      <motion.p {...WORK.p} viewport={VIEWPORT} className="text-center max-w-2xl mx-auto mt-15 mb-16 font-Ovo">
+        {t("description")}
+      </motion.p>
+
+      <motion.div {...WORK.gridWrap} viewport={VIEWPORT} className="overflow-hidden transition-[max-height] duration-500 ease-in-out" style={{ maxHeight: maxHeight ? `${maxHeight}px` : undefined }}>
+        <div ref={gridRef} className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 dark:text-black">
           {userProyects.map((proyect) => (
-            <button
+            <modal
               key={proyect.id}
               type="button"
               onClick={() => openProject(proyect)}
@@ -75,10 +71,10 @@ const Work = () => {
                   <IconSend stroke={2} className="w-8 p-1 text-black dark:text-white" />
                 </div>
               </div>
-            </button>
+            </modal>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {userProyects.length > 0 && (
         <div className="flex justify-center mt-10">
@@ -86,16 +82,16 @@ const Work = () => {
             onClick={toggleShowMore}
             className="w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover font-Ovo"
           >
-            {expanded ? t('showLess') : t('showMore')}
+            {expanded ? t("showLess") : t("showMore")}
             {expanded ? <IconArrowMoveUp stroke={2} /> : <IconArrowMoveDown stroke={2} />}
           </button>
         </div>
       )}
 
-      <ProjectModal open={!!selectedProject} onClose={closeProject}>
+      <ProjectModal open={!!selectedProject} title={tm("title")} onClose={closeProject}>
         <ProjectDetail project={selectedProject} />
       </ProjectModal>
-    </div>
+    </motion.div>
   );
 };
 

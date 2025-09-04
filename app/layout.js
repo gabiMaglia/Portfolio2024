@@ -1,4 +1,3 @@
-// app/layout.jsx
 import { Outfit, Ovo } from 'next/font/google';
 import './globals.css';
 
@@ -25,3 +24,9 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+import PropTypes from 'prop-types';
+
+RootLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

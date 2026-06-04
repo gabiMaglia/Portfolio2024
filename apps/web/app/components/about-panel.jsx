@@ -25,17 +25,20 @@ const AboutPanel = () => {
     <section className="panel p-ink" data-d-panel data-ui="paper">
       <div className="about-layout">
 
-        {/* ── LEFT — kicker + headline + [paras | stats] ── */}
-        <div className="col layer pll-mid about-left">
-          <span className="kicker reveal">02 — {t("title")}</span>
+        {/* ── LEFT — top: headline | bottom: paras+stats ── */}
+        <div className="about-left layer pll-mid">
 
-          <h2 className="display reveal d1 about-headline">
-            {t("headlinePt1")}<br />{t("headlinePt2")}<br />
-            <span className="ser" style={{ color: "var(--accent)" }}>{t("headlineAccent")}</span>{" "}
-            {t("headlineEnd")}
-          </h2>
+          {/* top block */}
+          <div>
+            <span className="kicker reveal">02 — {t("title")}</span>
+            <h2 className="display reveal d1 about-headline">
+              {t("headlinePt1")}<br />{t("headlinePt2")}<br />
+              <span className="ser" style={{ color: "var(--accent)" }}>{t("headlineAccent")}</span>{" "}
+              {t("headlineEnd")}
+            </h2>
+          </div>
 
-          {/* paras + stats side by side */}
+          {/* bottom block: paras | stats side by side */}
           <div className="about-body reveal d2">
             <div className="about-paras">
               {paragraphs.map((p, i) => (
@@ -60,9 +63,10 @@ const AboutPanel = () => {
               </div>
             </div>
           </div>
+
         </div>
 
-        {/* ── RIGHT — stack column (where image was) ─────── */}
+        {/* ── RIGHT — stack distributed top to bottom ───── */}
         <div className="about-stack reveal d2">
           {stackItems.map((skill) => (
             <span key={skill.id} className="skill-name">{skill.name}</span>

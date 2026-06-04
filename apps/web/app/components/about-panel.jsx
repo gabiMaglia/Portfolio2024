@@ -23,21 +23,19 @@ const AboutPanel = () => {
 
   return (
     <section className="panel p-ink" data-d-panel data-ui="paper">
-      <div className="about-layout layer pll-fore">
+      <div className="about-layout">
 
-        {/* top: kicker + headline */}
-        <div>
+        {/* LEFT — everything stacked */}
+        <div className="about-left col layer pll-mid">
           <span className="kicker reveal">02 — {t("title")}</span>
+
           <h2 className="display reveal d1 about-headline">
             {t("headlinePt1")}<br />{t("headlinePt2")}<br />
             <span className="ser" style={{ color: "var(--accent)" }}>{t("headlineAccent")}</span>{" "}
             {t("headlineEnd")}
           </h2>
-        </div>
 
-        {/* bottom: paras | stats | stack — same baseline */}
-        <div className="about-bottom reveal d2">
-          <div className="about-paras">
+          <div className="about-paras reveal d2">
             {paragraphs.map((p, i) => (
               <p key={i} style={{ fontSize: "clamp(.98rem,1.2vw,1.16rem)", lineHeight: 1.6, opacity: 0.78, fontWeight: 500 }}>
                 {p}
@@ -59,12 +57,13 @@ const AboutPanel = () => {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="about-stack">
-            {stackItems.map((skill) => (
-              <span key={skill.id} className="skill-name">{skill.name}</span>
-            ))}
-          </div>
+        {/* RIGHT — stack, same height as left, items spread top to bottom */}
+        <div className="about-stack reveal d2">
+          {stackItems.map((skill) => (
+            <span key={skill.id} className="skill-name">{skill.name}</span>
+          ))}
         </div>
 
       </div>

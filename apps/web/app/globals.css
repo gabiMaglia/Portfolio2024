@@ -380,28 +380,28 @@ body.scrolled .hint { opacity: 0; }
 
 /* ===================== ABOUT PANEL ===================== */
 
-/* single flex column: headline top, bottom row at the end */
+/* two columns: [all text left] [stack right], top-aligned, full height */
 .about-layout {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(36px, 5vw, 80px);
+  align-items: start;
+  height: calc(100vh - var(--frame) * 6.4);
+}
+
+/* left column stacks everything naturally */
+.about-left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: calc(100vh - var(--frame) * 6.4);
+  gap: clamp(16px, 2.5vh, 28px);
 }
 
 .about-headline {
   font-size: clamp(2.6rem, 6vw, 6rem) !important;
-  margin: 18px 0 0;
-}
-
-/* bottom row: paras | stats | stack — all share the same top baseline */
-.about-bottom {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: clamp(28px, 5vw, 80px);
-  align-items: start;
+  margin: 0;
 }
 
 .about-paras {
@@ -412,18 +412,17 @@ body.scrolled .hint { opacity: 0; }
 
 .about-stats {
   display: flex;
-  flex-direction: column;
-  gap: clamp(18px, 2.5vh, 32px);
-  padding-top: 2px;
+  gap: clamp(24px, 4vw, 56px);
 }
 
 .stat { display: flex; flex-direction: column; }
 
-/* stack: column of skill names, right-aligned */
+/* right column: same height as left, items spread top to bottom */
 .about-stack {
+  align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 1.2vh, 14px);
+  justify-content: space-between;
   align-items: flex-end;
 }
 
@@ -626,27 +625,23 @@ body.scrolled .hint { opacity: 0; }
 
   /* ── ABOUT ─────────────────────────────────────────── */
   .about-layout {
+    grid-template-columns: 1fr !important;
     height: auto !important;
-    justify-content: flex-start !important;
     gap: 22px !important;
     overflow-y: auto;
     max-height: 100%;
     padding-bottom: 8px;
   }
 
-  .about-headline { font-size: clamp(2.4rem, 9vw, 4rem) !important; margin: 12px 0 0 !important; }
+  .about-left { gap: 16px !important; }
 
-  .about-bottom {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-  }
+  .about-headline { font-size: clamp(2.4rem, 9vw, 4rem) !important; }
 
-  .about-stats {
-    flex-direction: row !important;
-    gap: 28px !important;
-  }
+  .about-stats { gap: 28px !important; }
 
   .about-stack {
+    align-self: auto !important;
+    justify-content: flex-start !important;
     align-items: flex-start !important;
     display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important;

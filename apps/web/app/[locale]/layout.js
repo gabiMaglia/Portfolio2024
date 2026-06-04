@@ -13,6 +13,8 @@ import {
   fetchUserPhrases
 } from '@/lib/queries';
 
+export const dynamic = 'force-dynamic';
+
 export function generateStaticParams() {
   return [{ locale: 'es' }, { locale: 'en' }];
 }

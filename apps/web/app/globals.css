@@ -380,22 +380,15 @@ body.scrolled .hint { opacity: 0; }
 
 /* ===================== ABOUT PANEL ===================== */
 
+/* single flex column: headline top, bottom row at the end */
 .about-layout {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.6fr .4fr;
-  gap: clamp(36px, 5vw, 80px);
-  align-items: stretch;
-  height: calc(100vh - var(--frame) * 6.4);
-}
-
-/* left column: flex col, kicker+headline top, about-body bottom */
-.about-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: calc(100vh - var(--frame) * 6.4);
 }
 
 .about-headline {
@@ -403,11 +396,11 @@ body.scrolled .hint { opacity: 0; }
   margin: 18px 0 0;
 }
 
-/* paras | stats — side by side under headline */
-.about-body {
+/* bottom row: paras | stats | stack — all share the same top baseline */
+.about-bottom {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: 1fr auto auto;
+  gap: clamp(28px, 5vw, 80px);
   align-items: start;
 }
 
@@ -426,12 +419,11 @@ body.scrolled .hint { opacity: 0; }
 
 .stat { display: flex; flex-direction: column; }
 
-/* right column: stack against right margin, natural gap */
+/* stack: column of skill names, right-aligned */
 .about-stack {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: clamp(4px, 1.2vh, 16px);
+  gap: clamp(4px, 1.2vh, 14px);
   align-items: flex-end;
 }
 
@@ -634,19 +626,17 @@ body.scrolled .hint { opacity: 0; }
 
   /* ── ABOUT ─────────────────────────────────────────── */
   .about-layout {
-    grid-template-columns: 1fr !important;
     height: auto !important;
+    justify-content: flex-start !important;
     gap: 22px !important;
     overflow-y: auto;
     max-height: 100%;
     padding-bottom: 8px;
   }
 
-  .about-content { justify-content: flex-start !important; gap: 20px; }
-
   .about-headline { font-size: clamp(2.4rem, 9vw, 4rem) !important; margin: 12px 0 0 !important; }
 
-  .about-body {
+  .about-bottom {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
   }
@@ -656,9 +646,7 @@ body.scrolled .hint { opacity: 0; }
     gap: 28px !important;
   }
 
-  /* stack: multi-col grid below content, back to center-aligned */
   .about-stack {
-    justify-content: flex-start !important;
     align-items: flex-start !important;
     display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important;

@@ -52,13 +52,8 @@ const ContactPanel = () => {
 
         <div className="contact-socials reveal d3">
           {links.map((link) => (
-            <a key={link.id} href={link.url} target="_blank" rel="noreferrer" className="social">
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: ".18em", textTransform: "uppercase", opacity: 0.6 }}>
-                {link.name}
-              </span>
-              <span className="social-handle" style={{ fontSize: "clamp(1rem,1.4vw,1.3rem)", fontWeight: 700 }}>
-                {link.handle}
-              </span>
+            <a key={link.id} href={link.url} target="_blank" rel="noreferrer" className="social-name">
+              {link.name}
             </a>
           ))}
         </div>

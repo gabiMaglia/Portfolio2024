@@ -384,7 +384,7 @@ body.scrolled .hint { opacity: 0; }
   max-width: 1300px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: clamp(110px, 14vw, 200px) 1fr;
+  grid-template-columns: 1fr clamp(110px, 14vw, 200px);
   gap: clamp(36px, 6vw, 96px);
   align-items: start;
   max-height: calc(100vh - var(--frame) * 7);

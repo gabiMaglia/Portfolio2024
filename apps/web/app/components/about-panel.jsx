@@ -25,14 +25,7 @@ const AboutPanel = () => {
     <section className="panel p-ink" data-d-panel data-ui="paper">
       <div className="about-layout">
 
-        {/* ── LEFT — stack column ───────────────────────── */}
-        <div className="about-stack reveal d2">
-          {stackItems.map((skill) => (
-            <span key={skill.id} className="skill-name">{skill.name}</span>
-          ))}
-        </div>
-
-        {/* ── RIGHT — content ───────────────────────────── */}
+        {/* ── LEFT — content ────────────────────────────── */}
         <div className="about-content col layer pll-fore">
           <span className="kicker reveal">02 — {t("title")}</span>
 
@@ -64,6 +57,13 @@ const AboutPanel = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* ── RIGHT — stack column ──────────────────────── */}
+        <div className="about-stack reveal d2">
+          {stackItems.map((skill) => (
+            <span key={skill.id} className="skill-name">{skill.name}</span>
+          ))}
         </div>
 
       </div>

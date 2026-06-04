@@ -25,8 +25,8 @@ const AboutPanel = () => {
     <section className="panel p-ink" data-d-panel data-ui="paper">
       <div className="about-layout">
 
-        {/* ── LEFT — content ────────────────────────────── */}
-        <div className="about-content col layer pll-fore">
+        {/* ── LEFT — kicker + headline + [paras | stats] ── */}
+        <div className="col layer pll-mid about-left">
           <span className="kicker reveal">02 — {t("title")}</span>
 
           <h2 className="display reveal d1 about-headline">
@@ -35,31 +35,34 @@ const AboutPanel = () => {
             {t("headlineEnd")}
           </h2>
 
-          <div className="about-paras reveal d2">
-            {paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: "clamp(.98rem,1.2vw,1.16rem)", lineHeight: 1.6, opacity: 0.78, fontWeight: 500 }}>
-                {p}
-              </p>
-            ))}
-          </div>
-
-          <div className="about-stats reveal d3">
-            <div className="stat">
-              <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.8rem,4.5vw,4.4rem)", lineHeight: 1 }}>+4</div>
-              <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 180, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
-                {t("statYearsLabel")}
-              </div>
+          {/* paras + stats side by side */}
+          <div className="about-body reveal d2">
+            <div className="about-paras">
+              {paragraphs.map((p, i) => (
+                <p key={i} style={{ fontSize: "clamp(.98rem,1.2vw,1.16rem)", lineHeight: 1.6, opacity: 0.78, fontWeight: 500 }}>
+                  {p}
+                </p>
+              ))}
             </div>
-            <div className="stat">
-              <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.8rem,4.5vw,4.4rem)", lineHeight: 1 }}>∞</div>
-              <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 180, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
-                {t("statLearnLabel")}
+
+            <div className="about-stats reveal d3">
+              <div className="stat">
+                <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.4rem,4vw,3.8rem)", lineHeight: 1 }}>+4</div>
+                <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 150, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
+                  {t("statYearsLabel")}
+                </div>
+              </div>
+              <div className="stat">
+                <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.4rem,4vw,3.8rem)", lineHeight: 1 }}>∞</div>
+                <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 150, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
+                  {t("statLearnLabel")}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ── RIGHT — stack column ──────────────────────── */}
+        {/* ── RIGHT — stack column (where image was) ─────── */}
         <div className="about-stack reveal d2">
           {stackItems.map((skill) => (
             <span key={skill.id} className="skill-name">{skill.name}</span>

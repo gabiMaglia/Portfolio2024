@@ -11,14 +11,15 @@ const ContactPanel = () => {
   const t = useTranslations("Contact");
   const socials = useUserStore((state) => state.social) || [];
 
-  const links = socials.length > 0
+  const links = (socials.length > 0
     ? socials.map((s) => ({
         id: s.id,
         name: s.name,
         url: s.url,
         handle: s.url.replace(/^https?:\/\//, "").split("/").pop() || s.name,
       }))
-    : HARDCODED_LINKS;
+    : HARDCODED_LINKS
+  ).filter((l) => !l.url.startsWith("mailto:") && !/mail/i.test(l.name));
 
   return (
     <section className="panel p-accent" data-d-panel data-ui="ink">

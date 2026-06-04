@@ -26,7 +26,7 @@ const AboutPanel = () => {
       <div className="about-layout">
 
         {/* ── LEFT — stack column ───────────────────────── */}
-        <div className="about-stack layer pll-back reveal d2">
+        <div className="about-stack reveal d2">
           {stackItems.map((skill) => (
             <span key={skill.id} className="skill-name">{skill.name}</span>
           ))}

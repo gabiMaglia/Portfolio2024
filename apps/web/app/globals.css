@@ -352,6 +352,13 @@ body.scrolled .hint { opacity: 0; }
   width: 100%;
 }
 
+/* wraps h1 + hero-below as a group; on desktop it's transparent to layout
+   (display:contents) so h1/hero-below stay direct flex children of
+   .hero-wrap exactly as before — mobile overrides this to center the group */
+.hero-mid {
+  display: contents;
+}
+
 .hero-below {
   margin-top: clamp(20px, 3.4vh, 46px);
   max-width: min(720px, 62vw);
@@ -603,12 +610,22 @@ body.scrolled .hint { opacity: 0; }
   }
 
   /* ── HERO ─────────────────────────────────────────── */
-  /* panel stretches hero-wrap to full height; center the block instead of
-     packing it against the top so the empty space is distributed evenly
-     above/below rather than dumped below the content */
+  /* panel stretches hero-wrap to full height. Three vertical zones:
+     kicker pinned top, hero-mid (h1 + lead) centered in the middle,
+     hero-meta pinned bottom — via space-between on the column plus
+     margin:auto centering on the middle group. */
   .hero-wrap {
     max-width: 100% !important;
+    justify-content: space-between;
+  }
+
+  .hero-mid {
+    display: flex !important;
+    flex-direction: column;
     justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    min-height: 0;
   }
 
   /* hero h1: tighten font-size so "Maglia®" never overflows 390px viewport */
@@ -623,7 +640,7 @@ body.scrolled .hint { opacity: 0; }
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 12px !important;
-    margin-top: clamp(28px, 4.5vh, 44px) !important;
+    margin-top: 0 !important;
   }
 
   /* ── ABOUT ─────────────────────────────────────────── */

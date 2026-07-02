@@ -94,7 +94,7 @@ Portfolio2024/                      # raíz del monorepo
    ```
 2. `turbo.json` con pipeline básico (`dev`, `build`, `lint`). `dev` con `"cache": false, "persistent": true`.
 3. `package.json` root: `packageManager`, scripts `dev`/`build` que delegan a turbo, devDeps `turbo`.
-4. `tsconfig.base.json` con paths y `strict: true`.
+4. ~~`tsconfig.base.json` con paths y `strict: true`.~~ **Descartado** — ver ADR-001 (T-006): cada package usa tsconfig autónomo; sin base compartida.
 5. **No mover el Next todavía** — primero armar `packages/db` y `apps/api` para validar, luego mover web.
 
 ### Fase 2 — `packages/db` (schema compartido)

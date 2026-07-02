@@ -109,29 +109,83 @@ const PortfolioShell = () => {
       document.body.classList.add("scrolled");
     };
 
+    const SWIPE_MULTIPLIER = 2.2;
+    const FLICK_VELOCITY = 0.45; // px/ms of raw finger movement to count as a "flick"
+    const DIR_LOCK_THRESHOLD = 6; // px before a gesture commits to horizontal/vertical
+
     let tx0 = 0;
     let ty0 = 0;
+    let prevX = 0;
+    let prevT = 0;
+    let velocity = 0; // smoothed px/ms of raw finger movement (+ = swipe left/forward)
+    let dirLocked = null; // 'x' | 'y' | null while undecided
+    let touchActive = false;
+
     const onTouchStart = (e) => {
-      tx0 = e.touches[0].clientX;
-      ty0 = e.touches[0].clientY;
+      const t = e.touches[0];
+      tx0 = prevX = t.clientX;
+      ty0 = t.clientY;
+      prevT = e.timeStamp;
+      velocity = 0;
+      dirLocked = null;
+      touchActive = true;
+      clearTimeout(snapTO);
     };
+
     const onTouchMove = (e) => {
-      const dx = tx0 - e.touches[0].clientX;
-      const dy = ty0 - e.touches[0].clientY;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 6) {
-        window.scrollBy(0, dx * 2.2);
-        e.preventDefault();
+      const t = e.touches[0];
+      const totalDx = tx0 - t.clientX;
+      const totalDy = ty0 - t.clientY;
+
+      if (dirLocked === null) {
+        if (Math.abs(totalDx) > DIR_LOCK_THRESHOLD || Math.abs(totalDy) > DIR_LOCK_THRESHOLD) {
+          dirLocked = Math.abs(totalDx) > Math.abs(totalDy) ? "x" : "y";
+        }
       }
-      document.body.classList.add("scrolled");
+
+      if (dirLocked === "x") {
+        const stepDx = prevX - t.clientX; // incremental delta since last event (fixes runaway scroll)
+        const dt = Math.max(1, e.timeStamp - prevT);
+        window.scrollBy(0, stepDx * SWIPE_MULTIPLIER);
+        velocity = velocity * 0.6 + (stepDx / dt) * 0.4;
+        e.preventDefault();
+        document.body.classList.add("scrolled");
+      }
+
+      prevX = t.clientX;
+      prevT = e.timeStamp;
+    };
+
+    const snapToNearest = (biasVelocity = 0) => {
+      const currentIdx = frac() * (N - 1);
+      let targetIdx;
+      if (Math.abs(biasVelocity) > FLICK_VELOCITY) {
+        targetIdx = biasVelocity > 0 ? Math.ceil(currentIdx) : Math.floor(currentIdx);
+        if (Math.abs(targetIdx - currentIdx) < 0.02) {
+          targetIdx += biasVelocity > 0 ? 1 : -1;
+        }
+      } else {
+        targetIdx = Math.round(currentIdx);
+      }
+      targetIdx = Math.min(N - 1, Math.max(0, targetIdx));
+      window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: "smooth" });
+    };
+
+    const onTouchEnd = () => {
+      touchActive = false;
+      if (dirLocked === "x") {
+        snapToNearest(velocity);
+      }
+      dirLocked = null;
     };
 
     let snapTO = null;
     const onScroll = () => {
       document.body.classList.add("scrolled");
+      if (touchActive) return; // avoid the idle-snap firing mid-drag and fighting the manual scrollBy
       clearTimeout(snapTO);
       snapTO = setTimeout(() => {
-        const idx = Math.round(frac() * (N - 1));
-        window.scrollTo({ top: (idx / (N - 1)) * maxScroll, behavior: "smooth" });
+        snapToNearest();
       }, 150);
     };
 
@@ -156,15 +210,20 @@ const PortfolioShell = () => {
     window.addEventListener("keydown", onKey);
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
     return () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(snapTO);
       window.removeEventListener("resize", layout);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
     };
   }, []);
 

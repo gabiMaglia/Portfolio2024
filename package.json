@@ -2,6 +2,9 @@
   "name": "portfolio-monorepo",
   "private": true,
   "packageManager": "pnpm@10.34.1",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=@portfolio/web",

@@ -5,19 +5,16 @@ export const UI_FOR_SURFACE = { paper: 'ink', ink: 'paper', accent: 'ink' };
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
-// Activación de reveals por DESTINO, no por proximidad visible: curX va ~0.1/frame detrás del
-// scroll y el reveal dura .9s, así que lo que se ve al 50% del recorrido tiene que haber
-// arrancado antes. Rango [min(visibles,destino)-1, max(visibles,destino)+1]; el shell solo
-// agrega (nunca desactiva), por eso todo panel atravesado queda activo.
-export const panelsToActivate = (curX, vw, frac, n) => {
-  const pos = -curX / vw;
-  const dest = Math.round(clamp(frac, 0, 1) * (n - 1));
-  const lo = clamp(Math.min(Math.floor(pos + 1e-6), dest) - 1, 0, n - 1);
-  const hi = clamp(Math.max(Math.ceil(pos - 1e-6), dest) + 1, 0, n - 1);
-  const out = [];
-  for (let i = lo; i <= hi; i += 1) out.push(i);
-  return out;
-};
+// Reveal guiado por posición (ADR-006): la opacidad es función de --d (la geometría del mismo
+// frame que pinta el track), no del tiempo, así que a d<=.5 todo está visible a cualquier
+// velocidad, con End, nav o swipe. Estas constantes se espejan en globals.css (--rv-*).
+export const REVEAL_FAR = 0.96; // d desde el que arranca el elemento de orden 0
+export const REVEAL_STEP = 0.04; // desfase por orden .dN (stagger por posición)
+export const REVEAL_SPAN = 0.25; // recorrido de d entre 0 y 1
+export const REVEAL_RISE_PX = 24;
+
+export const revealOpacity = (d, n) =>
+  clamp((REVEAL_FAR - REVEAL_STEP * n - Math.max(d, 0)) / REVEAL_SPAN, 0, 1);
 
 // Panel bajo cada borde del elemento y dónde cae el seam (px desde su borde izquierdo).
 // Un elemento más angosto que el viewport cruza como mucho un seam.

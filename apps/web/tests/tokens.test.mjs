@@ -176,3 +176,27 @@ test('ADR-005: descendientes de .ui-ink no fijan opacity/transform/filter/blend/
   }
   assert.deepEqual([...new Set(bad)], []);
 });
+
+// ADR-006: el reveal es función de --d (posición). Una transición o data-active lo haría
+// depender del tiempo: el panel entrante llegaría a vw/2 con el reveal a medias.
+test('ADR-006: .reveal sin transition/transition-delay de opacity/transform ni selectores [data-active', () => {
+  for (const { sel, body } of ruleList()) {
+    const hitsReveal = sel.split(',').some((one) => /\.reveal\b/.test(one.trim().split(/[\s>+~]+/).pop()));
+    if (hitsReveal) assert.doesNotMatch(body, /(^|[;\s])transition(-[\w]+)?\s*:/, `transition en ${sel}`);
+    if (/\[data-active/.test(sel)) assert.doesNotMatch(sel, /\.reveal|\.d[1-4]/, `data-active alcanza .reveal: ${sel}`);
+  }
+  assert.doesNotMatch(css, /data-active/);
+  for (const f of componentFiles) {
+    const src = read(`app/components/${f}`);
+    assert.doesNotMatch(src, /data-active|transitionDelay/, `${f}: reveal por tiempo/activación`);
+  }
+});
+
+test('ADR-006: .reveal deriva opacity/transform de --d y --rv-*', () => {
+  const m = /\n\.reveal\s*\{([^}]*)\}/.exec(css);
+  assert.ok(m, 'regla .reveal');
+  assert.match(m[1], /var\(--d\)/);
+  assert.match(m[1], /var\(--rv-far\)/);
+  assert.match(m[1], /opacity\s*:/);
+  assert.match(m[1], /transform\s*:/);
+});

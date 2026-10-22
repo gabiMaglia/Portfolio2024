@@ -81,6 +81,12 @@
   --dur-marquee: 26s;
   --stagger: .06s;
 
+  /* reveal por posición (ADR-006): == REVEAL_* de lib/scroll-motion.mjs */
+  --rv-far: .96;
+  --rv-step: .04;
+  --rv-span: .25;
+  --rv-rise: 24px;
+
   --frame: clamp(18px, 2.2vw, 38px);
   --panel-pt: calc(var(--frame) * 3.4);
   --panel-px: clamp(28px, 7vw, 150px);
@@ -504,20 +510,34 @@ body.scrolled .hint { opacity: 0; }
 
 /* ===================== REVEAL ANIMATION ===================== */
 .reveal {
-  opacity: 0;
-  transform: translateY(24px);
+  /* ADR-006: función de --d (posición del panel), sin transition. Constantes == lib/scroll-motion.mjs */
+  --o: clamp(0, (var(--rv-far) - var(--rv-step) * var(--n, 0) - max(var(--d), 0)) / var(--rv-span), 1);
+  opacity: var(--o);
+  transform: translateY(calc((1 - var(--o)) * var(--rv-rise)));
 }
 
-.panel[data-active="1"] .reveal {
-  opacity: 1;
-  transform: none;
-  transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+.reveal.d1 { --n: 1; }
+.reveal.d2 { --n: 2; }
+.reveal.d3 { --n: 3; }
+.reveal.d4 { --n: 4; }
+
+/* Antes de hidratar, cada panel declara su posición (JS la pisa inline cada frame) */
+#track > .panel:nth-child(1) { --d: 0; }
+#track > .panel:nth-child(2) { --d: 1; }
+#track > .panel:nth-child(3) { --d: 2; }
+#track > .panel:nth-child(4) { --d: 3; }
+#track > .panel:nth-child(5) { --d: 4; }
+
+/* Entrada del hero en la carga: keyframe desde el primer paint (el panel 0 está en d<=0, o=1) */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(var(--rv-rise)); }
+  to   { opacity: 1; transform: none; }
 }
 
-.panel[data-active="1"] .reveal.d1 { transition-delay: calc(var(--stagger) * 1); }
-.panel[data-active="1"] .reveal.d2 { transition-delay: calc(var(--stagger) * 2); }
-.panel[data-active="1"] .reveal.d3 { transition-delay: calc(var(--stagger) * 3); }
-.panel[data-active="1"] .reveal.d4 { transition-delay: calc(var(--stagger) * 4); }
+#track > .panel:first-child .reveal {
+  animation: reveal-in var(--dur-reveal) var(--ease) backwards;
+  animation-delay: calc(var(--stagger) * var(--n, 0));
+}
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; }

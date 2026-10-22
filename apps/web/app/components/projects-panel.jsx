@@ -2,13 +2,13 @@ import { useUserStore } from "@/store/store";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-const ProjectsPanel = () => {
+const ProjectsPanel = ({ index }) => {
   const t = useTranslations("Work");
   const projects = useUserStore((state) => state.proyects) || [];
   const visible = projects.slice(0, 4);
 
   return (
-    <section className="panel p-paper" data-d-panel data-ui="ink">
+    <section inert={index === 0 ? undefined : ""} className="panel p-paper" data-d-panel data-ui="ink">
       <div className="proj-content" style={{ width: "100%" }}>
         {/* header */}
         <div className="layer pll-back proj-head">

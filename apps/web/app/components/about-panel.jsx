@@ -1,7 +1,7 @@
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
 
-const AboutPanel = () => {
+const AboutPanel = ({ index }) => {
   const t = useTranslations("About");
   const phrases = useUserStore((state) => state.phrases) || {};
   const skills = useUserStore((state) => state.skill) || [];
@@ -22,7 +22,7 @@ const AboutPanel = () => {
     : fallbackStack.map((n) => ({ id: n, name: n }));
 
   return (
-    <section className="panel p-ink" data-d-panel data-ui="paper">
+    <section inert={index === 0 ? undefined : ""} className="panel p-ink" data-d-panel data-ui="paper">
       <div className="about-layout">
 
         {/* LEFT — everything stacked */}

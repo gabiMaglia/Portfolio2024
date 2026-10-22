@@ -7,7 +7,7 @@ const HARDCODED_LINKS = [
   { id: "cv", name: "CV",       url: "/Gabriel Maglia - Fullstack Developer ESP.pdf", handle: "Descargar PDF" },
 ];
 
-const ContactPanel = () => {
+const ContactPanel = ({ index }) => {
   const t = useTranslations("Contact");
   const socials = useUserStore((state) => state.social) || [];
 
@@ -22,7 +22,7 @@ const ContactPanel = () => {
   ).filter((l) => !l.url.startsWith("mailto:") && !/mail/i.test(l.name));
 
   return (
-    <section className="panel p-accent" data-d-panel data-ui="ink">
+    <section inert={index === 0 ? undefined : ""} className="panel p-accent" data-d-panel data-ui="ink">
       {/* scrolling marquee background */}
       <div className="layer pll-back mq-wrap" aria-hidden="true">
         <div className="mq-track">

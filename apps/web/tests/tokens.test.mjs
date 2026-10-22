@@ -102,9 +102,8 @@ test('ADR-004: ninguna clase con opacity/transform comparte elemento con .reveal
     for (const c of subjectClasses(sel)) motion.add(c);
   }
   for (const c of ['reveal', 'd1', 'd2', 'd3', 'd4']) motion.delete(c);
-  // Única exención escrita: la grilla de proyectos (transform de paralaje pisado
-  // por el reveal desde main). Pasa a T-010.
-  const EXEMPT = new Set(['projects-panel.jsx:pll-mid']);
+  // Cero exenciones (T-010 resolvió pll-mid envolviendo el reveal en un hijo).
+  const EXEMPT = new Set();
   const clash = [];
   for (const f of componentFiles) {
     const src = read(`app/components/${f}`);
@@ -120,5 +119,20 @@ test('ADR-004: ninguna clase con opacity/transform comparte elemento con .reveal
 test('ADR-004: los roles .t-* no declaran opacity (atenuación por color)', () => {
   for (const { sel, body } of ruleList()) {
     if (/^\.t-[\w-]+$/.test(sel)) assert.doesNotMatch(body, /(^|[;\s])opacity\s*:/, sel);
+  }
+});
+
+test('T-010: :hover no toca propiedades de layout (los vecinos no se mueven)', () => {
+  const LAYOUT = /(^|[;\s])(font-size|letter-spacing|line-height|padding[\w-]*|margin[\w-]*|width|height|gap|border-width)\s*:/;
+  for (const m of withoutReduced.matchAll(/[^{}]*:hover[^{]*\{([^}]*)\}/g)) {
+    assert.doesNotMatch(m[1], LAYOUT, `layout en hover: ${m[0].trim()}`);
+  }
+});
+
+test('T-010: el chrome no transiciona color (el corte por glifo ES la transición)', () => {
+  for (const sel of ['.frame', '.counter', '.nav button', '.sig', '.hint', '.pbar']) {
+    for (const m of css.matchAll(new RegExp(`${sel.replace('.', '\\.')}\\s*\\{([^}]*)\\}`, 'g'))) {
+      assert.doesNotMatch(m[1], /transition\s*:[^;]*\bcolor\b/, sel);
+    }
   }
 });

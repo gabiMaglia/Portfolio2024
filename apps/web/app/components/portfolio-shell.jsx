@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isInteractiveTarget } from "@/lib/keyboard.mjs";
+import { chromeSegments, shouldActivate, snapTargetIdx, shouldSkipSnap, isSingleTouch } from "@/lib/scroll-motion.mjs";
 import LocaleSwitcher from "./localeSwitcher";
 import HeroPanel from "./hero-panel";
 import AboutPanel from "./about-panel";
@@ -58,19 +59,40 @@ const PortfolioShell = () => {
 
     const frac = () => Math.min(1, Math.max(0, window.scrollY / maxScroll));
 
-    const setUI = (idx) => {
-      const el = panelEls[idx];
-      if (!el) return;
-      const want = el.getAttribute("data-ui");
-      const map = {
-        ink:    "var(--ink)",
-        paper:  "var(--paper)",
-        accent: "var(--accent-ink)",
-      };
-      document.documentElement.style.setProperty("--ui", map[want] || map.paper);
+    const UI_VAR = {
+      ink:    "var(--ink)",
+      paper:  "var(--paper)",
+      accent: "var(--accent-ink)",
+    };
+    const panelInk = panelEls.map((el) => UI_VAR[el.getAttribute("data-ui")] || UI_VAR.paper);
+
+    // Chrome fijo: cada glifo toma la tinta del panel que tiene debajo en ESTE frame
+    // (corte duro en el seam), así nunca queda paper sobre paper a mitad de recorrido.
+    const followEls = Array.from(document.querySelectorAll("[data-ui-follow]"));
+    const hintEl = document.querySelector(".hint");
+    const paintChrome = () => {
+      const rects = followEls.map((el) => el.getBoundingClientRect());
+      followEls.forEach((el, i) => {
+        const r = rects[i];
+        const { a, b, cut } = chromeSegments(r.left, r.right, curX, vw, N);
+        el.style.setProperty("--ui-a", panelInk[a]);
+        el.style.setProperty("--ui-b", panelInk[b]);
+        el.style.setProperty("--ui-cut", `${cut.toFixed(2)}px`);
+      });
+      if (hintEl) {
+        const r = hintEl.getBoundingClientRect();
+        const { a } = chromeSegments(r.left + r.width / 2, r.left + r.width / 2 + 1, curX, vw, N);
+        document.documentElement.style.setProperty("--ui", panelInk[a]);
+      }
+    };
+
+    const activate = (i) => {
+      activated.add(i);
+      panelEls[i].setAttribute("data-active", "1");
     };
 
     let lastActive = -1;
+    let lastPaintedX = null;
     let rafId;
 
     const raf = () => {
@@ -84,16 +106,21 @@ const PortfolioShell = () => {
       for (let i = 0; i < panelEls.length; i += 1) {
         const d = (i * vw + curX) / vw;
         panelEls[i].style.setProperty("--d", motionQuery.matches ? "0" : d.toFixed(4));
+        // El panel entrante revela antes de ser el activo: nunca llega vacío
+        if (!activated.has(i) && shouldActivate(d)) activate(i);
+      }
+
+      if (curX !== lastPaintedX) {
+        lastPaintedX = curX;
+        paintChrome();
       }
 
       const idx = Math.round(f * (N - 1));
       if (idx !== lastActive) {
         lastActive = idx;
         setActive(idx);
-        setUI(idx);
-        activated.add(idx);
+        activate(idx);
         panelEls.forEach((el, i) => {
-          el.setAttribute("data-active", activated.has(i) ? "1" : "0");
           // Paneles fuera de pantalla no reciben foco: Tab no puede desplazar el stage
           if (i === idx) el.removeAttribute("inert");
           else el.setAttribute("inert", "");
@@ -106,14 +133,16 @@ const PortfolioShell = () => {
     };
 
     rafId = requestAnimationFrame(raf);
-    setUI(0);
-    activated.add(0);
+    activate(0);
     panelEls.forEach((el, i) => {
-      if (i === 0) el.setAttribute("data-active", "1");
-      else el.setAttribute("inert", "");
+      if (i !== 0) el.setAttribute("inert", "");
     });
 
+    let lastSnap = null; // D-02: destino del último snap, para no relanzar scrollTo al mismo índice
+    let gestureInvalid = false; // pinch / multitouch: no es un swipe de navegación
+
     const onWheel = (e) => {
+      lastSnap = null;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 0) {
         window.scrollBy(0, e.deltaX);
         e.preventDefault();
@@ -134,6 +163,12 @@ const PortfolioShell = () => {
     let touchActive = false;
 
     const onTouchStart = (e) => {
+      lastSnap = null;
+      if (!isSingleTouch(e.touches)) {
+        gestureInvalid = true;
+        return;
+      }
+      gestureInvalid = false;
       const t = e.touches[0];
       tx0 = prevX = t.clientX;
       ty0 = t.clientY;
@@ -145,6 +180,10 @@ const PortfolioShell = () => {
     };
 
     const onTouchMove = (e) => {
+      if (gestureInvalid || !isSingleTouch(e.touches)) {
+        gestureInvalid = true;
+        return;
+      }
       const t = e.touches[0];
       const totalDx = tx0 - t.clientX;
       const totalDy = ty0 - t.clientY;
@@ -169,26 +208,21 @@ const PortfolioShell = () => {
     };
 
     const snapToNearest = (biasVelocity = 0) => {
-      const currentIdx = frac() * (N - 1);
-      let targetIdx;
-      if (Math.abs(biasVelocity) > FLICK_VELOCITY) {
-        targetIdx = biasVelocity > 0 ? Math.ceil(currentIdx) : Math.floor(currentIdx);
-        if (Math.abs(targetIdx - currentIdx) < 0.02) {
-          targetIdx += biasVelocity > 0 ? 1 : -1;
-        }
-      } else {
-        targetIdx = Math.round(currentIdx);
-      }
-      targetIdx = Math.min(N - 1, Math.max(0, targetIdx));
+      const targetIdx = snapTargetIdx(frac() * (N - 1), biasVelocity, N, FLICK_VELOCITY);
+      const now = performance.now();
+      if (shouldSkipSnap(targetIdx, lastSnap, now)) return;
+      lastSnap = { idx: targetIdx, at: now };
       window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: scrollBehavior() });
     };
 
-    const onTouchEnd = () => {
+    const onTouchEnd = (e) => {
+      if (e.touches && e.touches.length > 0) return; // quedan dedos: el gesto sigue
       touchActive = false;
       if (dirLocked === "x") {
-        snapToNearest(velocity);
+        snapToNearest(gestureInvalid ? 0 : velocity);
       }
       dirLocked = null;
+      gestureInvalid = false;
     };
 
     let snapTO = null;
@@ -202,6 +236,7 @@ const PortfolioShell = () => {
     };
 
     const onKey = (e) => {
+      lastSnap = null;
       // Con foco en un link/botón, Space/Enter/flechas son del control, no del scroll
       if (isInteractiveTarget(e.target)) return;
       const behavior = scrollBehavior();
@@ -253,7 +288,7 @@ const PortfolioShell = () => {
       {/* El chrome va antes del stage en el DOM: Tab llega primero a la navegación */}
       {/* Logo — top left */}
       <div className="frame frame--tl">
-        <a href="#" onClick={(e) => { e.preventDefault(); goTo(0); }} className="sig">
+        <a href="#" onClick={(e) => { e.preventDefault(); goTo(0); }} className="sig ui-ink" data-ui-follow>
           Gabriel <em>Maglia</em>
         </a>
       </div>
@@ -265,7 +300,8 @@ const PortfolioShell = () => {
             <button
               key={item.id}
               type="button"
-              className={active === idx ? "on" : ""}
+              className={`ui-ink${active === idx ? " on" : ""}`}
+              data-ui-follow
               onClick={() => goTo(idx)}
             >
               {item.n} — {t(item.labelKey)}
@@ -281,12 +317,12 @@ const PortfolioShell = () => {
       </div>
 
       {/* Progress bar */}
-      <div className="pbar">
+      <div className="pbar" data-ui-follow>
         <div className="pbar__fill" id="pbar-fill" />
       </div>
 
       {/* Section counter — center bottom */}
-      <div className="counter">
+      <div className="counter ui-ink" data-ui-follow>
         <b>{navItems[active]?.n}</b>
         {t(navItems[active]?.labelKey)}
         <span className="counter__of">— {navItems[N - 1].n}</span>

@@ -14,11 +14,12 @@ import {
   fetchUserPhrases
 } from '@/lib/queries';
 
+// Render dinámico por request: el layout raíz lee el locale del header que setea el middleware
+// (getLocale), así que la ruta nunca es estática ni con `revalidate` (verificado en T-011+013:
+// Cache-Control no-store con y sin force-dynamic). Sin generateStaticParams: el "● SSG" del
+// build era un espejismo (no se prerenderiza nada). Pasar a ISR exige sacar el header del
+// layout raíz (setRequestLocale), ver ADR-003; ahí también habría que resincronizar el store.
 export const dynamic = 'force-dynamic';
-
-export function generateStaticParams() {
-  return [{ locale: 'es' }, { locale: 'en' }];
-}
 
 import PropTypes from 'prop-types';
 
@@ -54,7 +55,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
     <NextIntlClientProvider locale={locale} messages={messages}>
       <LangSync />
       <ToasterProvider />
-      <StoreProvider data={data}>{children}</StoreProvider>
+      <StoreProvider key={locale} data={data}>{children}</StoreProvider>
     </NextIntlClientProvider>
   );
 }

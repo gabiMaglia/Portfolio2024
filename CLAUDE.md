@@ -47,7 +47,7 @@ Todos bajo `apps/web/app/components/`:
 - `projects-panel.jsx` — Panel 03: proyectos (datos de DB: proyects)
 - `experience-panel.jsx` — Panel 04: experiencia (datos de DB: experiences)
 - `contact-panel.jsx` — Panel 05: contacto (datos de DB: social)
-- `localeSwitcher.jsx` — Cambia idioma (es/en), CSS plano (`.locale-*`); se reescribe en T-011
+- `localeSwitcher.jsx` + `lang-switch.jsx` — Switch deslizante ES/EN (link real con `Link` de `next-intl/navigation`, conserva el panel vía `#hash`); `skip-link.jsx`, `masthead.jsx` (hora AR), `copy-email.jsx` (T-011+013)
 
 ### Providers
 `apps/web/providers/`:

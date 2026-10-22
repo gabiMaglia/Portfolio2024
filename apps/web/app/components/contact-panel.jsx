@@ -1,5 +1,8 @@
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
+import CopyEmail from "./copy-email";
+
+const EMAIL = "Gab.Maglia@gmail.com";
 
 const HARDCODED_LINKS = [
   { id: "gh", name: "GitHub",   url: "https://github.com/gabiMaglia",          handle: "gabiMaglia" },
@@ -46,9 +49,12 @@ const ContactPanel = ({ index }) => {
 
         <p className="t-body contact-lead reveal d2">{t("description")}</p>
 
-        <a className="email-link reveal d2" href="mailto:Gab.Maglia@gmail.com">
-          Gab.Maglia@gmail.com <span className="email-arrow">→</span>
-        </a>
+        <CopyEmail
+          className="reveal d2"
+          email={EMAIL}
+          copiedLabel={t("copied")}
+          hint={t("copyHint")}
+        />
 
         <div className="contact-socials reveal d3">
           {links.map((link) => (

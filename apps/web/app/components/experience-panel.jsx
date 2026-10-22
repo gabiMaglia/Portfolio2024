@@ -1,8 +1,10 @@
 import { useUserStore } from "@/store/store";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatExpDate } from "@/lib/format-date.mjs";
 
 const ExperiencePanel = ({ index }) => {
   const t = useTranslations("Experience");
+  const locale = useLocale();
   const experiences = useUserStore((state) => state.experiences) || [];
 
   return (
@@ -23,7 +25,7 @@ const ExperiencePanel = ({ index }) => {
               <span className="display exp-company">{exp.institution_exp}</span>
               <span className="exp-role">{exp.title_exp}</span>
               <span className="t-note exp-date">
-                {exp.startDate_exp} — {exp.endDate_exp}
+                {formatExpDate(exp.startDate_exp, locale, t("present"))} — {formatExpDate(exp.endDate_exp, locale, t("present"))}
               </span>
             </div>
           ))}

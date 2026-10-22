@@ -32,13 +32,16 @@ const ProjectsPanel = ({ index }) => {
             // Sin link no hay <a href="#">: sería un control que no lleva a ningún lado
             const linkProps = href ? { href, target: "_blank", rel: "noreferrer" } : {};
             const Card = href ? "a" : "div";
+            const title = project.title_pro?.trim();
+            const tech = project.technologies_pro?.trim();
+            const alt = tech ? t("thumbAlt", { title, tech }) : t("thumbAltNoTech", { title });
             return (
               <Card key={project.id} className="proj-card" {...linkProps}>
                 <div className="proj-card-thumb">
                   {thumb ? (
                     <Image
                       src={thumb}
-                      alt={project.title_pro}
+                      alt={alt}
                       fill
                       sizes="(max-width: 720px) 90vw, 25vw"
                       quality={70}
@@ -55,7 +58,7 @@ const ProjectsPanel = ({ index }) => {
                     <span className="proj-card-title">{project.title_pro}</span>
                     <span className="t-fine">{project.technologies_pro}</span>
                   </div>
-                  <span className="card-arrow">↗</span>
+                  <span className="card-arrow" aria-hidden="true">↗</span>
                 </div>
               </Card>
             );

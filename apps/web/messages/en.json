@@ -4,7 +4,8 @@
     "about": "About",
     "work": "My Work",
     "experience": "Experience",
-    "contact": "Contact Me"
+    "contact": "Contact Me",
+    "label": "Main navigation"
   },
   "Hero": {
     "kicker": "Portfolio — 2026 / Argentina",
@@ -37,7 +38,9 @@
     "title": "My latest work",
     "description": "A selection of representative work. Each one built with attention to detail and product thinking.",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "thumbAlt": "Screenshot of the {title} project, built with {tech}",
+    "thumbAltNoTech": "Screenshot of the {title} project"
   },
   "Experience": {
     "subtitle": "My Job history",
@@ -45,7 +48,8 @@
     "headlinePt1": "Where I left my",
     "headlineAccent": "mark",
     "description": "Here are some of the companies I've worked for",
-    "empty": "No experiences in the database yet."
+    "empty": "No experiences in the database yet.",
+    "present": "Present"
   },
   "Contact": {
     "subtitle": "Connect with me",
@@ -58,7 +62,10 @@
     "messagePlaceholder": "Message",
     "send": "Send",
     "sending": "sending...",
-    "footer": "Designed and built with intention."
+    "footer": "Designed and built with intention.",
+    "copyEmail": "Copy email",
+    "copied": "Copied",
+    "copyHint": "Click to copy the email to the clipboard"
   },
   "Footer": {
     "rights": "All rights reserved."
@@ -70,5 +77,20 @@
     "noImages": "No images available",
     "liveDemo": "Live Demo",
     "github": "GitHub"
+  },
+  "Lang": {
+    "label": "Language",
+    "switchTo": "Switch language to {language}",
+    "names": {
+      "es": "Español",
+      "en": "English"
+    }
+  },
+  "A11y": {
+    "skip": "Skip to content"
+  },
+  "Masthead": {
+    "edition": "Ed. {year}",
+    "localTime": "Local time AR"
   }
 }

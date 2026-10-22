@@ -27,34 +27,30 @@ const AboutPanel = ({ index }) => {
 
         {/* LEFT — everything stacked */}
         <div className="about-left col layer pll-mid">
-          <span className="kicker reveal">02 — {t("title")}</span>
+          <div className="sec-head">
+            <span className="t-kicker reveal">02 — {t("title")}</span>
 
-          <h2 className="display reveal d1 about-headline">
-            {t("headlinePt1")}<br />{t("headlinePt2")}<br />
-            <span className="ser" style={{ color: "var(--accent)" }}>{t("headlineAccent")}</span>{" "}
-            {t("headlineEnd")}
-          </h2>
+            <h2 className="display t-title reveal d1">
+              {t("headlinePt1")}<br />{t("headlinePt2")}<br />
+              <span className="ser accent">{t("headlineAccent")}</span>{" "}
+              {t("headlineEnd")}
+            </h2>
+          </div>
 
           <div className="about-paras reveal d2">
             {paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: "clamp(.98rem,1.2vw,1.16rem)", lineHeight: 1.6, opacity: 0.78, fontWeight: 500 }}>
-                {p}
-              </p>
+              <p key={i} className="t-body">{p}</p>
             ))}
           </div>
 
           <div className="about-stats reveal d3">
             <div className="stat">
-              <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.4rem,4vw,3.8rem)", lineHeight: 1 }}>+4</div>
-              <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 150, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
-                {t("statYearsLabel")}
-              </div>
+              <div className="display stat-num">+4</div>
+              <div className="t-label stat-label">{t("statYearsLabel")}</div>
             </div>
             <div className="stat">
-              <div className="display" style={{ color: "var(--accent)", fontSize: "clamp(2.4rem,4vw,3.8rem)", lineHeight: 1 }}>∞</div>
-              <div style={{ fontSize: 12, opacity: 0.62, maxWidth: 150, lineHeight: 1.4, fontWeight: 500, marginTop: 6 }}>
-                {t("statLearnLabel")}
-              </div>
+              <div className="display stat-num">∞</div>
+              <div className="t-label stat-label">{t("statLearnLabel")}</div>
             </div>
           </div>
         </div>

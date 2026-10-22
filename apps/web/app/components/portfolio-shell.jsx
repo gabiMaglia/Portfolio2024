@@ -289,7 +289,7 @@ const PortfolioShell = () => {
       <div className="counter">
         <b>{navItems[active]?.n}</b>
         {t(navItems[active]?.labelKey)}
-        <span style={{ opacity: 0.5 }}>— {navItems[N - 1].n}</span>
+        <span className="counter__of">— {navItems[N - 1].n}</span>
       </div>
 
       <div id="stage" onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}>

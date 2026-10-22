@@ -27,7 +27,7 @@ const ContactPanel = ({ index }) => {
       <div className="layer pll-back mq-wrap" aria-hidden="true">
         <div className="mq-track">
           {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="display outline" style={{ fontSize: "min(22vw,16rem)", opacity: 0.14, lineHeight: 1 }}>
+            <span key={i} className="display outline mq-word">
               {t("marqueeWord")}&nbsp;·&nbsp;
             </span>
           ))}
@@ -35,19 +35,19 @@ const ContactPanel = ({ index }) => {
       </div>
 
       <div className="layer pll-fore contact-wrap">
-        <span className="kicker reveal">05 — {t("title")}</span>
+        <div className="sec-head">
+          <span className="t-kicker reveal">05 — {t("title")}</span>
 
-        <h2 className="display reveal d1" style={{ fontSize: "clamp(3rem,11vw,11rem)", lineHeight: 0.86, marginTop: 16 }}>
-          {t("title")}{" "}
-          <span className="ser">{t("titleAccent")}</span>
-        </h2>
+          <h2 className="display t-title t-title--2xl reveal d1">
+            {t("title")}{" "}
+            <span className="ser">{t("titleAccent")}</span>
+          </h2>
+        </div>
 
-        <p className="reveal d2" style={{ marginTop: 20, fontSize: "clamp(1rem,1.4vw,1.3rem)", maxWidth: 430, lineHeight: 1.5, fontWeight: 500, opacity: 0.82 }}>
-          {t("description")}
-        </p>
+        <p className="t-body contact-lead reveal d2">{t("description")}</p>
 
         <a className="email-link reveal d2" href="mailto:Gab.Maglia@gmail.com">
-          Gab.Maglia@gmail.com <span style={{ marginLeft: 14 }}>→</span>
+          Gab.Maglia@gmail.com <span className="email-arrow">→</span>
         </a>
 
         <div className="contact-socials reveal d3">
@@ -58,7 +58,7 @@ const ContactPanel = ({ index }) => {
           ))}
         </div>
 
-        <div className="reveal d4" style={{ marginTop: "clamp(34px,5vh,60px)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".06em", opacity: 0.6 }}>
+        <div className="t-fine contact-foot reveal d4">
           © {new Date().getFullYear()} Gabriel Maglia — {t("footer")}
         </div>
       </div>

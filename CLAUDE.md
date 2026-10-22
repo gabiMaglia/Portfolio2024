@@ -26,7 +26,7 @@ No hay ningún árbol Next.js vivo en la raíz del repo: `app/`, `components/`,
 
 ## Stack (apps/web)
 - **Framework**: Next.js 14 (App Router) con `next-intl` para i18n (es/en)
-- **Styling**: CSS custom properties + Tailwind CSS v3 (sólo para el LocaleSwitcher)
+- **Styling**: CSS custom properties + clases semánticas en `globals.css` (tokens `--fs-*`, `--sp-*`, `--r-*`, `--dur-*`, alphas). Sin Tailwind (eliminado en T-009)
 - **State**: Zustand (store global para datos de DB)
 - **DB**: PostgreSQL + Drizzle ORM, vía el paquete compartido `@portfolio/db` (`packages/db`)
 - **Fonts**: Archivo (display), Instrument Serif (accents serif/italic), Space Mono (mono)
@@ -47,7 +47,7 @@ Todos bajo `apps/web/app/components/`:
 - `projects-panel.jsx` — Panel 03: proyectos (datos de DB: proyects)
 - `experience-panel.jsx` — Panel 04: experiencia (datos de DB: experiences)
 - `contact-panel.jsx` — Panel 05: contacto (datos de DB: social)
-- `localeSwitcher.jsx` — Cambia idioma (es/en), usa Tailwind
+- `localeSwitcher.jsx` — Cambia idioma (es/en), CSS plano (`.locale-*`); se reescribe en T-011
 
 ### Providers
 `apps/web/providers/`:

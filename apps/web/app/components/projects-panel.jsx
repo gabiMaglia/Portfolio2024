@@ -9,17 +9,15 @@ const ProjectsPanel = ({ index }) => {
 
   return (
     <section inert={index === 0 ? undefined : ""} className="panel p-paper" data-d-panel data-ui="ink">
-      <div className="proj-content" style={{ width: "100%" }}>
+      <div className="proj-content">
         {/* header */}
-        <div className="layer pll-back proj-head">
-          <span className="kicker reveal">03 — {t("portfolio")}</span>
-          <div className="reveal d1" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
-            <h2 className="display" style={{ fontSize: "clamp(2.4rem,5.5vw,5.4rem)", lineHeight: 0.9 }}>
+        <div className="layer pll-back proj-head sec-head">
+          <span className="t-kicker reveal">03 — {t("portfolio")}</span>
+          <div className="reveal d1 proj-head-row">
+            <h2 className="display t-title">
               {t("headlineLine1")}<br />{t("headlineLine2")}
             </h2>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, lineHeight: 1.6, opacity: 0.62, maxWidth: 300, paddingBottom: 8 }}>
-              {t("description")}
-            </p>
+            <p className="t-note proj-desc">{t("description")}</p>
           </div>
         </div>
 
@@ -44,25 +42,18 @@ const ProjectsPanel = ({ index }) => {
                       quality={70}
                     />
                   ) : (
-                    <div style={{ width: "100%", height: "100%", background: "rgba(22,20,15,.08)", display: "grid", placeItems: "center" }}>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, opacity: 0.4 }}>{num}</span>
+                    <div className="proj-card-empty">
+                      <span className="t-fine">{num}</span>
                     </div>
                   )}
                 </div>
                 <div className="proj-card-meta">
-                  <span className="display" style={{ fontSize: "1.5rem", lineHeight: 1, color: "var(--accent)" }}>{num}</span>
-                  <div className="col" style={{ gap: 3, flex: 1 }}>
-                    <span style={{ fontSize: 14, fontWeight: 700 }}>{project.title_pro}</span>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: ".02em", opacity: 0.6 }}>
-                      {project.technologies_pro}
-                    </span>
+                  <span className="display proj-card-num">{num}</span>
+                  <div className="col proj-card-text">
+                    <span className="proj-card-title">{project.title_pro}</span>
+                    <span className="t-fine">{project.technologies_pro}</span>
                   </div>
-                  <span
-                    className="card-arrow"
-                    style={{ fontSize: 16, opacity: 0, transform: "translate(-4px, 4px)", transition: "all .3s var(--ease)" }}
-                  >
-                    ↗
-                  </span>
+                  <span className="card-arrow">↗</span>
                 </div>
               </Card>
             );

@@ -74,6 +74,8 @@ const PortfolioShell = () => {
       paper:  "var(--paper)",
       accent: "var(--accent-ink)",
     };
+    // relleno del thumb del switch: accent en todos, salvo sobre accent (si no, accent sobre accent)
+    const panelThumb = panelEls.map((el) => (el.classList.contains("p-accent") ? "var(--thumb-on-accent)" : "var(--accent)"));
     const panelInk = panelEls.map((el) => UI_VAR[el.getAttribute("data-ui")] || UI_VAR.paper);
 
     // Chrome fijo: cada glifo toma la tinta del panel que tiene debajo en ESTE frame
@@ -88,6 +90,8 @@ const PortfolioShell = () => {
         el.style.setProperty("--ui-a", panelInk[a]);
         el.style.setProperty("--ui-b", panelInk[b]);
         el.style.setProperty("--ui-cut", `${cut.toFixed(2)}px`);
+        el.style.setProperty("--thumb-a", panelThumb[a]);
+        el.style.setProperty("--thumb-b", panelThumb[b]);
       });
       if (hintEl) {
         const r = hintEl.getBoundingClientRect();

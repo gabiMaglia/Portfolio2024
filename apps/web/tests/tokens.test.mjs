@@ -102,9 +102,8 @@ test('ADR-004: ninguna clase con opacity/transform comparte elemento con .reveal
     for (const c of subjectClasses(sel)) motion.add(c);
   }
   for (const c of ['reveal', 'd1', 'd2', 'd3', 'd4']) motion.delete(c);
-  // Única exención escrita: la grilla de proyectos (transform de paralaje pisado
-  // por el reveal desde main). Pasa a T-010.
-  const EXEMPT = new Set(['projects-panel.jsx:pll-mid']);
+  // Cero exenciones (T-010 resolvió pll-mid envolviendo el reveal en un hijo).
+  const EXEMPT = new Set();
   const clash = [];
   for (const f of componentFiles) {
     const src = read(`app/components/${f}`);
@@ -121,4 +120,83 @@ test('ADR-004: los roles .t-* no declaran opacity (atenuación por color)', () =
   for (const { sel, body } of ruleList()) {
     if (/^\.t-[\w-]+$/.test(sel)) assert.doesNotMatch(body, /(^|[;\s])opacity\s*:/, sel);
   }
+});
+
+test('T-010: :hover no toca propiedades de layout (los vecinos no se mueven)', () => {
+  const LAYOUT = /(^|[;\s])(font-size|letter-spacing|line-height|padding[\w-]*|margin[\w-]*|width|height|gap|border-width)\s*:/;
+  for (const m of withoutReduced.matchAll(/[^{}]*:hover[^{]*\{([^}]*)\}/g)) {
+    assert.doesNotMatch(m[1], LAYOUT, `layout en hover: ${m[0].trim()}`);
+  }
+});
+
+test('T-010: el chrome no transiciona color (el corte por glifo ES la transición)', () => {
+  for (const sel of ['.frame', '.counter', '.nav button', '.sig', '.hint', '.pbar']) {
+    for (const m of css.matchAll(new RegExp(`${sel.replace('.', '\\.')}\\s*\\{([^}]*)\\}`, 'g'))) {
+      assert.doesNotMatch(m[1], /transition\s*:[^;]*\bcolor\b/, sel);
+    }
+  }
+});
+
+// ADR-005: dentro de un .ui-ink (texto pintado con background-clip:text) ningún descendiente
+// crea grupo de pintura ni fija color/background: queda fuera de la máscara y no se ve.
+test('ADR-005: descendientes de .ui-ink no fijan opacity/transform/filter/blend/will-change/color/background', () => {
+  const FORBIDDEN = /(^|[;\s])(opacity|transform|filter|mix-blend-mode|will-change|color|background[\w-]*)\s*:/;
+  const src = read('app/components/portfolio-shell.jsx').replace(/=>/g, '=_');
+  const stack = [];
+  const roots = []; // { own: Set(clases del .ui-ink), kids: [{tag, classes}] }
+  for (const m of src.matchAll(/<(\/?)([A-Za-z][\w.]*)([^<>]*?)(\/?)>/g)) {
+    const [, close, tag, attrs, selfClose] = m;
+    if (close) { stack.pop(); continue; }
+    const cls = (/className=(?:"([^"]*)"|\{`([^`]*)`\})/.exec(attrs) || [])[1] ?? (/className=\{`([^`]*)`\}/.exec(attrs) || [])[1] ?? '';
+    const classes = cls.replace(/\$\{[^}]*\}/g, ' ').split(/\s+/).filter(Boolean);
+    const root = stack.find((e) => e.root)?.root;
+    if (root) root.kids.push({ tag, classes });
+    const entry = { root: classes.includes('ui-ink') ? { own: new Set(classes), kids: [] } : null };
+    if (entry.root) roots.push(entry.root);
+    if (!selfClose) stack.push(entry);
+  }
+  assert.ok(roots.length >= 3, `.ui-ink en el chrome: ${roots.length}`);
+  const ownClasses = new Set(roots.flatMap((r) => [...r.own]));
+  const bad = [];
+  for (const { sel, body } of ruleList()) {
+    if (!FORBIDDEN.test(body)) continue;
+    for (const one of sel.split(',')) {
+      if (one.includes('::')) continue;
+      const parts = one.trim().split(/[\s>+~]+/);
+      const last = parts.pop();
+      const lastClasses = [...last.matchAll(/\.([\w-]+)/g)].map((c) => c[1]);
+      const lastTag = /^[a-z][\w-]*/.exec(last)?.[0];
+      const viaAncestor = parts.some((p) => [...p.matchAll(/\.([\w-]+)/g)].some((c) => ownClasses.has(c[1])));
+      for (const r of roots) for (const k of r.kids) {
+        const byClass = k.classes.some((c) => lastClasses.includes(c));
+        const byTag = lastTag && lastTag === k.tag && lastClasses.length === 0 && viaAncestor;
+        if (byClass || byTag) bad.push(`${one.trim()} -> <${k.tag} ${k.classes.join('.')}>`);
+      }
+    }
+  }
+  assert.deepEqual([...new Set(bad)], []);
+});
+
+// ADR-006: el reveal es función de --d (posición). Una transición o data-active lo haría
+// depender del tiempo: el panel entrante llegaría a vw/2 con el reveal a medias.
+test('ADR-006: .reveal sin transition/transition-delay de opacity/transform ni selectores [data-active', () => {
+  for (const { sel, body } of ruleList()) {
+    const hitsReveal = sel.split(',').some((one) => /\.reveal\b/.test(one.trim().split(/[\s>+~]+/).pop()));
+    if (hitsReveal) assert.doesNotMatch(body, /(^|[;\s])transition(-[\w]+)?\s*:/, `transition en ${sel}`);
+    if (/\[data-active/.test(sel)) assert.doesNotMatch(sel, /\.reveal|\.d[1-4]/, `data-active alcanza .reveal: ${sel}`);
+  }
+  assert.doesNotMatch(css, /data-active/);
+  for (const f of componentFiles) {
+    const src = read(`app/components/${f}`);
+    assert.doesNotMatch(src, /data-active|transitionDelay/, `${f}: reveal por tiempo/activación`);
+  }
+});
+
+test('ADR-006: .reveal deriva opacity/transform de --d y --rv-*', () => {
+  const m = /\n\.reveal\s*\{([^}]*)\}/.exec(css);
+  assert.ok(m, 'regla .reveal');
+  assert.match(m[1], /var\(--d\)/);
+  assert.match(m[1], /var\(--rv-far\)/);
+  assert.match(m[1], /opacity\s*:/);
+  assert.match(m[1], /transform\s*:/);
 });

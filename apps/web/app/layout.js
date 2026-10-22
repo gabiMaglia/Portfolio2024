@@ -1,6 +1,7 @@
 import { Archivo, Space_Mono, Instrument_Serif } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import './globals.css';
+import { FONT_GATE_SCRIPT } from '@/lib/font-gate.mjs';
 
 const archivo = Archivo({
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -34,6 +35,9 @@ export default async function RootLayout({ children }) {
   const locale = await getLocale();
   return (
     <html lang={locale} className={`${archivo.variable} ${spaceMono.variable} ${instrumentSerif.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: FONT_GATE_SCRIPT }} />
+      </head>
       <body>
         {children}
       </body>

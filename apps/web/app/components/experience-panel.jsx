@@ -18,7 +18,7 @@ const ExperiencePanel = ({ index }) => {
 
         <div className="layer pll-mid exp-list">
           {experiences.map((exp, index) => (
-            <div key={exp.id} className="exp-row reveal" style={{ transitionDelay: `${index * 0.07}s` }}>
+            <div key={exp.id} className="exp-row reveal">
               <span className="t-note exp-num">{String(index + 1).padStart(2, "0")}</span>
               <span className="display exp-company">{exp.institution_exp}</span>
               <span className="exp-role">{exp.title_exp}</span>

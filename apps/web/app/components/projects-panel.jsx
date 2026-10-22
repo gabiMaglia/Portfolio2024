@@ -22,7 +22,9 @@ const ProjectsPanel = ({ index }) => {
         </div>
 
         {/* grid */}
-        <div className="layer pll-mid reveal d2 proj-grid">
+        {/* paralaje y reveal en elementos distintos: ADR-004 */}
+        <div className="layer pll-mid proj-grid-wrap">
+        <div className="reveal d2 proj-grid">
           {visible.map((project, index) => {
             const thumb = project.img1_pro || project.img2_pro || project.img3_pro || null;
             const num = String(index + 1).padStart(2, "0");
@@ -58,6 +60,7 @@ const ProjectsPanel = ({ index }) => {
               </Card>
             );
           })}
+        </div>
         </div>
       </div>
     </section>

@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 import {
-  chromeSegments, shouldActivate, snapTargetIdx, shouldSkipSnap, isSingleTouch, UI_FOR_SURFACE, REVEAL_NEAR, SNAP_TTL_MS,
+  chromeSegments, panelsToActivate, snapTargetIdx, shouldSkipSnap, isSingleTouch, UI_FOR_SURFACE, SNAP_TTL_MS,
 } from '../lib/scroll-motion.mjs';
 
 const VW = 1000;
@@ -30,16 +30,44 @@ test('chromeSegments: se clampa a [0, N-1]', () => {
   assert.deepEqual(chromeSegments(10, 20, -(N - 1) * VW - 500, VW, N), { a: 4, b: 4, cut: 0 });
 });
 
-test('shouldActivate: vecino cercano activa, lejano no', () => {
-  assert.equal(shouldActivate(0), true);
-  assert.equal(shouldActivate(REVEAL_NEAR - 0.01), true);
-  assert.equal(shouldActivate(-(REVEAL_NEAR - 0.01)), true);
-  assert.equal(shouldActivate(1), false);
-  assert.equal(shouldActivate(-1.5), false);
+// Activación por DESTINO (round(frac*(N-1))): rango [min(visibles,destino)-1, max(visibles,destino)+1]
+const at = (panel, f) => panelsToActivate(-panel * VW, VW, f, N);
+
+test('panelsToActivate: en reposo activa el panel y sus vecinos (precarga)', () => {
+  assert.deepEqual(at(0, 0), [0, 1]);
+  assert.deepEqual(at(2, 0.5), [1, 2, 3]);
 });
 
-test('al 50% del recorrido el panel entrante ya está activado', () => {
-  assert.equal(shouldActivate(0.5), true);
+test('panelsToActivate: bordes 0 y N-1 no salen de rango', () => {
+  assert.deepEqual(at(0, 0), [0, 1]);
+  assert.deepEqual(at(4, 1), [3, 4]);
+});
+
+test('panelsToActivate: salto 0->3 (destino lejos del visible) cubre todo lo atravesado + vecino', () => {
+  assert.deepEqual(panelsToActivate(0, VW, 0.75, N), [0, 1, 2, 3, 4]);
+});
+
+test('panelsToActivate: retroceso 3->0 cubre todo lo atravesado + vecino', () => {
+  assert.deepEqual(panelsToActivate(-3 * VW, VW, 0, N), [0, 1, 2, 3, 4]);
+});
+
+test('panelsToActivate: a mitad de camino incluye el vecino del destino', () => {
+  // visible entre 1 y 2 (curX=-1.5vw), destino 2 -> [0..3]
+  assert.deepEqual(panelsToActivate(-1.5 * VW, VW, 0.5, N), [0, 1, 2, 3]);
+});
+
+test('panelsToActivate: nunca devuelve vacío ni índices fuera de [0,N-1]', () => {
+  for (let x = 0; x <= 4; x += 0.25) for (let f = 0; f <= 1; f += 0.125) {
+    const r = panelsToActivate(-x * VW, VW, f, N);
+    assert.ok(r.length >= 1);
+    assert.ok(r.every((i) => i >= 0 && i <= N - 1));
+  }
+});
+
+test('panelsToActivate: es monótono (unir resultados a lo largo de un recorrido nunca pierde panel)', () => {
+  const seen = new Set();
+  for (let x = 0; x <= 3; x += 0.1) panelsToActivate(-x * VW, VW, x / 4, N).forEach((i) => seen.add(i));
+  for (const i of [0, 1, 2, 3, 4]) assert.ok(seen.has(i));
 });
 
 test('snapTargetIdx: sin velocidad redondea, con flick va al siguiente', () => {

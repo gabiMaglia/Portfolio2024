@@ -136,3 +136,43 @@ test('T-010: el chrome no transiciona color (el corte por glifo ES la transició
     }
   }
 });
+
+// ADR-005: dentro de un .ui-ink (texto pintado con background-clip:text) ningún descendiente
+// crea grupo de pintura ni fija color/background: queda fuera de la máscara y no se ve.
+test('ADR-005: descendientes de .ui-ink no fijan opacity/transform/filter/blend/will-change/color/background', () => {
+  const FORBIDDEN = /(^|[;\s])(opacity|transform|filter|mix-blend-mode|will-change|color|background[\w-]*)\s*:/;
+  const src = read('app/components/portfolio-shell.jsx').replace(/=>/g, '=_');
+  const stack = [];
+  const roots = []; // { own: Set(clases del .ui-ink), kids: [{tag, classes}] }
+  for (const m of src.matchAll(/<(\/?)([A-Za-z][\w.]*)([^<>]*?)(\/?)>/g)) {
+    const [, close, tag, attrs, selfClose] = m;
+    if (close) { stack.pop(); continue; }
+    const cls = (/className=(?:"([^"]*)"|\{`([^`]*)`\})/.exec(attrs) || [])[1] ?? (/className=\{`([^`]*)`\}/.exec(attrs) || [])[1] ?? '';
+    const classes = cls.replace(/\$\{[^}]*\}/g, ' ').split(/\s+/).filter(Boolean);
+    const root = stack.find((e) => e.root)?.root;
+    if (root) root.kids.push({ tag, classes });
+    const entry = { root: classes.includes('ui-ink') ? { own: new Set(classes), kids: [] } : null };
+    if (entry.root) roots.push(entry.root);
+    if (!selfClose) stack.push(entry);
+  }
+  assert.ok(roots.length >= 3, `.ui-ink en el chrome: ${roots.length}`);
+  const ownClasses = new Set(roots.flatMap((r) => [...r.own]));
+  const bad = [];
+  for (const { sel, body } of ruleList()) {
+    if (!FORBIDDEN.test(body)) continue;
+    for (const one of sel.split(',')) {
+      if (one.includes('::')) continue;
+      const parts = one.trim().split(/[\s>+~]+/);
+      const last = parts.pop();
+      const lastClasses = [...last.matchAll(/\.([\w-]+)/g)].map((c) => c[1]);
+      const lastTag = /^[a-z][\w-]*/.exec(last)?.[0];
+      const viaAncestor = parts.some((p) => [...p.matchAll(/\.([\w-]+)/g)].some((c) => ownClasses.has(c[1])));
+      for (const r of roots) for (const k of r.kids) {
+        const byClass = k.classes.some((c) => lastClasses.includes(c));
+        const byTag = lastTag && lastTag === k.tag && lastClasses.length === 0 && viaAncestor;
+        if (byClass || byTag) bad.push(`${one.trim()} -> <${k.tag} ${k.classes.join('.')}>`);
+      }
+    }
+  }
+  assert.deepEqual([...new Set(bad)], []);
+});

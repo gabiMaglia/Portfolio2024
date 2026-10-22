@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isInteractiveTarget } from "@/lib/keyboard.mjs";
-import { chromeSegments, shouldActivate, snapTargetIdx, shouldSkipSnap, isSingleTouch } from "@/lib/scroll-motion.mjs";
+import { chromeSegments, panelsToActivate, snapTargetIdx, shouldSkipSnap, isSingleTouch } from "@/lib/scroll-motion.mjs";
 import LocaleSwitcher from "./localeSwitcher";
 import HeroPanel from "./hero-panel";
 import AboutPanel from "./about-panel";
@@ -29,6 +29,7 @@ const PortfolioShell = () => {
   const t = useTranslations();
   const trackRef = useRef(null);
   const spacerRef = useRef(null);
+  const shellApi = useRef({});
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -91,6 +92,17 @@ const PortfolioShell = () => {
       panelEls[i].setAttribute("data-active", "1");
     };
 
+    // Saltos con destino conocido (nav, teclado, flick): el smooth-scroll recién mueve `frac`
+    // más tarde, así que se activa ya el rango hacia el destino (mismo contrato que panelsToActivate)
+    const activateToward = (destIdx) => {
+      const curNow = -frac() * travel;
+      for (const i of panelsToActivate(curNow, vw, destIdx / (N - 1), N)) {
+        if (!activated.has(i)) activate(i);
+      }
+    };
+    shellApi.current.activateToward = activateToward;
+    const currentIdx = () => Math.round(frac() * (N - 1));
+
     let lastActive = -1;
     let lastPaintedX = null;
     let rafId;
@@ -106,8 +118,11 @@ const PortfolioShell = () => {
       for (let i = 0; i < panelEls.length; i += 1) {
         const d = (i * vw + curX) / vw;
         panelEls[i].style.setProperty("--d", motionQuery.matches ? "0" : d.toFixed(4));
-        // El panel entrante revela antes de ser el activo: nunca llega vacío
-        if (!activated.has(i) && shouldActivate(d)) activate(i);
+      }
+
+      // Reveals por destino del scroll: el vecino llega ya revelado, nunca vacío
+      for (const i of panelsToActivate(curX, vw, f, N)) {
+        if (!activated.has(i)) activate(i);
       }
 
       if (curX !== lastPaintedX) {
@@ -212,6 +227,7 @@ const PortfolioShell = () => {
       const now = performance.now();
       if (shouldSkipSnap(targetIdx, lastSnap, now)) return;
       lastSnap = { idx: targetIdx, at: now };
+      activateToward(targetIdx);
       window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: scrollBehavior() });
     };
 
@@ -243,13 +259,17 @@ const PortfolioShell = () => {
       const step = maxScroll / (N - 1);
       if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) {
         e.preventDefault();
+        activateToward(Math.min(N - 1, currentIdx() + 1));
         window.scrollBy({ top: step, behavior });
       } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) {
         e.preventDefault();
+        activateToward(Math.max(0, currentIdx() - 1));
         window.scrollBy({ top: -step, behavior });
       } else if (e.key === "Home") {
+        activateToward(0);
         window.scrollTo({ top: 0, behavior });
       } else if (e.key === "End") {
+        activateToward(N - 1);
         window.scrollTo({ top: maxScroll, behavior });
       }
     };
@@ -278,6 +298,7 @@ const PortfolioShell = () => {
   }, []);
 
   const goTo = (index) => {
+    shellApi.current.activateToward?.(index);
     const vh = window.innerHeight;
     const maxScroll = Math.max(1, (N - 1) * vh * 1.08);
     window.scrollTo({ top: (index / (N - 1)) * maxScroll, behavior: scrollBehavior() });
@@ -325,7 +346,7 @@ const PortfolioShell = () => {
       <div className="counter ui-ink" data-ui-follow>
         <b>{navItems[active]?.n}</b>
         {t(navItems[active]?.labelKey)}
-        <span className="counter__of">— {navItems[N - 1].n}</span>
+        <span>— {navItems[N - 1].n}</span>
       </div>
 
       <div id="stage" onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}>

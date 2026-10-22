@@ -49,7 +49,12 @@ test('M1: sin document.fonts no se oculta nada', () => {
   assert.equal(run(undefined).attrs.size, 0);
 });
 
-test('M1: CSS oculta el body solo mientras pending, y el layout inyecta el script', () => {
-  assert.match(read('app/globals.css'), /html\[data-fonts="pending"\]\s+body\s*\{[^}]*visibility\s*:\s*hidden/);
+test('M1: el gate solo oculta .ghost (decorativo, aria-hidden); nunca body ni el árbol a11y', () => {
+  const css = read('app/globals.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(css, /html\[data-fonts="pending"\]\s+\.ghost\s*\{[^}]*visibility\s*:\s*hidden/);
+  for (const m of css.matchAll(/([^{}]*data-fonts[^{}]*)\{/g)) {
+    assert.match(m[1].trim(), /\.ghost$/, `el gate alcanza algo más que .ghost: ${m[1].trim()}`);
+  }
   assert.match(read('app/layout.js'), /FONT_GATE_SCRIPT/);
+  assert.match(read('app/components/hero-panel.jsx'), /className="ghost" aria-hidden="true"/);
 });

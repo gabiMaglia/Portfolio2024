@@ -1,17 +1,11 @@
 import { useUserStore } from "@/store/store";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-
-const PLACEHOLDER_PROJECTS = [
-  { id: "p1", title_pro: "Proyecto 01", technologies_pro: "Next.js · Node · PostgreSQL", img1_pro: null },
-  { id: "p2", title_pro: "Proyecto 02", technologies_pro: "React Native · Expo",          img1_pro: null },
-  { id: "p3", title_pro: "Proyecto 03", technologies_pro: "React · TypeScript",            img1_pro: null },
-  { id: "p4", title_pro: "Proyecto 04", technologies_pro: "Astro · Tailwind",              img1_pro: null },
-];
 
 const ProjectsPanel = () => {
   const t = useTranslations("Work");
   const projects = useUserStore((state) => state.proyects) || [];
-  const visible = (projects.length > 0 ? projects : PLACEHOLDER_PROJECTS).slice(0, 4);
+  const visible = projects.slice(0, 4);
 
   return (
     <section className="panel p-paper" data-d-panel data-ui="ink">
@@ -34,17 +28,21 @@ const ProjectsPanel = () => {
           {visible.map((project, index) => {
             const thumb = project.img1_pro || project.img2_pro || project.img3_pro || null;
             const num = String(index + 1).padStart(2, "0");
+            const href = project.deployLink_pro || project.githubLink_pro || null;
+            // Sin link no hay <a href="#">: sería un control que no lleva a ningún lado
+            const linkProps = href ? { href, target: "_blank", rel: "noreferrer" } : {};
+            const Card = href ? "a" : "div";
             return (
-              <a
-                key={project.id}
-                href={project.deployLink_pro || project.githubLink_pro || "#"}
-                target={project.deployLink_pro || project.githubLink_pro ? "_blank" : undefined}
-                rel="noreferrer"
-                className="proj-card"
-              >
+              <Card key={project.id} className="proj-card" {...linkProps}>
                 <div className="proj-card-thumb">
                   {thumb ? (
-                    <img src={thumb} alt={project.title_pro} />
+                    <Image
+                      src={thumb}
+                      alt={project.title_pro}
+                      fill
+                      sizes="(max-width: 720px) 90vw, 25vw"
+                      quality={70}
+                    />
                   ) : (
                     <div style={{ width: "100%", height: "100%", background: "rgba(22,20,15,.08)", display: "grid", placeItems: "center" }}>
                       <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, opacity: 0.4 }}>{num}</span>
@@ -66,7 +64,7 @@ const ProjectsPanel = () => {
                     ↗
                   </span>
                 </div>
-              </a>
+              </Card>
             );
           })}
         </div>

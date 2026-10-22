@@ -32,22 +32,16 @@ export default function LocaleSwitcher({className = ''}) {
         prefetch
         onClick={() => setIsSwitching(true)}
         aria-label={`Switch language to ${otherLocale.toUpperCase()}`}
+        aria-busy={isSwitching}
+        className={`flex items-center justify-center w-8 h-8 rounded-full font-Ovo
+                    ${isSwitching ? 'opacity-60 pointer-events-none' : ''}
+                    bg-black !text-white dark:bg-white dark:!text-black ${className}`}
       >
-        <button
-          type="button"
-          className={`flex items-center justify-center w-8 h-8 rounded-full font-Ovo
-                      ${isSwitching ? 'opacity-60 pointer-events-none' : ''}
-                      bg-black text-white dark:bg-white dark:text-black ${className}`}
-          aria-busy={isSwitching}
-          tabIndex={-1}
-          disabled={isSwitching}
-        >
-          {isSwitching ? (
-            <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-black dark:border-t-transparent" />
-          ) : (
-            <p className='text-sm'>{otherLocale.toUpperCase()}</p>
-          )}
-        </button>
+        {isSwitching ? (
+          <span className="block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-black dark:border-t-transparent" />
+        ) : (
+          <span className="text-sm">{otherLocale.toUpperCase()}</span>
+        )}
       </Link>
 
       {isSwitching && (

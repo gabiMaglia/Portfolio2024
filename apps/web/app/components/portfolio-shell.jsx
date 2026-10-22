@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { isInteractiveTarget } from "@/lib/keyboard.mjs";
 import LocaleSwitcher from "./localeSwitcher";
 import HeroPanel from "./hero-panel";
 import AboutPanel from "./about-panel";
@@ -20,6 +21,9 @@ const navItems = [
 const sections = [HeroPanel, AboutPanel, ProjectsPanel, ExperiencePanel, ContactPanel];
 const N = sections.length;
 
+const reducedMotionQuery = () => window.matchMedia("(prefers-reduced-motion: reduce)");
+const scrollBehavior = () => (reducedMotionQuery().matches ? "auto" : "smooth");
+
 const PortfolioShell = () => {
   const t = useTranslations();
   const trackRef = useRef(null);
@@ -32,6 +36,7 @@ const PortfolioShell = () => {
     if (!track || !spacer) return;
 
     const panelEls = Array.from(track.querySelectorAll("[data-d-panel]"));
+    const motionQuery = reducedMotionQuery();
 
     let vw = window.innerWidth;
     let vh = window.innerHeight;
@@ -71,13 +76,14 @@ const PortfolioShell = () => {
     const raf = () => {
       const f = frac();
       targetX = -f * travel;
-      curX += (targetX - curX) * 0.1;
+      // reduced-motion: el track salta, sin easing
+      curX = motionQuery.matches ? targetX : curX + (targetX - curX) * 0.1;
       if (Math.abs(targetX - curX) < 0.4) curX = targetX;
       track.style.transform = `translate3d(${curX}px, 0, 0)`;
 
       for (let i = 0; i < panelEls.length; i += 1) {
         const d = (i * vw + curX) / vw;
-        panelEls[i].style.setProperty("--d", d.toFixed(4));
+        panelEls[i].style.setProperty("--d", motionQuery.matches ? "0" : d.toFixed(4));
       }
 
       const idx = Math.round(f * (N - 1));
@@ -86,9 +92,12 @@ const PortfolioShell = () => {
         setActive(idx);
         setUI(idx);
         activated.add(idx);
-        panelEls.forEach((el, i) =>
-          el.setAttribute("data-active", activated.has(i) ? "1" : "0")
-        );
+        panelEls.forEach((el, i) => {
+          el.setAttribute("data-active", activated.has(i) ? "1" : "0");
+          // Paneles fuera de pantalla no reciben foco: Tab no puede desplazar el stage
+          if (i === idx) el.removeAttribute("inert");
+          else el.setAttribute("inert", "");
+        });
       }
 
       const fill = document.getElementById("pbar-fill");
@@ -99,7 +108,10 @@ const PortfolioShell = () => {
     rafId = requestAnimationFrame(raf);
     setUI(0);
     activated.add(0);
-    if (panelEls[0]) panelEls[0].setAttribute("data-active", "1");
+    panelEls.forEach((el, i) => {
+      if (i === 0) el.setAttribute("data-active", "1");
+      else el.setAttribute("inert", "");
+    });
 
     const onWheel = (e) => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 0) {
@@ -168,7 +180,7 @@ const PortfolioShell = () => {
         targetIdx = Math.round(currentIdx);
       }
       targetIdx = Math.min(N - 1, Math.max(0, targetIdx));
-      window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: "smooth" });
+      window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: scrollBehavior() });
     };
 
     const onTouchEnd = () => {
@@ -190,17 +202,20 @@ const PortfolioShell = () => {
     };
 
     const onKey = (e) => {
+      // Con foco en un link/botón, Space/Enter/flechas son del control, no del scroll
+      if (isInteractiveTarget(e.target)) return;
+      const behavior = scrollBehavior();
       const step = maxScroll / (N - 1);
       if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) {
         e.preventDefault();
-        window.scrollBy({ top: step, behavior: "smooth" });
+        window.scrollBy({ top: step, behavior });
       } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) {
         e.preventDefault();
-        window.scrollBy({ top: -step, behavior: "smooth" });
+        window.scrollBy({ top: -step, behavior });
       } else if (e.key === "Home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior });
       } else if (e.key === "End") {
-        window.scrollTo({ top: maxScroll, behavior: "smooth" });
+        window.scrollTo({ top: maxScroll, behavior });
       }
     };
 
@@ -230,20 +245,12 @@ const PortfolioShell = () => {
   const goTo = (index) => {
     const vh = window.innerHeight;
     const maxScroll = Math.max(1, (N - 1) * vh * 1.08);
-    window.scrollTo({ top: (index / (N - 1)) * maxScroll, behavior: "smooth" });
+    window.scrollTo({ top: (index / (N - 1)) * maxScroll, behavior: scrollBehavior() });
   };
 
   return (
     <>
-      <div id="stage">
-        <div id="track" ref={trackRef}>
-          {sections.map((Section, index) => (
-            <Section key={index} index={index} />
-          ))}
-        </div>
-      </div>
-      <div id="spacer" ref={spacerRef} />
-
+      {/* El chrome va antes del stage en el DOM: Tab llega primero a la navegación */}
       {/* Logo — top left */}
       <div className="frame frame--tl">
         <a href="#" onClick={(e) => { e.preventDefault(); goTo(0); }} className="sig">
@@ -284,6 +291,15 @@ const PortfolioShell = () => {
         {t(navItems[active]?.labelKey)}
         <span style={{ opacity: 0.5 }}>— {navItems[N - 1].n}</span>
       </div>
+
+      <div id="stage" onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}>
+        <div id="track" ref={trackRef}>
+          {sections.map((Section, index) => (
+            <Section key={index} index={index} />
+          ))}
+        </div>
+      </div>
+      <div id="spacer" ref={spacerRef} />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { Archivo, Space_Mono, Instrument_Serif } from 'next/font/google';
+import { getLocale } from 'next-intl/server';
 import './globals.css';
 
 const archivo = Archivo({
@@ -29,9 +30,10 @@ export const metadata = {
   description: 'Gabriel Maglia — Fullstack Developer · Portfolio',
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const locale = await getLocale();
   return (
-    <html lang="es" className={`${archivo.variable} ${spaceMono.variable} ${instrumentSerif.variable}`}>
+    <html lang={locale} className={`${archivo.variable} ${spaceMono.variable} ${instrumentSerif.variable}`}>
       <body>
         {children}
       </body>

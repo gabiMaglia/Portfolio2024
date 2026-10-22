@@ -52,8 +52,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ToasterProvider />
-      <StoreProvider data={data} />
-      {children}
+      <StoreProvider data={data}>{children}</StoreProvider>
     </NextIntlClientProvider>
   );
 }

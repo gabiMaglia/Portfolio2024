@@ -70,7 +70,8 @@
     "footer": "Diseñado y construido con intención.",
     "copyEmail": "Copiar email",
     "copied": "Copiado",
-    "copyHint": "Clic para copiar el email al portapapeles"
+    "copyHint": "Clic para copiar el email al portapapeles",
+    "appsLink": "Mis apps"
   },
   "Footer": {
     "rights": "Todos los derechos reservados."
@@ -97,5 +98,15 @@
   "Masthead": {
     "edition": "Ed. {year}",
     "localTime": "Hora local AR"
+  },
+  "Apps": {
+    "kicker": "Apps",
+    "title": "Mis",
+    "titleAccent": "apps",
+    "description": "Productos que construí más allá del portfolio.",
+    "listbuddy": "Tus playlists de Rekordbox y Traktor en una sola vista, listas para el USB.",
+    "netgauge": "Cuánto consume de red cada app en Windows y Mac. Gratis y open source.",
+    "open": "Abrir",
+    "back": "Volver al portfolio"
   }
 }

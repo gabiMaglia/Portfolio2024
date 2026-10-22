@@ -1,5 +1,6 @@
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import CopyEmail from "./copy-email";
 
 const EMAIL = "Gab.Maglia@gmail.com";
@@ -66,6 +67,8 @@ const ContactPanel = ({ index }) => {
 
         <div className="t-fine contact-foot reveal d4">
           © {new Date().getFullYear()} Gabriel Maglia — {t("footer")}
+          {" · "}
+          <Link href="/apps" className="foot-link">{t("appsLink")}</Link>
         </div>
       </div>
     </section>

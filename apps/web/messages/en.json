@@ -70,7 +70,8 @@
     "footer": "Designed and built with intention.",
     "copyEmail": "Copy email",
     "copied": "Copied",
-    "copyHint": "Click to copy the email to the clipboard"
+    "copyHint": "Click to copy the email to the clipboard",
+    "appsLink": "My apps"
   },
   "Footer": {
     "rights": "All rights reserved."
@@ -97,5 +98,15 @@
   "Masthead": {
     "edition": "Ed. {year}",
     "localTime": "Local time AR"
+  },
+  "Apps": {
+    "kicker": "Apps",
+    "title": "My",
+    "titleAccent": "apps",
+    "description": "Products I built beyond the portfolio.",
+    "listbuddy": "Your Rekordbox and Traktor playlists in one view, ready for the USB.",
+    "netgauge": "How much network each app uses on Windows and Mac. Free and open source.",
+    "open": "Open",
+    "back": "Back to portfolio"
   }
 }

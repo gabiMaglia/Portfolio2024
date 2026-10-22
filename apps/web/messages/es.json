@@ -4,7 +4,8 @@
     "about": "Sobre mí",
     "work": "Mis Proyectos",
     "experience": "Experiencia",
-    "contact": "Contáctame"
+    "contact": "Contáctame",
+    "label": "Navegación principal"
   },
   "Hero": {
     "kicker": "Portfolio — 2026 / Argentina",
@@ -37,7 +38,9 @@
     "title": "Mis últimos trabajos",
     "description": "Una selección de trabajos representativos. Cada uno construido con atención al detalle y al producto.",
     "showMore": "Ver más",
-    "showLess": "Ver menos"
+    "showLess": "Ver menos",
+    "thumbAlt": "Captura del proyecto {title}, hecho con {tech}",
+    "thumbAltNoTech": "Captura del proyecto {title}"
   },
   "Experience": {
     "subtitle": "Mi historial laboral",
@@ -45,7 +48,8 @@
     "headlinePt1": "Dónde dejé",
     "headlineAccent": "huella",
     "description": "Aquí están algunas de las empresas para las que he trabajado",
-    "empty": "No hay experiencias en la base de datos todavía."
+    "empty": "No hay experiencias en la base de datos todavía.",
+    "present": "Presente"
   },
   "Contact": {
     "subtitle": "Conecta conmigo",
@@ -58,7 +62,10 @@
     "messagePlaceholder": "Mensaje",
     "send": "Enviar",
     "sending": "enviando...",
-    "footer": "Diseñado y construido con intención."
+    "footer": "Diseñado y construido con intención.",
+    "copyEmail": "Copiar email",
+    "copied": "Copiado",
+    "copyHint": "Clic para copiar el email al portapapeles"
   },
   "Footer": {
     "rights": "Todos los derechos reservados."
@@ -70,5 +77,20 @@
     "noImages": "No hay imágenes disponibles",
     "liveDemo": "Ver demo",
     "github": "GitHub"
+  },
+  "Lang": {
+    "label": "Idioma",
+    "switchTo": "Cambiar idioma a {language}",
+    "names": {
+      "es": "Español",
+      "en": "English"
+    }
+  },
+  "A11y": {
+    "skip": "Saltar al contenido"
+  },
+  "Masthead": {
+    "edition": "Ed. {year}",
+    "localTime": "Hora local AR"
   }
 }

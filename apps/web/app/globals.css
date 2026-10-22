@@ -25,10 +25,15 @@
   --accent-a0: rgba(226, 85, 46, 0);
   --accent-a50: rgba(226, 85, 46, .5);
 
-  /* opacidad de texto secundario */
-  --o-faint: .4;
-  --o-mute: .6;
-  --o-soft: .75;
+  /* opacidad de texto secundario. Calibradas para AA (>=4.5:1) sobre paper y ink;
+     .p-accent las redefine porque la tinta sobre accent solo da 4.9:1 a pleno. */
+  --o-faint: .55;
+  --o-mute: .66;
+  --o-soft: .78;
+
+  /* áreas táctiles: WCAG 2.5.8 (24) y 2.5.5 (44) */
+  --tap-min: 24px;
+  --tap-lg: 44px;
 
   --font-display: var(--font-archivo, "Archivo", system-ui, sans-serif);
   --font-serif: var(--font-instrument-serif, "Georgia", serif);
@@ -75,7 +80,6 @@
   --dur-base: .4s;
   --dur-slow: .6s;
   --dur-reveal: .9s;
-  --dur-spin: 1s;
   --dur-hint: 1.8s;
   --dur-pulse: 2.6s;
   --dur-marquee: 26s;
@@ -176,7 +180,15 @@ a { color: inherit; }
    acá (ADR-004): opacity en un .reveal es del movimiento, nunca del contenido. */
 .p-paper { --fg: var(--ink);        background: var(--paper);  color: var(--fg); }
 .p-ink   { --fg: var(--paper);      background: var(--ink);    color: var(--fg); }
-.p-accent{ --fg: var(--accent-ink); background: var(--accent); color: var(--fg); }
+.p-accent{
+  --fg: var(--accent-ink);
+  background: var(--accent);
+  color: var(--fg);
+  /* soft/mute llegan a 4.5+ solo casi a pleno; faint (texto grande) a >=3 */
+  --o-soft: 1;
+  --o-mute: .95;
+  --o-faint: .8;
+}
 
 /* ===================== PARALLAX LAYERS ===================== */
 .layer { will-change: transform; }
@@ -218,6 +230,9 @@ a { color: inherit; }
   letter-spacing: .01em;
   text-transform: none;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
 }
 
 .sig em {
@@ -303,24 +318,33 @@ a { color: inherit; }
   font-size: var(--fs-xs);
   letter-spacing: .14em;
   text-transform: uppercase;
-  /* --o-soft: con --o-mute la tinta sobre el panel accent da 2.8:1 (<3:1) */
-  opacity: var(--o-soft);
-  transition: opacity var(--dur-fast) var(--ease);
+  /* área táctil >=24px; el texto va a pleno (T-013: sobre accent el atenuado no llega a AA) */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--sp-1);
+  border-radius: var(--sp-1);
   position: relative;
 }
 
-.nav button:hover { opacity: 1; }
-.nav button.on    { opacity: 1; }
+/* activo = negrita (misma métrica en monoespaciada) + subrayado accent */
+.nav button.on { font-weight: 700; }
 
-.nav button.on::after {
+.nav button::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -5px;
+  left: var(--sp-1);
+  right: var(--sp-1);
+  bottom: var(--sp-1);
   height: 1.5px;
   background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-fast) var(--ease);
 }
+
+.nav button:hover::after,
+.nav button.on::after { transform: scaleX(1); }
 
 @media (max-width: 720px) { .nav { display: none; } }
 
@@ -351,7 +375,6 @@ a { color: inherit; }
   letter-spacing: .3em;
   text-transform: uppercase;
   color: var(--ui, var(--paper));
-  opacity: var(--o-mute);
   display: flex;
   align-items: center;
   gap: var(--sp-3);
@@ -383,42 +406,89 @@ a { color: inherit; }
 
 body.scrolled .hint { opacity: 0; }
 
-/* ===================== LOCALE SWITCHER (CSS plano; T-011 lo reescribe) ===================== */
-.frame .locale-switch {
-  display: flex;
+/* ===================== LOCALE SWITCH ===================== */
+/* Pastilla única (un link real al otro idioma): ES [pista con thumb] EN.
+   Pista y textos siguen la tinta del panel por glifo, igual que el resto del chrome (T-010). */
+.frame .lang-switch {
+  --sw-w: 36px;
+  --sw-h: 20px;
+  --sw-inset: 3px;
+  --sw-thumb: 14px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--r-full);
-  background: var(--black);
-  color: var(--white);
-  font-family: serif;
-  font-size: var(--fs-sm);
-  letter-spacing: 0;
+  gap: var(--sp-2);
+  min-width: var(--tap-lg);
+  min-height: var(--tap-lg);
+  padding: 0 var(--sp-1);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.locale-switch[aria-busy="true"] { opacity: var(--o-mute); pointer-events: none; }
+.lang-switch__opt.on { font-weight: 700; }
 
-.locale-spinner {
-  display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: var(--r-full);
-  border: 2px solid var(--white);
-  border-top-color: transparent;
-  animation: spin var(--dur-spin) linear infinite;
+.lang-switch__track {
+  position: relative;
+  flex: none;
+  width: var(--sw-w);
+  height: var(--sw-h);
+  border-radius: var(--r-pill);
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.locale-overlay {
+/* borde con el mismo gradiente de corte duro (un border real no puede partirse por glifo) */
+.lang-switch__track::before {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 9999;
-  background: var(--ink-a50);
-  backdrop-filter: blur(4px);
+  padding: 1.5px;
+  border-radius: inherit;
+  background-image: linear-gradient(90deg, var(--ui-a) var(--ui-cut), var(--ui-b) var(--ui-cut));
+  -webkit-mask: linear-gradient(var(--black) 0 0) content-box, linear-gradient(var(--black) 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(var(--black) 0 0) content-box exclude, linear-gradient(var(--black) 0 0);
 }
+
+/* thumb accent con aro de tinta: se ve sobre paper, ink y también sobre accent */
+.lang-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: var(--sw-inset);
+  width: var(--sw-thumb);
+  height: var(--sw-thumb);
+  margin-top: calc(var(--sw-thumb) / -2);
+  border-radius: var(--r-full);
+  background: var(--accent);
+  border: 1.5px solid var(--ink);
+  transition: transform var(--dur-base) var(--ease);
+}
+
+.lang-switch[data-shown="en"] .lang-switch__thumb {
+  transform: translateX(calc(var(--sw-w) - var(--sw-thumb) - var(--sw-inset) * 2));
+}
+
+.lang-switch[aria-busy="true"] { cursor: progress; }
+
+@media (forced-colors: active) {
+  .lang-switch__track { border: 1px solid CanvasText; }
+  .lang-switch__track::before { display: none; }
+  .lang-switch__thumb { background: Highlight; border-color: CanvasText; }
+}
+
+/* ===================== MASTHEAD ===================== */
+.masthead {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  /* misma caja que el contador (su <b> usa --fs-sm): comparten línea base */
+  line-height: calc(var(--fs-sm) * 1.5);
+  white-space: nowrap;
+}
+
+/* no entra junto al contador centrado en pantallas angostas */
+@media (max-width: 900px) { .frame--bl { display: none; } }
 
 /* ===================== TYPE PRIMITIVES ===================== */
 .ser {
@@ -428,6 +498,18 @@ body.scrolled .hint { opacity: 0; }
 }
 
 .accent { color: var(--accent); }
+
+/* accent sobre paper da 3.06:1: solo alcanza como texto grande (>=24px). Donde el texto
+   queda más chico se escribe en tinta con subrayado accent (T-013, A6). */
+@media (max-width: 1100px) {
+  .p-paper .accent {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: .12em;
+    text-underline-offset: .14em;
+  }
+}
 
 .display {
   font-family: var(--font-display);
@@ -496,7 +578,9 @@ body.scrolled .hint { opacity: 0; }
 }
 
 .t-title { font-size: var(--fs-xl); }
-.t-title--2xl { font-size: var(--fs-2xl); }
+/* line-height .86 deja los descendentes ("j" de "juntos") colgando fuera de la caja:
+   se reserva proporcional al cuerpo para que no rocen el párrafo siguiente (L2) */
+.t-title--2xl { font-size: var(--fs-2xl); padding-bottom: .12em; }
 
 /* kicker + título de sección: misma composición en todos los paneles */
 .sec-head {
@@ -556,11 +640,43 @@ body.scrolled .hint { opacity: 0; }
 }
 /* sobre fondo accent el outline accent desaparece */
 .p-accent :focus-visible { outline-color: var(--ink); }
-/* .nav button usa all:unset, que borra el outline: se restituye acá */
-.nav button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+/* Chrome y skip link flotan sobre cualquier superficie: aro de tinta + halo de papel.
+   Sobre paper/accent se ve el aro; sobre ink, el halo (>=3:1 en las tres). */
+.frame :focus-visible,
+.skip-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--paper);
 }
+/* el stage solo recibe foco por script (skip link): es un destino, no un control */
+#stage:focus { outline: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  z-index: 100;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: .08em;
+  text-decoration: none;
+  border-radius: var(--sp-1);
+  transform: translateY(-200%);
+}
+.skip-link:focus-visible { transform: none; }
 
 /* ===================== HERO PANEL ===================== */
 .hero-wrap {
@@ -724,7 +840,6 @@ body.scrolled .hint { opacity: 0; }
   color: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity var(--dur-base) var(--ease);
 }
 
 .card-arrow {
@@ -736,7 +851,8 @@ body.scrolled .hint { opacity: 0; }
 
 .proj-card:hover .card-arrow { opacity: 1; transform: none; }
 .proj-card:hover .display { color: var(--accent); transition: color var(--dur-fast) var(--ease); }
-.proj-grid:hover .proj-card:not(:hover) { opacity: var(--o-mute); }
+/* se atenúa la miniatura, nunca el texto (el texto atenuado dejaría de cumplir AA) */
+.proj-grid:hover .proj-card:not(:hover) .proj-card-thumb { opacity: var(--o-mute); }
 
 .proj-card-thumb {
   position: relative;
@@ -745,6 +861,7 @@ body.scrolled .hint { opacity: 0; }
   border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--ink-a12);
+  transition: opacity var(--dur-base) var(--ease);
 }
 
 .proj-card-thumb img {
@@ -835,10 +952,20 @@ body.scrolled .hint { opacity: 0; }
 
 .contact-lead { margin-top: var(--sp-6); max-width: 430px; }
 
+.email-wrap {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-fl-m);
+}
+
+/* reserva el ancho de "Copiado": el aviso no empuja nada al aparecer */
+.email-status { min-width: 10ch; }
+
 .email-link {
   display: inline-flex;
   align-items: center;
-  margin-top: var(--sp-fl-m);
   font-family: var(--font-display);
   font-weight: 800;
   letter-spacing: -.02em;

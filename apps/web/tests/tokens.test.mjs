@@ -141,7 +141,8 @@ test('T-010: el chrome no transiciona color (el corte por glifo ES la transició
 // crea grupo de pintura ni fija color/background: queda fuera de la máscara y no se ve.
 test('ADR-005: descendientes de .ui-ink no fijan opacity/transform/filter/blend/will-change/color/background', () => {
   const FORBIDDEN = /(^|[;\s])(opacity|transform|filter|mix-blend-mode|will-change|color|background[\w-]*)\s*:/;
-  const src = read('app/components/portfolio-shell.jsx').replace(/=>/g, '=_');
+  // el shell y los componentes de chrome que montan .ui-ink (switch, masthead)
+  const src = ['portfolio-shell', 'lang-switch', 'masthead'].map((f) => read(`app/components/${f}.jsx`)).join('\n').replace(/=>/g, '=_');
   const stack = [];
   const roots = []; // { own: Set(clases del .ui-ink), kids: [{tag, classes}] }
   for (const m of src.matchAll(/<(\/?)([A-Za-z][\w.]*)([^<>]*?)(\/?)>/g)) {
@@ -199,4 +200,36 @@ test('ADR-006: .reveal deriva opacity/transform de --d y --rv-*', () => {
   assert.match(m[1], /var\(--rv-far\)/);
   assert.match(m[1], /opacity\s*:/);
   assert.match(m[1], /transform\s*:/);
+});
+
+test('T-011: el switch de idioma no usa Tailwind ni overlay/spinner, y su pista sigue el gradiente del chrome', () => {
+  for (const f of ['localeSwitcher.jsx', 'lang-switch.jsx']) {
+    const src = read(`app/components/${f}`);
+    assert.doesNotMatch(src, /className="[^"]*\b(w|h|px|py|rounded|flex|bg|text)-[\w[\]/]+/, `${f}: clase utilitaria`);
+    assert.doesNotMatch(src, /overlay|spinner/i, f);
+  }
+  assert.doesNotMatch(css, /locale-overlay|locale-spinner/);
+  assert.match(css, /\.lang-switch__track::before\s*\{[^}]*var\(--ui-a\)[^}]*var\(--ui-b\)/);
+});
+
+test('T-011: el thumb se desliza con --ease y el área táctil es >=44px', () => {
+  assert.match(css, /\.lang-switch__thumb\s*\{[^}]*transition:\s*transform var\(--dur-base\) var\(--ease\)/);
+  assert.match(css, /--tap-lg:\s*44px/);
+  assert.match(css, /\.lang-switch\s*\{[^}]*min-height:\s*var\(--tap-lg\)/);
+});
+
+test('T-013: nav y logo con área táctil >=24px; foco visible propio del chrome', () => {
+  assert.match(css, /--tap-min:\s*24px/);
+  assert.match(css, /\.nav button\s*\{[^}]*min-height:\s*var\(--tap-min\)/);
+  assert.match(css, /\.frame :focus-visible/);
+});
+
+test('T-011 C2: StoreProvider se remonta por locale (ADR-002)', () => {
+  assert.match(read('app/[locale]/layout.js'), /<StoreProvider key=\{locale\}/);
+});
+
+test('T-013: el skip link es lo primero que renderiza el shell', () => {
+  const src = read('app/components/portfolio-shell.jsx');
+  const body = src.slice(src.indexOf('return (\n    <>'));
+  assert.match(body.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').trim().replace(/^return \(\s*<>\s*/, ''), /^<SkipLink/);
 });

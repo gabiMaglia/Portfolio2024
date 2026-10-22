@@ -1,52 +1,35 @@
-'use client';
+"use client";
 
-import {useState, useEffect} from 'react';
-import Link from 'next/link';
-import {useLocale} from 'next-intl';
-import {usePathname} from 'next/navigation';
-import PropTypes from 'prop-types';
+import { useLocale, useTranslations } from "next-intl";
+import PropTypes from "prop-types";
+import { useLocaleSwitch } from "@/hooks/use-locale-switch";
+import LangSwitch from "./lang-switch";
 
-export default function LocaleSwitcher({className = ''}) {
+const OPTIONS = [
+  { code: "es", label: "ES" },
+  { code: "en", label: "EN" },
+];
+
+// panelId viaja en el hash: el otro idioma abre en el mismo panel
+const LocaleSwitcher = ({ panelId }) => {
+  const t = useTranslations("Lang");
   const locale = useLocale();
-  const otherLocale = locale === 'en' ? 'es' : 'en';
-  const pathname = usePathname();
-  const [isSwitching, setIsSwitching] = useState(false);
-
- 
-  useEffect(() => {
-    if (isSwitching) setIsSwitching(false);
-    
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!isSwitching) return;
-    const id = setTimeout(() => setIsSwitching(false), 6000);
-    return () => clearTimeout(id);
-  }, [isSwitching]);
+  const { target, shown, busy, onClick, onKeyDown } = useLocaleSwitch(locale);
 
   return (
-    <>
-      <Link
-        href={`/${otherLocale}`}
-        locale={otherLocale}
-        prefetch
-        onClick={() => setIsSwitching(true)}
-        aria-label={`Switch language to ${otherLocale.toUpperCase()}`}
-        aria-busy={isSwitching}
-        className={`locale-switch ${className}`.trim()}
-      >
-        {isSwitching ? (
-          <span className="locale-spinner" />
-        ) : (
-          <span>{otherLocale.toUpperCase()}</span>
-        )}
-      </Link>
-
-      {isSwitching && <div className="locale-overlay" aria-hidden="true" />}
-    </>
+    <LangSwitch
+      options={OPTIONS}
+      shown={shown}
+      target={target}
+      hash={panelId}
+      busy={busy}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      label={t("switchTo", { language: t(`names.${target}`) })}
+    />
   );
-}
-
-LocaleSwitcher.propTypes = {
-  className: PropTypes.string
 };
+
+LocaleSwitcher.propTypes = { panelId: PropTypes.string };
+
+export default LocaleSwitcher;

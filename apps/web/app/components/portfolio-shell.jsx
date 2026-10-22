@@ -1,23 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isInteractiveTarget } from "@/lib/keyboard.mjs";
 import { chromeSegments, snapTargetIdx, shouldSkipSnap, isSingleTouch } from "@/lib/scroll-motion.mjs";
+import { PANEL_IDS, panelIndexFromHash } from "@/lib/panel-hash.mjs";
+import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
 import LocaleSwitcher from "./localeSwitcher";
+import SkipLink from "./skip-link";
+import Masthead from "./masthead";
 import HeroPanel from "./hero-panel";
 import AboutPanel from "./about-panel";
 import ProjectsPanel from "./projects-panel";
 import ExperiencePanel from "./experience-panel";
 import ContactPanel from "./contact-panel";
 
-const navItems = [
-  { n: "01", id: "inicio",      labelKey: "Navbar.home" },
-  { n: "02", id: "sobre",       labelKey: "Navbar.about" },
-  { n: "03", id: "proyectos",   labelKey: "Navbar.work" },
-  { n: "04", id: "experiencia", labelKey: "Navbar.experience" },
-  { n: "05", id: "contacto",    labelKey: "Navbar.contact" },
-];
+const NAV_LABELS = ["Navbar.home", "Navbar.about", "Navbar.work", "Navbar.experience", "Navbar.contact"];
+const navItems = PANEL_IDS.map((id, i) => ({ n: String(i + 1).padStart(2, "0"), id, labelKey: NAV_LABELS[i] }));
+const STAGE_ID = "stage";
 
 const sections = [HeroPanel, AboutPanel, ProjectsPanel, ExperiencePanel, ContactPanel];
 const N = sections.length;
@@ -31,7 +31,9 @@ const PortfolioShell = () => {
   const spacerRef = useRef(null);
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
+  // Layout effect: al llegar con #panel (cambio de idioma) el track se posiciona antes del
+  // primer paint, sin mostrar un frame del hero.
+  useIsomorphicLayoutEffect(() => {
     const track = trackRef.current;
     const spacer = spacerRef.current;
     if (!track || !spacer) return;
@@ -53,10 +55,18 @@ const PortfolioShell = () => {
     };
     layout();
 
-    let curX = 0;
-    let targetX = 0;
-
     const frac = () => Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+    // Llegada desde el switch de idioma: el hash trae el panel; se consume y se limpia la URL
+    const hashIdx = panelIndexFromHash(window.location.hash);
+    if (hashIdx >= 0) {
+      window.scrollTo({ top: (hashIdx / (N - 1)) * maxScroll, behavior: "auto" });
+      window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+    }
+
+    // Arranca donde ya está el scroll (hash o restauración del navegador): sin barrido desde el panel 1
+    let curX = -frac() * travel;
+    let targetX = curX;
 
     const UI_VAR = {
       ink:    "var(--ink)",
@@ -277,6 +287,8 @@ const PortfolioShell = () => {
 
   return (
     <>
+      <SkipLink targetId={STAGE_ID} label={t("A11y.skip")} />
+
       {/* El chrome va antes del stage en el DOM: Tab llega primero a la navegación */}
       {/* Logo — top left */}
       <div className="frame frame--tl">
@@ -287,7 +299,7 @@ const PortfolioShell = () => {
 
       {/* Nav + locale switcher — top right */}
       <div className="frame frame--tr">
-        <nav className="nav">
+        <nav className="nav" aria-label={t("Navbar.label")}>
           {navItems.map((item, idx) => (
             <button
               key={item.id}
@@ -300,12 +312,17 @@ const PortfolioShell = () => {
             </button>
           ))}
         </nav>
-        <LocaleSwitcher />
+        <LocaleSwitcher panelId={navItems[active].id} />
       </div>
 
       {/* Scroll hint — right side, vertical */}
       <div className="hint">
         Scroll <span className="ln" />
+      </div>
+
+      {/* Masthead editorial — bottom left */}
+      <div className="frame frame--bl">
+        <Masthead />
       </div>
 
       {/* Progress bar */}
@@ -320,7 +337,7 @@ const PortfolioShell = () => {
         <span>— {navItems[N - 1].n}</span>
       </div>
 
-      <div id="stage" onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}>
+      <div id={STAGE_ID} tabIndex={-1} onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}>
         <div id="track" ref={trackRef}>
           {sections.map((Section, index) => (
             <Section key={index} index={index} />

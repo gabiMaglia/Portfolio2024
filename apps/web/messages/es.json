@@ -40,7 +40,12 @@
     "showMore": "Ver más",
     "showLess": "Ver menos",
     "thumbAlt": "Captura del proyecto {title}, hecho con {tech}",
-    "thumbAltNoTech": "Captura del proyecto {title}"
+    "thumbAltNoTech": "Captura del proyecto {title}",
+    "carousel": "Proyectos",
+    "carouselRole": "carrusel",
+    "prev": "Proyecto anterior",
+    "next": "Proyecto siguiente",
+    "external": "(se abre en una pestaña nueva)"
   },
   "Experience": {
     "subtitle": "Mi historial laboral",

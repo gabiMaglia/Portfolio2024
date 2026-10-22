@@ -40,7 +40,12 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "thumbAlt": "Screenshot of the {title} project, built with {tech}",
-    "thumbAltNoTech": "Screenshot of the {title} project"
+    "thumbAltNoTech": "Screenshot of the {title} project",
+    "carousel": "Projects",
+    "carouselRole": "carousel",
+    "prev": "Previous project",
+    "next": "Next project",
+    "external": "(opens in a new tab)"
   },
   "Experience": {
     "subtitle": "My Job history",

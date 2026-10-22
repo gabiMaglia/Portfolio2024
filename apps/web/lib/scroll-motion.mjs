@@ -40,8 +40,23 @@ export const snapTargetIdx = (currentIdx, velocity, n, flick = 0.45) => {
 
 // D-02: no relanzar scrollTo al mismo destino mientras ya vamos hacia él.
 // El guard vence (ttl ~ duración del smooth-scroll) para no dejar un destino viejo bloqueado.
-export const SNAP_TTL_MS = 700;
+export const SNAP_TTL_MS = 1000; // > SNAP_MAX_MS + idle-timer (150ms)
 export const shouldSkipSnap = (target, last, now, ttl = SNAP_TTL_MS) =>
   Boolean(last) && last.idx === target && now - last.at < ttl;
 
 export const isSingleTouch = (touches) => Boolean(touches) && touches.length === 1;
+
+// Snap smooth: el smooth nativo dura ~250-310ms (medido) y se sentía brusco. Duración propia,
+// proporcional a la distancia; reduced-motion salta sin animar.
+export const SNAP_MIN_MS = 420;
+export const SNAP_MAX_MS = 760;
+const SNAP_MS_PER_PX = 0.3;
+
+export const snapDurationMs = (distancePx, reduced) =>
+  reduced ? 0 : clamp(SNAP_MIN_MS + Math.abs(distancePx) * SNAP_MS_PER_PX, SNAP_MIN_MS, SNAP_MAX_MS);
+
+// easeInOutCubic: arranca y frena suave, sin el "latigazo" de un ease-out puro
+export const easeSnap = (t) => {
+  const x = clamp(t, 0, 1);
+  return x < 0.5 ? 4 * x * x * x : 1 - ((-2 * x + 2) ** 3) / 2;
+};

@@ -116,3 +116,31 @@ test('A1: la tinta del chrome nunca es la del fondo de su panel', () => {
   }
   assert.equal(seen, 5);
 });
+
+// ---- T-012: snap smooth
+import { snapDurationMs, easeSnap, SNAP_MIN_MS, SNAP_MAX_MS, SNAP_TTL_MS as TTL } from '../lib/scroll-motion.mjs';
+
+test('snapDurationMs: reduced-motion => 0 (sin animación)', () => {
+  assert.equal(snapDurationMs(500, true), 0);
+});
+
+test('snapDurationMs: monótona y acotada [MIN, MAX]', () => {
+  assert.equal(snapDurationMs(0, false), SNAP_MIN_MS);
+  assert.ok(snapDurationMs(450, false) > snapDurationMs(100, false));
+  assert.equal(snapDurationMs(1e6, false), SNAP_MAX_MS);
+});
+
+test('snapDurationMs: más suave que el smooth nativo (~250-310ms medidos)', () => {
+  assert.ok(snapDurationMs(300, false) >= 450);
+});
+
+test('easeSnap: 0->0, 1->1, monótona', () => {
+  assert.equal(easeSnap(0), 0);
+  assert.equal(easeSnap(1), 1);
+  let prev = 0;
+  for (let i = 1; i <= 20; i += 1) { const v = easeSnap(i / 20); assert.ok(v >= prev); prev = v; }
+});
+
+test('D-02: el guard de snap vence después de la animación más larga + idle-timer', () => {
+  assert.ok(TTL > SNAP_MAX_MS + 150);
+});

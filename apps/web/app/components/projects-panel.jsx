@@ -1,11 +1,14 @@
 import { useUserStore } from "@/store/store";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useCarousel } from "@/hooks/use-carousel";
+import { formatCounter } from "@/lib/carousel.mjs";
+import CarouselControls from "./carousel-controls";
 
 const ProjectsPanel = ({ index }) => {
   const t = useTranslations("Work");
   const projects = useUserStore((state) => state.proyects) || [];
-  const visible = projects.slice(0, 4);
+  const carousel = useCarousel(projects.length);
 
   return (
     <section inert={index === 0 ? undefined : ""} className="panel p-paper" data-d-panel data-ui="ink">
@@ -24,8 +27,20 @@ const ProjectsPanel = ({ index }) => {
         {/* grid */}
         {/* paralaje y reveal en elementos distintos: ADR-004 */}
         <div className="layer pll-mid proj-grid-wrap">
-        <div className="reveal d2 proj-grid">
-          {visible.map((project, index) => {
+        <div
+          className="reveal d2 proj-carousel"
+          role="region"
+          aria-roledescription={t("carouselRole")}
+          aria-label={t("carousel")}
+        >
+        <div
+          ref={carousel.ref}
+          className="proj-grid"
+          data-hscroll
+          tabIndex={0}
+          onKeyDown={carousel.onKeyDown}
+        >
+          {projects.map((project, index) => {
             const thumb = project.img1_pro || project.img2_pro || project.img3_pro || null;
             const num = String(index + 1).padStart(2, "0");
             const href = project.deployLink_pro || project.githubLink_pro || null;
@@ -43,7 +58,7 @@ const ProjectsPanel = ({ index }) => {
                       src={thumb}
                       alt={alt}
                       fill
-                      sizes="(max-width: 720px) 90vw, 25vw"
+                      sizes="(max-width: 768px) 90px, 30vw"
                       quality={70}
                     />
                   ) : (
@@ -58,11 +73,24 @@ const ProjectsPanel = ({ index }) => {
                     <span className="proj-card-title">{project.title_pro}</span>
                     <span className="t-fine">{project.technologies_pro}</span>
                   </div>
+                  {href && <span className="sr-only">{t("external")}</span>}
                   <span className="card-arrow" aria-hidden="true">↗</span>
                 </div>
               </Card>
             );
           })}
+        </div>
+        {projects.length > 0 && (
+          <CarouselControls
+            counter={formatCounter(carousel.index, projects.length)}
+            prevLabel={t("prev")}
+            nextLabel={t("next")}
+            onPrev={() => carousel.go(-1)}
+            onNext={() => carousel.go(1)}
+            prevDisabled={carousel.atStart}
+            nextDisabled={carousel.atEnd}
+          />
+        )}
         </div>
         </div>
       </div>

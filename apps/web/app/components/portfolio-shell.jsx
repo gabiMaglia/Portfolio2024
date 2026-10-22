@@ -3,7 +3,8 @@
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { isInteractiveTarget } from "@/lib/keyboard.mjs";
-import { chromeSegments, snapTargetIdx, shouldSkipSnap, isSingleTouch } from "@/lib/scroll-motion.mjs";
+import { chromeSegments, snapTargetIdx, shouldSkipSnap, isSingleTouch, snapDurationMs, easeSnap } from "@/lib/scroll-motion.mjs";
+import { wheelRoute, inHScroll } from "@/lib/carousel.mjs";
 import { PANEL_IDS, panelIndexFromHash } from "@/lib/panel-hash.mjs";
 import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
 import LocaleSwitcher from "./localeSwitcher";
@@ -141,9 +142,35 @@ const PortfolioShell = () => {
     let lastSnap = null; // D-02: destino del último snap, para no relanzar scrollTo al mismo índice
     let gestureInvalid = false; // pinch / multitouch: no es un swipe de navegación
 
+    // Snap smooth: tween propio (el smooth nativo no tiene duración controlable y era brusco)
+    let tweenId = 0;
+    const cancelTween = () => {
+      cancelAnimationFrame(tweenId);
+      tweenId = 0;
+    };
+    const animateScrollTo = (to, duration) => {
+      cancelTween();
+      const from = window.scrollY;
+      if (duration <= 0 || from === to) {
+        window.scrollTo({ top: to, behavior: "auto" });
+        return;
+      }
+      const t0 = performance.now();
+      const frame = (now) => {
+        const p = Math.min(1, (now - t0) / duration);
+        window.scrollTo({ top: from + (to - from) * easeSnap(p), behavior: "auto" });
+        tweenId = p < 1 ? requestAnimationFrame(frame) : 0;
+      };
+      tweenId = requestAnimationFrame(frame);
+    };
+
+    let ignoreGesture = false; // el touch nació en un scroller horizontal (carrusel): no es del shell
+
     const onWheel = (e) => {
       lastSnap = null;
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 0) {
+      cancelTween();
+      // Horizontal sobre el carrusel = nativo (scrollea el carrusel); vertical siempre es del shell
+      if (wheelRoute(e.deltaX, e.deltaY, inHScroll(e.target)) === "shell-x") {
         window.scrollBy(0, e.deltaX);
         e.preventDefault();
       }
@@ -164,6 +191,9 @@ const PortfolioShell = () => {
 
     const onTouchStart = (e) => {
       lastSnap = null;
+      cancelTween();
+      ignoreGesture = inHScroll(e.target);
+      if (ignoreGesture) return;
       if (!isSingleTouch(e.touches)) {
         gestureInvalid = true;
         return;
@@ -180,6 +210,7 @@ const PortfolioShell = () => {
     };
 
     const onTouchMove = (e) => {
+      if (ignoreGesture) return;
       if (gestureInvalid || !isSingleTouch(e.touches)) {
         gestureInvalid = true;
         return;
@@ -212,11 +243,16 @@ const PortfolioShell = () => {
       const now = performance.now();
       if (shouldSkipSnap(targetIdx, lastSnap, now)) return;
       lastSnap = { idx: targetIdx, at: now };
-      window.scrollTo({ top: (targetIdx / (N - 1)) * maxScroll, behavior: scrollBehavior() });
+      const to = (targetIdx / (N - 1)) * maxScroll;
+      animateScrollTo(to, snapDurationMs(Math.abs(to - window.scrollY), motionQuery.matches));
     };
 
     const onTouchEnd = (e) => {
       if (e.touches && e.touches.length > 0) return; // quedan dedos: el gesto sigue
+      if (ignoreGesture) {
+        ignoreGesture = false;
+        return;
+      }
       touchActive = false;
       if (dirLocked === "x") {
         snapToNearest(gestureInvalid ? 0 : velocity);
@@ -237,6 +273,7 @@ const PortfolioShell = () => {
 
     const onKey = (e) => {
       lastSnap = null;
+      cancelTween();
       // Con foco en un link/botón, Space/Enter/flechas son del control, no del scroll
       if (isInteractiveTarget(e.target)) return;
       const behavior = scrollBehavior();
@@ -268,6 +305,7 @@ const PortfolioShell = () => {
     return () => {
       cancelAnimationFrame(rafId);
       clearTimeout(snapTO);
+      cancelTween();
       window.removeEventListener("resize", layout);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("scroll", onScroll);

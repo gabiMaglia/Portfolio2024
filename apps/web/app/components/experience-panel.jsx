@@ -1,12 +1,12 @@
 import { useUserStore } from "@/store/store";
 import { useTranslations } from "next-intl";
 
-const ExperiencePanel = () => {
+const ExperiencePanel = ({ index }) => {
   const t = useTranslations("Experience");
   const experiences = useUserStore((state) => state.experiences) || [];
 
   return (
-    <section className="panel p-ink" data-d-panel data-ui="paper">
+    <section inert={index === 0 ? undefined : ""} className="panel p-ink" data-d-panel data-ui="paper">
       <div className="exp-content" style={{ width: "100%", maxWidth: 1280, margin: "0 auto" }}>
         <div className="exp-header layer pll-back col" style={{ marginBottom: "clamp(28px,5vh,64px)" }}>
           <span className="kicker reveal">04 — {t("title")}</span>

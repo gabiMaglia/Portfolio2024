@@ -44,3 +44,6 @@ next-env.d.ts
 
 # NERV internal tracking (multi-agent orchestration meta — not part of the app)
 engram/
+
+# NERV gate test command (local)
+.nerv-test-cmd

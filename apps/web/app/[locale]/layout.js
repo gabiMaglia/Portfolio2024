@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import es from '@/messages/es.json';
 import en from '@/messages/en.json';
 
+import LangSync from '@/app/components/lang-sync';
 import StoreProvider from '@/providers/store-provider';
 import { ToasterProvider } from '@/providers/toast-provider';
 
@@ -51,9 +52,9 @@ export default async function LocaleLayout({ children, params: { locale } }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <LangSync />
       <ToasterProvider />
-      <StoreProvider data={data} />
-      {children}
+      <StoreProvider data={data}>{children}</StoreProvider>
     </NextIntlClientProvider>
   );
 }

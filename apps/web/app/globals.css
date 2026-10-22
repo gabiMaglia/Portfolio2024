@@ -342,6 +342,25 @@ body.scrolled .hint { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; }
+  /* dot pulse, marquee, scroll hint, hovers: todo quieto */
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* ===================== FOCUS ===================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+/* sobre fondo accent el outline accent desaparece */
+.p-accent :focus-visible { outline-color: var(--ink); }
+/* .nav button usa all:unset, que borra el outline: se restituye acá */
+.nav button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 /* ===================== HERO PANEL ===================== */
@@ -481,6 +500,7 @@ body.scrolled .hint { opacity: 0; }
 .proj-grid:hover .proj-card:not(:hover) { opacity: .55; }
 
 .proj-card-thumb {
+  position: relative;
   width: 100%;
   height: clamp(150px, 22vh, 230px);
   border-radius: 20px;

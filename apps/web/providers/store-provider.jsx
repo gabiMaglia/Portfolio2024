@@ -1,26 +1,19 @@
 "use client";
 
-import { useUserStore } from "@/store/store";
+import { useRef } from "react";
+import PropTypes from "prop-types";
+import { StoreContext } from "@/store/store";
+import { buildInitialState, createUserStore } from "@/store/user-store.mjs";
 
-const StoreProvider = ({ data }) => {
-  const setPersona = useUserStore((state) => state.setPersona);
-  const setProyects = useUserStore((state) => state.setProyects);
-  const setExperiences = useUserStore((state) => state.setExperiences);
-  const setSkill = useUserStore((state) => state.setSkill);
-  const setSocial = useUserStore((state) => state.setSocial);
-  const setPhrases = useUserStore((state) => state.setPhrases);
-  setPersona(data?.data);
-  setSocial(data?.socialData);
-  setProyects(data?.restOfData?.proyects);
-  setExperiences(data?.restOfData?.experiences);
-  setSkill(data?.restOfData?.skills);
-  setPhrases({
-    mainPhrase: data?.data?.main_phrase,
-    phrase1: data?.data?.phrase1,
-    phrase2: data?.data?.phrase2,
-    phrase3: data?.data?.phrase3,
-  });
+const StoreProvider = ({ data, children }) => {
+  const storeRef = useRef(null);
+  if (!storeRef.current) storeRef.current = createUserStore(buildInitialState(data));
+  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>;
 };
 
+StoreProvider.propTypes = {
+  data: PropTypes.object,
+  children: PropTypes.node,
+};
 
 export default StoreProvider;

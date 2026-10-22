@@ -80,3 +80,45 @@ test('D-03: contenedores con overflow no usan justify-content:center', () => {
     }
   }
 });
+
+// ADR-004: en un elemento .reveal, opacity/transform son del movimiento.
+// Si una clase de contenido los fija, `.panel[data-active] .reveal` (0,3,0) la pisa.
+const ruleList = () => {
+  const out = [];
+  for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) out.push({ sel: m[1].trim(), body: m[2] });
+  return out;
+};
+const subjectClasses = (sel) =>
+  sel.split(',').flatMap((one) => {
+    if (one.includes('::')) return []; // pseudo-elementos no son el elemento
+    const last = one.trim().split(/[\s>+~]+/).pop();
+    return [...last.matchAll(/\.([\w-]+)/g)].map((c) => c[1]);
+  });
+
+test('ADR-004: ninguna clase con opacity/transform comparte elemento con .reveal', () => {
+  const motion = new Set();
+  for (const { sel, body } of ruleList()) {
+    if (!/(^|[;\s])(opacity|transform)\s*:/.test(body)) continue;
+    for (const c of subjectClasses(sel)) motion.add(c);
+  }
+  for (const c of ['reveal', 'd1', 'd2', 'd3', 'd4']) motion.delete(c);
+  // Única exención escrita: la grilla de proyectos (transform de paralaje pisado
+  // por el reveal desde main). Pasa a T-010.
+  const EXEMPT = new Set(['projects-panel.jsx:pll-mid']);
+  const clash = [];
+  for (const f of componentFiles) {
+    const src = read(`app/components/${f}`);
+    for (const m of src.matchAll(/className="([^"]*)"/g)) {
+      const cls = m[1].split(/\s+/);
+      if (!cls.includes('reveal')) continue;
+      for (const c of cls) if (motion.has(c) && !EXEMPT.has(`${f}:${c}`)) clash.push(`${f}:${c}`);
+    }
+  }
+  assert.deepEqual(clash, []);
+});
+
+test('ADR-004: los roles .t-* no declaran opacity (atenuación por color)', () => {
+  for (const { sel, body } of ruleList()) {
+    if (/^\.t-[\w-]+$/.test(sel)) assert.doesNotMatch(body, /(^|[;\s])opacity\s*:/, sel);
+  }
+});

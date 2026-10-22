@@ -159,9 +159,11 @@ a { color: inherit; }
   opacity: .16;
 }
 
-.p-paper { background: var(--paper); color: var(--ink); }
-.p-ink   { background: var(--ink);   color: var(--paper); }
-.p-accent{ background: var(--accent); color: var(--accent-ink); }
+/* --fg: la tinta de cada superficie. La atenuación de texto se calcula desde
+   acá (ADR-004): opacity en un .reveal es del movimiento, nunca del contenido. */
+.p-paper { --fg: var(--ink);        background: var(--paper);  color: var(--fg); }
+.p-ink   { --fg: var(--paper);      background: var(--ink);    color: var(--fg); }
+.p-accent{ --fg: var(--accent-ink); background: var(--accent); color: var(--fg); }
 
 /* ===================== PARALLAX LAYERS ===================== */
 .layer { will-change: transform; }
@@ -423,7 +425,6 @@ body.scrolled .hint { opacity: 0; }
   font-size: var(--fs-xs);
   letter-spacing: .24em;
   text-transform: uppercase;
-  opacity: var(--o-soft);
 }
 
 .t-meta {
@@ -431,7 +432,7 @@ body.scrolled .hint { opacity: 0; }
   font-size: var(--fs-xs);
   letter-spacing: .16em;
   text-transform: uppercase;
-  opacity: var(--o-soft);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-soft) * 100%), transparent);
 }
 
 .t-note {
@@ -439,21 +440,21 @@ body.scrolled .hint { opacity: 0; }
   font-size: var(--fs-sm);
   letter-spacing: .04em;
   line-height: 1.6;
-  opacity: var(--o-mute);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-mute) * 100%), transparent);
 }
 
 .t-fine {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: .06em;
-  opacity: var(--o-mute);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-mute) * 100%), transparent);
 }
 
 .t-body {
   font-size: var(--fs-body);
   line-height: 1.6;
   font-weight: 500;
-  opacity: var(--o-soft);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-soft) * 100%), transparent);
 }
 
 .t-lead {
@@ -468,7 +469,7 @@ body.scrolled .hint { opacity: 0; }
   font-size: var(--fs-sm);
   line-height: 1.4;
   font-weight: 500;
-  opacity: var(--o-mute);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-mute) * 100%), transparent);
 }
 
 .t-title { font-size: var(--fs-xl); }
@@ -755,9 +756,8 @@ body.scrolled .hint { opacity: 0; }
 .exp-row:hover { padding-left: var(--sp-4); }
 .exp-row:hover .display { color: var(--accent); transition: color var(--dur-fast) var(--ease); }
 
-.exp-num { opacity: var(--o-mute); }
 .exp-company { font-size: var(--fs-lg); line-height: 1; }
-.exp-role { font-size: var(--fs-body); font-weight: 500; opacity: var(--o-soft); }
+.exp-role { font-size: var(--fs-body); font-weight: 500; color: color-mix(in srgb, var(--fg) calc(var(--o-soft) * 100%), transparent); }
 .exp-date { justify-self: end; }
 .exp-empty { padding: var(--sp-fl-l) var(--sp-1); }
 

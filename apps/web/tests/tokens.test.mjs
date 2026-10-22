@@ -275,3 +275,22 @@ test('T-012: mobile = lista vertical con scroll interno y fade; flecha visible e
   assert.match(mobile, /\.proj-grid\[data-fade-end\]\s*\{[^}]*mask-image/);
   assert.match(css, /@media \(hover: none\)[\s\S]*\.card-arrow\s*\{[^}]*opacity:\s*1/);
 });
+
+// T-016: sobre la superficie accent el thumb no puede ser accent (accent sobre accent no se ve)
+test('T-016: el thumb tiene token propio sobre accent, distinto del fondo, y sigue el seam del chrome', () => {
+  const rootBlock = /:root\s*\{([^}]*)\}/.exec(css)[1];
+  const tok = (n) => new RegExp(`--${n}\\s*:\\s*(#[0-9a-fA-F]{6})`).exec(rootBlock)?.[1].toLowerCase();
+  assert.ok(tok('thumb-on-accent'), 'falta --thumb-on-accent en :root');
+  assert.notEqual(tok('thumb-on-accent'), tok('accent'));
+  const thumb = /\.lang-switch__thumb\s*\{([^}]*)\}/.exec(css)[1];
+  assert.match(thumb, /var\(--thumb-a\)[^;]*var\(--thumb-b\)/);
+  assert.doesNotMatch(thumb, /background:\s*var\(--accent\)/);
+  // el shell escribe --thumb-a/b según la superficie bajo cada borde
+  const shell = read('app/components/portfolio-shell.jsx');
+  assert.match(shell, /--thumb-a/);
+  assert.match(shell, /--thumb-b/);
+  assert.match(shell, /--thumb-on-accent/);
+  // fallback de los otros paneles: sigue siendo accent
+  assert.match(rootBlock, /--thumb-a\s*:\s*var\(--accent\)/);
+  assert.match(rootBlock, /--thumb-b\s*:\s*var\(--accent\)/);
+});

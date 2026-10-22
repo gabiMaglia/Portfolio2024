@@ -69,3 +69,10 @@ test('hover de tarjetas: se atenúa la miniatura, no el texto', () => {
   assert.doesNotMatch(css, /\.proj-card:not\(:hover\)\s*\{[^}]*opacity/);
   assert.match(css, /\.proj-card:not\(:hover\) \.proj-card-thumb\s*\{[^}]*opacity/);
 });
+
+test('T-016: thumb sobre accent: relleno >=3:1 con accent (WCAG 1.4.11) y aro de tinta >=3:1 con ambos', () => {
+  const thumb = hex('thumb-on-accent');
+  assert.ok(contrastRatio(thumb, ACCENT) >= 3, `thumb/accent ${contrastRatio(thumb, ACCENT)}`);
+  assert.ok(contrastRatio(INK, ACCENT) >= 3);
+  assert.ok(contrastRatio(INK, thumb) >= 3);
+});

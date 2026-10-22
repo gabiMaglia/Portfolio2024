@@ -8,6 +8,8 @@
   --ink-2: #26221a;
   --accent: #e2552e;
   --accent-ink: #16140f;
+  /* thumb del switch sobre accent: manteca, 3.06:1 con accent (+ aro de tinta 4.9:1) */
+  --thumb-on-accent: #fbe97a;
   --black: #000;
   --white: #fff;
   --ui: var(--ink); /* first panel is p-paper → UI should be dark */
@@ -15,6 +17,9 @@
   --ui-a: var(--ink);
   --ui-b: var(--ink);
   --ui-cut: 0px;
+  /* relleno del thumb por lado del seam: accent salvo sobre accent (lo escribe el shell) */
+  --thumb-a: var(--accent);
+  --thumb-b: var(--accent);
 
   /* alphas (tinta/papel/acento sobre el fondo) */
   --ink-a8: rgba(22, 20, 15, .08);
@@ -450,7 +455,7 @@ body.scrolled .hint { opacity: 0; }
   mask: linear-gradient(var(--black) 0 0) content-box exclude, linear-gradient(var(--black) 0 0);
 }
 
-/* thumb accent con aro de tinta: se ve sobre paper, ink y también sobre accent */
+/* thumb accent con aro de tinta; sobre la superficie accent el relleno pasa a --thumb-on-accent */
 .lang-switch__thumb {
   position: absolute;
   top: 50%;
@@ -459,12 +464,15 @@ body.scrolled .hint { opacity: 0; }
   height: var(--sw-thumb);
   margin-top: calc(var(--sw-thumb) / -2);
   border-radius: var(--r-full);
-  background: var(--accent);
+  --thumb-x: var(--sw-inset);
+  background-image: linear-gradient(90deg, var(--thumb-a) calc(var(--ui-cut) - var(--thumb-x)), var(--thumb-b) calc(var(--ui-cut) - var(--thumb-x)));
+  background-origin: border-box;
   border: 1.5px solid var(--ink);
   transition: transform var(--dur-base) var(--ease);
 }
 
 .lang-switch[data-shown="en"] .lang-switch__thumb {
+  --thumb-x: calc(var(--sw-w) - var(--sw-thumb) - var(--sw-inset));
   transform: translateX(calc(var(--sw-w) - var(--sw-thumb) - var(--sw-inset) * 2));
 }
 
@@ -473,7 +481,7 @@ body.scrolled .hint { opacity: 0; }
 @media (forced-colors: active) {
   .lang-switch__track { border: 1px solid CanvasText; }
   .lang-switch__track::before { display: none; }
-  .lang-switch__thumb { background: Highlight; border-color: CanvasText; }
+  .lang-switch__thumb { background-image: none; background: Highlight; border-color: CanvasText; }
 }
 
 /* ===================== MASTHEAD ===================== */

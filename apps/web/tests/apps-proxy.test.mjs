@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
-import { pathToRegexp } from 'next/dist/compiled/path-to-regexp/index.js';
+import { pathToRegexp, match, compile } from 'next/dist/compiled/path-to-regexp/index.js';
 import { APPS, appsRewrites, pickAppsLocale } from '../lib/apps.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,7 +18,7 @@ test('T-017: rewrites de las dos landings hacia sus hosts de origen', () => {
   assert.equal(dest('/apps/netgauge'), 'https://net-gauge-brown.vercel.app/');
   assert.equal(dest('/apps/listbuddy/:path*/'), 'https://gabimaglia.github.io/listbuddy-site/:path*/');
   assert.equal(dest('/apps/netgauge/:path*/'), 'https://net-gauge-brown.vercel.app/:path*/');
-  assert.equal(r.length, 8);
+  assert.equal(r.length, 10);
   // la regla con slash va antes que la genérica, si no el slash se pierde
   for (const id of ['listbuddy', 'netgauge']) {
     const i = (src) => r.findIndex((x) => x.source === src);
@@ -79,4 +79,42 @@ test('T-017: el middleware quita el slash final del portfolio (comportamiento pr
   const src = read('middleware.js');
   assert.match(src, /endsWith\('\/'\)/);
   assert.match(src, /NextResponse\.redirect\([^)]*308/);
+});
+
+// Hotfix T-017: en Next el slash final del source es opcional; la regla de directorios
+// también matcheaba archivos y GH Pages devolvía 404 por pedir `favicon.svg/`.
+const resolve = (path) => {
+  for (const { source, destination } of appsRewrites()) {
+    const m = match(source)(path);
+    // Next compila solo el path del destino; el origen (con `https:`) no pasa por path-to-regexp
+    if (m) { const u = new URL(destination.replace(':path', 'x')); return u.origin + compile(destination.slice(u.origin.length), { validate: false })(m.params); }
+  }
+  return null;
+};
+
+test('T-017 hotfix: los archivos con extensión se piden SIN slash final al origen', () => {
+  for (const [id, origin] of [['listbuddy', 'https://gabimaglia.github.io/listbuddy-site'], ['netgauge', 'https://net-gauge-brown.vercel.app']]) {
+    assert.equal(resolve(`/apps/${id}/favicon.svg`), `${origin}/favicon.svg`);
+    assert.equal(resolve(`/apps/${id}/fonts/a.woff2`), `${origin}/fonts/a.woff2`);
+    assert.equal(resolve(`/apps/${id}/fonts/LICENSES.txt`), `${origin}/fonts/LICENSES.txt`);
+  }
+});
+
+test('T-017 hotfix: los directorios se piden CON slash final', () => {
+  for (const [id, origin] of [['listbuddy', 'https://gabimaglia.github.io/listbuddy-site'], ['netgauge', 'https://net-gauge-brown.vercel.app']]) {
+    assert.equal(resolve(`/apps/${id}/legal/`), `${origin}/legal/`);
+    assert.equal(resolve(`/apps/${id}/en/`), `${origin}/en/`);
+    assert.equal(resolve(`/apps/${id}/`), `${origin}/`);
+    assert.equal(resolve(`/apps/${id}`), `${origin}/`);
+  }
+});
+
+test('T-017 hotfix: la regla de archivos (extensión) precede a la de directorios y no termina en /', () => {
+  const r = appsRewrites();
+  for (const id of ['listbuddy', 'netgauge']) {
+    const file = r.findIndex((x) => x.source.startsWith(`/apps/${id}/:path(`) && x.source.includes('\\.'));
+    const dir = r.findIndex((x) => x.source === `/apps/${id}/:path*/`);
+    assert.ok(file >= 0 && file < dir, id);
+    assert.ok(!r[file].destination.endsWith('/'), id);
+  }
 });

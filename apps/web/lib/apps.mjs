@@ -10,11 +10,13 @@ export const APPS = [
 
 // El slash final se reenvía tal cual (Next lo come en :path*): las landings viven con slash y
 // GH Pages redirige /x -> /x/ a su propio host, lo que arma un loop con su redirect de host.
-// El orden importa: gana la primera regla que matchea (raíz, directorios con slash, resto).
+// El orden importa: gana la primera regla que matchea (raíz, archivos, directorios con slash, resto).
 export function appsRewrites() {
   return APPS.flatMap(({ id, origin }) => [
     { source: `/apps/${id}`, destination: `${origin}/` },
     { source: `/apps/${id}/`, destination: `${origin}/` },
+    // archivos (extensión en el último segmento): sin slash, GH Pages da 404 con `favicon.svg/`
+    { source: `/apps/${id}/:path(.*\\.[A-Za-z0-9]+)`, destination: `${origin}/:path` },
     { source: `/apps/${id}/:path*/`, destination: `${origin}/:path*/` },
     { source: `/apps/${id}/:path*`, destination: `${origin}/:path*` },
   ]);

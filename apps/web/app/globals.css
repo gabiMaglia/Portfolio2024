@@ -1242,3 +1242,37 @@ body.scrolled .hint { opacity: 0; }
 @media (hover: none) {
   .card-arrow { opacity: 1; transform: none; }
 }
+
+/* ===================== /apps (T-017) ===================== */
+.foot-link { color: inherit; text-underline-offset: .2em; }
+.foot-link:hover { color: var(--fg); }
+
+.apps-page {
+  min-height: 100vh;
+  padding: var(--panel-pt) var(--panel-px) var(--panel-pb);
+}
+.apps-wrap { max-width: 1100px; margin: 0 auto; }
+.apps-back { display: inline-block; text-decoration: none; margin-bottom: var(--sp-fl-l); }
+.apps-back:hover { text-decoration: underline; text-underline-offset: .2em; }
+.apps-head { display: flex; flex-direction: column; gap: var(--sp-fl-s); margin-bottom: var(--sp-fl-l); }
+.apps-list { list-style: none; border-top: 1.5px solid var(--fg); }
+.apps-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-fl-m);
+  padding: var(--sp-fl-m) var(--sp-1);
+  border-bottom: 1.5px solid var(--fg);
+  text-decoration: none;
+  color: var(--fg);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.apps-card:hover, .apps-card:focus-visible { background: var(--ink); color: var(--paper); }
+.apps-card-num { font-size: var(--fs-lg); }
+.apps-card-text { display: flex; flex-direction: column; gap: .5em; }
+.apps-card-name { font-size: var(--fs-lg); }
+.apps-card:hover .t-body, .apps-card:focus-visible .t-body { color: var(--paper); }
+@media (max-width: 600px) {
+  .apps-card { grid-template-columns: auto 1fr; }
+  .apps-card-open { grid-column: 2; }
+}

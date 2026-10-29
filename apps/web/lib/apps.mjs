@@ -1,11 +1,14 @@
 // Las landings viven en otros hosts; el portfolio las sirve bajo /apps/<nombre> por rewrite.
-// Cada landing compila con su `base` = /apps/<nombre>, así que el path se reenvía tal cual.
+// Cada landing compila con su `base` = /apps/<nombre> (o usa rutas relativas, como HushSplit),
+// así que el path se reenvía tal cual.
 const LISTBUDDY_ORIGIN = 'https://gabimaglia.github.io/listbuddy-site';
 const NETGAUGE_ORIGIN = 'https://net-gauge-brown.vercel.app';
+const HUSHSPLIT_ORIGIN = 'https://hushsplit.github.io';
 
 export const APPS = [
   { id: 'listbuddy', href: '/apps/listbuddy/', name: 'listBuddy', origin: LISTBUDDY_ORIGIN },
   { id: 'netgauge', href: '/apps/netgauge/', name: 'NetGauge', origin: NETGAUGE_ORIGIN },
+  { id: 'hushsplit', href: '/apps/hushsplit/', name: 'HushSplit', origin: HUSHSPLIT_ORIGIN },
 ];
 
 // El slash final se reenvía tal cual (Next lo come en :path*): las landings viven con slash y

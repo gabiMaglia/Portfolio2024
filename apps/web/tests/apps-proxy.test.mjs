@@ -18,12 +18,20 @@ test('T-017: rewrites de las dos landings hacia sus hosts de origen', () => {
   assert.equal(dest('/apps/netgauge'), 'https://net-gauge-brown.vercel.app/');
   assert.equal(dest('/apps/listbuddy/:path*/'), 'https://gabimaglia.github.io/listbuddy-site/:path*/');
   assert.equal(dest('/apps/netgauge/:path*/'), 'https://net-gauge-brown.vercel.app/:path*/');
-  assert.equal(r.length, 10);
+  assert.equal(r.length, 5 * APPS.length);
   // la regla con slash va antes que la genérica, si no el slash se pierde
-  for (const id of ['listbuddy', 'netgauge']) {
+  for (const { id } of APPS) {
     const i = (src) => r.findIndex((x) => x.source === src);
     assert.ok(i(`/apps/${id}/:path*/`) < i(`/apps/${id}/:path*`), id);
   }
+});
+
+test('T-020: /apps/hushsplit va a la raíz de hushsplit.github.io (rutas relativas)', () => {
+  const r = appsRewrites();
+  const dest = (src) => r.find((x) => x.source === src)?.destination;
+  assert.equal(dest('/apps/hushsplit'), 'https://hushsplit.github.io/');
+  assert.equal(dest('/apps/hushsplit/'), 'https://hushsplit.github.io/');
+  assert.equal(dest('/apps/hushsplit/:path*'), 'https://hushsplit.github.io/:path*');
 });
 
 test('T-017: next.config registra los rewrites de /apps y no redirige el slash', () => {
@@ -34,7 +42,7 @@ test('T-017: next.config registra los rewrites de /apps y no redirige el slash',
 });
 
 test('T-017: el índice /apps lista las dos apps con link', () => {
-  assert.deepEqual(APPS.map((a) => a.href), ['/apps/listbuddy/', '/apps/netgauge/']);
+  assert.deepEqual(APPS.map((a) => a.href), ['/apps/listbuddy/', '/apps/netgauge/', '/apps/hushsplit/']);
   for (const a of APPS) assert.ok(a.name && a.id);
 });
 
@@ -53,7 +61,7 @@ const matcher = (() => {
 const intercepted = (path) => matcher.some((p) => pathToRegexp(p).test(path));
 
 test('T-017: el middleware next-intl NO intercepta /apps ni sus subrutas', () => {
-  for (const p of ['/apps', '/apps/', '/apps/listbuddy/', '/apps/netgauge/en/', '/apps/listbuddy/legal/']) {
+  for (const p of ['/apps', '/apps/', '/apps/listbuddy/', '/apps/netgauge/en/', '/apps/listbuddy/legal/', '/apps/hushsplit/']) {
     assert.equal(intercepted(p), false, p);
   }
 });
@@ -71,7 +79,7 @@ test('T-017: el portfolio enlaza a /apps (es/en) desde Contacto', () => {
   for (const l of ['es', 'en']) assert.ok(JSON.parse(read(`messages/${l}.json`)).Contact.appsLink);
   for (const l of ['es', 'en']) {
     const a = JSON.parse(read(`messages/${l}.json`)).Apps;
-    assert.ok(a.title && a.kicker && a.listbuddy && a.netgauge && a.open);
+    assert.ok(a.title && a.kicker && a.listbuddy && a.netgauge && a.hushsplit && a.open);
   }
 });
 

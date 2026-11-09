@@ -18,6 +18,6 @@ test('T-011/013: claves nuevas presentes', () => {
     'Lang.label', 'Lang.switchTo', 'Lang.names.es', 'Lang.names.en', 'A11y.skip',
     'Masthead.edition', 'Masthead.localTime',
     'Contact.copyEmail', 'Contact.copied', 'Contact.copyHint', 'Experience.present',
-    'Work.thumbAlt', 'Work.thumbAltNoTech', 'Navbar.label',
+    'Work.index', 'Navbar.label',
   ]) assert.ok(k.has(key), key);
 });

@@ -31,3 +31,13 @@ test('cada store creado es independiente (sin singleton entre requests)', () => 
   assert.equal(a.getState().social.length, 1);
   assert.equal(a.getState().social[0].id, 1);
 });
+
+test('T-021: proyectos por order_pro, sin orden al final, y a igual orden el más nuevo', () => {
+  const s = buildInitialState({ restOfData: { proyects: [
+    { id: 'u1', title_pro: 'viejo', year_pro: 2022 },
+    { id: 'u2', title_pro: 'nuevo', year_pro: 2025 },
+    { id: 'u3', title_pro: 'segundo', order_pro: 2 },
+    { id: 'u4', title_pro: 'primero', order_pro: 1 },
+  ] } });
+  assert.deepEqual(s.proyects.map((p) => p.title_pro), ['primero', 'segundo', 'nuevo', 'viejo']);
+});

@@ -235,30 +235,19 @@ test('T-013: el skip link es lo primero que renderiza el shell', () => {
 });
 
 // ---- T-012: carrusel de proyectos
-test('T-012: el panel muestra todos los proyectos (sin slice a 4)', () => {
+test('T-021: el panel muestra todos los proyectos en el índice (sin slice a 4)', () => {
   const src = read('app/components/projects-panel.jsx');
   assert.doesNotMatch(src, /slice\(\s*0\s*,\s*4\s*\)/);
-  assert.match(src, /data-hscroll/);
+  assert.match(src, /projects\.map/);
+  assert.match(src, /aria-label=\{t\("index"\)\}/);
 });
 
-test('T-012: carrusel con scroll-snap nativo y sin traspaso de gestos al navegador', () => {
-  const m = /\.proj-grid\s*\{([^}]*)\}/.exec(css);
-  assert.ok(m, 'regla .proj-grid');
-  assert.match(m[1], /scroll-snap-type:\s*x mandatory/);
-  assert.match(m[1], /overscroll-behavior-x:\s*contain/);
-  assert.match(css, /\.proj-card\s*\{[^}]*scroll-snap-align:\s*start/);
-});
-
-test('T-012: botones prev/next con aria-disabled (no pierden el foco al llegar al borde)', () => {
-  const src = read('app/components/action-button.jsx');
-  assert.match(src, /aria-disabled/);
-  assert.doesNotMatch(src, /\sdisabled=\{/);
-  assert.match(read('app/components/carousel-controls.jsx'), /ActionButton/);
-});
-
-test('T-012 + ADR-004: el scroller va dentro del wrapper .reveal, nunca en el mismo elemento', () => {
+test('T-021: la portada sigue a la fila por hover y por foco, y queda fuera del árbol accesible', () => {
   const src = read('app/components/projects-panel.jsx');
-  assert.doesNotMatch(src, /className="[^"]*\breveal\b[^"]*\bproj-grid\b|className="[^"]*\bproj-grid\b[^"]*\breveal\b/);
+  assert.match(src, /onMouseEnter=\{\(\) => setActiveId/);
+  assert.match(src, /onFocus=\{\(\) => setActiveId/);
+  assert.match(src, /className="work-plate" aria-hidden="true"/);
+  assert.match(src, /work-plate-image" tabIndex=\{-1\}/);
 });
 
 test('T-012: el shell separa gestos con wheelRoute/inHScroll y el snap usa el tween propio', () => {
@@ -269,11 +258,11 @@ test('T-012: el shell separa gestos con wheelRoute/inHScroll y el snap usa el tw
   assert.match(src, /easeSnap\(/);
 });
 
-test('T-012: mobile = lista vertical con scroll interno y fade; flecha visible en táctil', () => {
+test('T-021: mobile = láminas apiladas con scroll interno, sin portada', () => {
   const mobile = /@media \(max-width: 768px\) \{[\s\S]*$/.exec(css)?.[0] ?? '';
-  assert.match(mobile, /\.proj-grid\s*\{[^}]*overflow-y:\s*auto/);
-  assert.match(mobile, /\.proj-grid\[data-fade-end\]\s*\{[^}]*mask-image/);
-  assert.match(css, /@media \(hover: none\)[\s\S]*\.card-arrow\s*\{[^}]*opacity:\s*1/);
+  assert.match(mobile, /\.work-plate\s*\{[^}]*display:\s*none/);
+  assert.match(mobile, /\.work-row-detail\s*\{[^}]*position:\s*static/);
+  assert.match(css, /\.work-index\s*\{[^}]*overflow-y:\s*auto/);
 });
 
 // T-016: sobre la superficie accent el thumb no puede ser accent (accent sobre accent no se ve)

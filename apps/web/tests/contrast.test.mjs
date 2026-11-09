@@ -65,9 +65,10 @@ test('kicker pleno por default (sin atenuación)', () => {
   assert.doesNotMatch(k, /opacity|color-mix/);
 });
 
-test('hover de tarjetas: se atenúa la miniatura, no el texto', () => {
-  assert.doesNotMatch(css, /\.proj-card:not\(:hover\)\s*\{[^}]*opacity/);
-  assert.match(css, /\.proj-card:not\(:hover\) \.proj-card-thumb\s*\{[^}]*opacity/);
+test('T-021: las filas inactivas se atenúan por color (AA), nunca con opacity', () => {
+  const r = /\.work-row\s*\{([^}]*)\}/.exec(css)[1];
+  assert.match(r, /color-mix\(in srgb, var\(--fg\) calc\(var\(--o-mute\)/);
+  assert.doesNotMatch(r, /(^|[\s;])opacity:/);
 });
 
 test('T-016: thumb sobre accent: relleno >=3:1 con accent (WCAG 1.4.11) y aro de tinta >=3:1 con ambos', () => {

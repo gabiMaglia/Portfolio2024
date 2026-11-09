@@ -36,15 +36,10 @@
     "headlineLine1": "Trabajos",
     "headlineLine2": "selectos",
     "title": "Mis últimos trabajos",
-    "description": "Una selección de trabajos representativos. Cada uno construido con atención al detalle y al producto.",
+    "description": "Algunos los hice de punta a punta, otros los mantuve. Cada uno dice cuál fue.",
     "showMore": "Ver más",
     "showLess": "Ver menos",
-    "thumbAlt": "Captura del proyecto {title}, hecho con {tech}",
-    "thumbAltNoTech": "Captura del proyecto {title}",
-    "carousel": "Proyectos",
-    "carouselRole": "carrusel",
-    "prev": "Proyecto anterior",
-    "next": "Proyecto siguiente",
+    "index": "Índice de proyectos",
     "external": "(se abre en una pestaña nueva)"
   },
   "Experience": {

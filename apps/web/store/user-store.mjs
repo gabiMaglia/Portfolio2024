@@ -51,9 +51,13 @@ export function buildInitialState(data) {
   return {
     persona: data?.data ?? {},
     social: data?.socialData ?? [],
-    // Ordena por id numérico ascendente, sin mutar el array original
+    // order_pro manda (sin orden van al final), después el más nuevo; sin mutar el array original
     proyects: [...(data?.restOfData?.proyects ?? [])].sort(
-      (a, b) => toNum(a?.id) - toNum(b?.id)
+      (a, b) =>
+        (a?.order_pro ?? Infinity) - (b?.order_pro ?? Infinity) ||
+        (b?.year_pro ?? 0) - (a?.year_pro ?? 0) ||
+        toNum(a?.id) - toNum(b?.id) ||
+        0
     ),
     // Más viejo → más nuevo
     experiences: [...(data?.restOfData?.experiences ?? [])].sort(

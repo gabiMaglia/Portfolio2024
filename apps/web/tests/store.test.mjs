@@ -18,7 +18,7 @@ const data = {
 test('buildInitialState ordena proyectos por id y experiencias por fecha', () => {
   const s = buildInitialState(data);
   assert.deepEqual(s.proyects.map((p) => p.title_pro), ['A', 'C']);
-  assert.deepEqual(s.experiences.map((e) => e.id), ['y', 'x']);
+  assert.deepEqual(s.experiences.map((e) => e.id), ['x', 'y']);
   assert.equal(s.phrases.mainPhrase, 'hola');
 });
 

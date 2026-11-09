@@ -69,6 +69,8 @@ export const skills = pgTable('Skills', {
   img_skill: text('img_skill'),
   name: text('name'),
   amount: integer('amount'),
+  group_skill: text('group_skill'),
+  order_skill: integer('order_skill'),
 });
 
 export type Skill = InferSelectModel<typeof skills>;

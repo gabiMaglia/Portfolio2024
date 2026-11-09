@@ -27,3 +27,10 @@ test('texto que no es "Mes AAAA" se devuelve tal cual', () => {
   assert.equal(formatExpDate('', 'es', 'Presente'), '');
   assert.equal(formatExpDate(null, 'es', 'Presente'), '');
 });
+
+test('formatExpYear deja solo el año y traduce el presente', async () => {
+  const { formatExpYear } = await import('../lib/format-date.mjs');
+  assert.equal(formatExpYear('Aprlil 2017', 'Presente'), '2017');
+  assert.equal(formatExpYear('Present Day', 'Presente'), 'Presente');
+  assert.equal(formatExpYear('', 'Presente'), '');
+});

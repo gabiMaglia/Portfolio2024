@@ -10,6 +10,12 @@ const parseMonthYear = (raw) => {
   return month < 0 ? null : { month, year: Number(m[2]) };
 };
 
+export const formatExpYear = (raw, presentLabel) => {
+  const text = String(raw ?? '').trim();
+  if (PRESENT.test(text)) return presentLabel;
+  return /\b(\d{4})\b/.exec(text)?.[1] ?? text;
+};
+
 export const formatExpDate = (raw, locale, presentLabel) => {
   const text = String(raw ?? '').trim();
   if (PRESENT.test(text)) return presentLabel;

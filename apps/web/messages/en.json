@@ -27,7 +27,7 @@
     "para1": "I'm Gabriel, a fullstack developer focused on frontend. I'm obsessed with the interface: the rhythm, the type, the millisecond of transition that makes something feel alive.",
     "para2": "I work end to end — I think through the product, design it, build it, and ship it to production.",
     "stackLabel": "Stack",
-    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Data & infra" }
+    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Data & infra", "ai": "AI" }
   },
   "Work": {
     "portfolio": "My portfolio",

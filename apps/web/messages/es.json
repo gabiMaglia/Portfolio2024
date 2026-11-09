@@ -27,7 +27,7 @@
     "para1": "Soy Gabriel, desarrollador fullstack con foco en frontend. Me obsesiona la interfaz: el ritmo, el tipo, el milisegundo de transición que hace que algo se sienta vivo.",
     "para2": "Trabajo de punta a punta — pienso el producto, lo diseño, lo construyo y lo pongo en producción.",
     "stackLabel": "Stack",
-    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Datos e infra" }
+    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Datos e infra", "ai": "IA" }
   },
   "Work": {
     "portfolio": "Mi portafolio",

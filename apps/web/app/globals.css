@@ -51,8 +51,9 @@
   --fs-md: clamp(1.25rem, 2.2vw, 2rem);
   --fs-lg: clamp(1.5rem, 3.2vw, 2.8rem);
   --fs-xl: clamp(2.5rem, 5.5vw, 5.5rem);
-  --fs-2xl: clamp(3rem, 11vw, 11rem);
-  --fs-hero: clamp(4.2rem, 15vw, 17rem);
+  --fs-2xl: clamp(3rem, min(11vw, calc(30vh - 80px)), 11rem);
+  /* el alto también limita: en ventanas anchas y bajas el título no debe pisar el chrome */
+  --fs-hero: clamp(3.4rem, min(15vw, calc(50vh - 180px)), 17rem);
   /* gráficos decorativos aria-hidden: fuera de la escala de texto */
   --deco-ghost: min(38vw, 30rem);
   --deco-mq: min(22vw, 16rem);
@@ -782,10 +783,10 @@ body.scrolled .hint { opacity: 0; }
 
 /* stack agrupado, alineado arriba: se lee como dato, no como decoración */
 .about-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-fl-m);
-  min-width: 15rem;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: var(--sp-fl-m) var(--sp-gx-m);
+  align-items: start;
 }
 
 .stack-label { font-weight: 400; margin-bottom: var(--sp-3); }
@@ -829,7 +830,7 @@ body.scrolled .hint { opacity: 0; }
   display: grid;
   grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
   gap: var(--sp-gx-l);
-  height: clamp(280px, 58vh, 640px);
+  height: clamp(240px, min(58vh, calc(100vh - 290px)), 640px);
 }
 
 .work-plate { display: flex; flex-direction: column; gap: var(--sp-3); min-height: 0; }
@@ -1094,7 +1095,7 @@ a.work-row:hover .work-row-title {
 
   .about-left { gap: var(--sp-4); }
 
-  .about-stack { gap: var(--sp-3); min-width: 0; }
+  .about-stack { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
   .stack-group { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; }
   .stack-label { margin-bottom: 0; }
   .stack-items { flex-direction: row; flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); }
@@ -1102,14 +1103,19 @@ a.work-row:hover .work-row-title {
 
   /* ── PROJECTS ──────────────────────────────────────── */
   /* Láminas apiladas con scroll interno: sin hover no hay portada que cambiar. */
+  /* El contenido va a todo el ancho para que la imagen llegue de borde a borde;
+     el margen lateral lo recuperan encabezado y filas. */
   .proj-content {
     display: flex;
+    flex: none;
     flex-direction: column;
+    width: 100vw;
     height: 100%;
+    margin-inline: calc(var(--panel-px) * -1);
     overflow: hidden;
   }
 
-  .proj-head { flex-shrink: 0; }
+  .proj-head { flex-shrink: 0; padding-inline: var(--panel-px); }
 
   .proj-grid-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .work-stage { display: flex; flex: 1; min-height: 0; height: auto; }
@@ -1121,7 +1127,7 @@ a.work-row:hover .work-row-title {
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: var(--sp-3);
     row-gap: var(--sp-2);
-    padding: 0 0 var(--sp-5);
+    padding: 0 var(--panel-px) var(--sp-5);
     border-bottom: 0;
     color: var(--fg);
   }
@@ -1130,7 +1136,8 @@ a.work-row:hover .work-row-title {
     position: relative;
     display: block;
     grid-column: 1 / -1;
-    aspect-ratio: 16 / 10;
+    margin-inline: calc(var(--panel-px) * -1);
+    aspect-ratio: 3 / 1;
     overflow: hidden;
     background: var(--ink-a8);
     outline: 1px solid var(--ink-a16);

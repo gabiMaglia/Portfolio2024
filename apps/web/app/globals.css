@@ -352,6 +352,14 @@ a { color: inherit; }
 .nav button:hover::after,
 .nav button.on::after { transform: scaleX(1); }
 
+/* Sin ancho para nombre + nav numerado: cae la numeración antes de que se toquen */
+.nav-n { white-space: pre; }
+@media (max-width: 1100px) { .nav-n { display: none; } }
+@media (max-width: 860px) {
+  .nav { gap: var(--sp-1); }
+  .nav button { letter-spacing: .08em; }
+}
+
 @media (max-width: 720px) { .nav { display: none; } }
 
 /* Texto del chrome pintado con gradiente de corte duro: cada glifo toma la tinta del

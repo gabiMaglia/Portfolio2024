@@ -350,7 +350,7 @@ const PortfolioShell = () => {
               data-ui-follow
               onClick={() => goTo(idx)}
             >
-              {item.n} — {t(item.labelKey)}
+              <span className="nav-n">{item.n} — </span>{t(item.labelKey)}
             </button>
           ))}
         </nav>

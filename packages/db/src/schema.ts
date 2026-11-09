@@ -38,6 +38,9 @@ export const proyect = pgTable('Proyects', {
   img1_pro: text('img1_pro'),
   img2_pro: text('img2_pro'),
   img3_pro: text('img3_pro'),
+  year_pro: integer('year_pro'),
+  kind_pro: text('kind_pro'),
+  order_pro: integer('order_pro'),
 });
 
 export const proyectEs = pgTable('Proyects_es', {
@@ -50,6 +53,9 @@ export const proyectEs = pgTable('Proyects_es', {
   img1_pro: text('img1_pro'),
   img2_pro: text('img2_pro'),
   img3_pro: text('img3_pro'),
+  year_pro: integer('year_pro'),
+  kind_pro: text('kind_pro'),
+  order_pro: integer('order_pro'),
 });
 
 export type Project = InferSelectModel<typeof proyect>;

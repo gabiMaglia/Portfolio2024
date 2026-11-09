@@ -835,115 +835,94 @@ body.scrolled .hint { opacity: 0; }
 
 .proj-grid-wrap { width: 100%; }
 
-.proj-carousel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-}
-
-/* Carrusel nativo: scroll-snap por card, la siguiente asoma (3.4 a la vista).
-   padding/margin negativo: el aro de foco de la card no queda recortado por el overflow. */
-.proj-grid {
+/* Portada + índice (T-021): solo crece la lista, la portada no cambia de tamaño. */
+.work-stage {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 3 * var(--sp-gx-s)) / 3.4);
-  gap: var(--sp-gx-s);
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--sp-1);
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  padding: var(--sp-1);
-  margin: calc(var(--sp-1) * -1);
+  grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+  gap: var(--sp-gx-l);
+  height: clamp(280px, 58vh, 640px);
 }
 
-.proj-grid::-webkit-scrollbar { display: none; }
-.proj-grid:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.work-plate { display: flex; flex-direction: column; gap: var(--sp-3); min-height: 0; }
 
-.proj-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.proj-counter { font-family: var(--font-mono); letter-spacing: .08em; }
-.proj-controls__btns { display: flex; gap: var(--sp-2); }
-
-.action-btn {
-  display: inline-grid;
-  place-items: center;
-  border: 1px solid var(--fg);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
-}
-
-.action-btn--round { border-radius: 50%; }
-.action-btn--lg { width: var(--tap-lg); height: var(--tap-lg); }
-.action-btn:hover:not([aria-disabled="true"]) { border-color: var(--accent); color: var(--accent); }
-.action-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
-.action-btn[aria-disabled="true"] { cursor: not-allowed; opacity: var(--o-faint); }
-
-.proj-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  min-width: 0;
-  scroll-snap-align: start;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.card-arrow {
-  font-size: var(--fs-body);
-  opacity: 0;
-  transform: translate(calc(var(--sp-1) * -1), var(--sp-1));
-  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
-}
-
-.proj-card:hover .card-arrow { opacity: 1; transform: none; }
-.proj-card:hover .display { color: var(--accent); transition: color var(--dur-fast) var(--ease); }
-/* se atenúa la miniatura, nunca el texto (el texto atenuado dejaría de cumplir AA) */
-.proj-grid:hover .proj-card:not(:hover) .proj-card-thumb { opacity: var(--o-mute); }
-
-.proj-card-thumb {
+.work-plate-image {
   position: relative;
-  width: 100%;
-  height: clamp(150px, 22vh, 230px);
-  border-radius: var(--r-lg);
+  display: block;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
-  background: var(--ink-a12);
+  background: var(--ink-a8);
+  outline: 1px solid var(--ink-a16);
+  outline-offset: -1px;
+}
+
+.work-plate-image img {
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
   transition: opacity var(--dur-base) var(--ease);
 }
 
-.proj-card-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.work-plate-image img[data-on] { opacity: 1; }
 
-.proj-card-empty {
-  width: 100%;
-  height: 100%;
-  background: var(--ink-a8);
+.work-plate-caption {
   display: grid;
-  place-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--sp-gx-m);
+  row-gap: var(--sp-1);
+  align-items: baseline;
 }
 
-.proj-card-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding-top: var(--sp-1);
+.work-plate-title { grid-row: span 2; font-size: var(--fs-lg); }
+.work-plate-text { font-size: var(--fs-sm); line-height: 1.45; text-wrap: pretty; }
+.work-plate-text .ser { font-size: var(--fs-body); }
+
+.work-index {
+  list-style: none;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-a16) transparent;
   border-top: 1px solid var(--ink-a16);
 }
 
-.proj-card-num { font-size: var(--fs-md); line-height: 1; color: var(--accent); }
-.proj-card-text { gap: var(--sp-1); flex: 1; }
-.proj-card-title { font-size: var(--fs-sm); font-weight: 700; }
+.work-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: clamp(10px, 1.7vh, 18px) 0;
+  border-bottom: 1px solid var(--ink-a16);
+  color: color-mix(in srgb, var(--fg) calc(var(--o-mute) * 100%), transparent);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+a.work-row { cursor: pointer; }
+.work-row[data-current] { color: var(--fg); border-bottom-color: var(--accent); }
+.work-row:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+
+.work-row-title { font-size: var(--fs-md); line-height: 1; }
+a.work-row:hover .work-row-title {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: .14em;
+}
+
+.work-row-meta { flex: none; font-size: var(--fs-body); }
+.work-row-thumb { display: none; }
+
+/* En escritorio el detalle se lee en la portada; acá queda para el lector de pantalla. */
+.work-row-detail {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* ===================== EXPERIENCE PANEL ===================== */
 .exp-content { width: 100%; max-width: 1280px; margin: 0 auto; }
@@ -1144,8 +1123,7 @@ body.scrolled .hint { opacity: 0; }
   }
 
   /* ── PROJECTS ──────────────────────────────────────── */
-  /* Lista vertical compacta: thumb a la izquierda + título + stack, scroll interno.
-     El carrusel (botones/contador) es sólo desktop: acá el swipe horizontal es del shell. */
+  /* Láminas apiladas con scroll interno: sin hover no hay portada que cambiar. */
   .proj-content {
     display: flex;
     flex-direction: column;
@@ -1156,33 +1134,48 @@ body.scrolled .hint { opacity: 0; }
   .proj-head { flex-shrink: 0; }
 
   .proj-grid-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-  .proj-carousel { flex: 1; min-height: 0; }
+  .work-stage { display: flex; flex: 1; min-height: 0; height: auto; }
+  .work-plate { display: none; }
+  .work-index { flex: 1; padding-bottom: var(--sp-4); border-top: 0; scrollbar-width: none; }
 
-  .proj-grid {
+  .work-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--sp-3);
+    row-gap: var(--sp-2);
+    padding: 0 0 var(--sp-5);
+    border-bottom: 0;
+    color: var(--fg);
+  }
+
+  .work-row-thumb {
+    position: relative;
+    display: block;
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--ink-a8);
+    outline: 1px solid var(--ink-a16);
+    outline-offset: -1px;
+  }
+
+  .work-row-thumb img { object-fit: cover; object-position: top; }
+
+  .work-row-detail {
+    position: static;
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;            /* critical: allows flex child to shrink below content size */
-    gap: var(--sp-3);
-    overflow-x: hidden;
-    overflow-y: auto;
-    scroll-snap-type: none;
-    padding: 0 0 var(--sp-4);
+    gap: var(--sp-1);
+    grid-column: 1 / -1;
+    width: auto;
+    height: auto;
     margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    font-size: var(--fs-sm);
+    line-height: 1.45;
   }
-
-  /* fade al pie = "hay más"; el hook lo apaga al llegar al final */
-  .proj-grid[data-fade-end] {
-    mask-image: linear-gradient(to bottom, black calc(100% - 44px), transparent);
-    -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 44px), transparent);
-  }
-
-  .proj-card { flex: 0 0 auto; flex-direction: row; align-items: center; gap: var(--sp-3); }
-  .proj-card-thumb { width: 84px; height: 64px; flex: 0 0 auto; border-radius: var(--r-lg); }
-  .proj-card-meta { flex: 1; min-width: 0; border-top: 0; padding-top: 0; }
-  .proj-card-num { display: none; }
-  .card-arrow { opacity: 1; transform: none; }
-  .proj-controls { display: none; }
 
   /* ── EXPERIENCE ─────────────────────────────────────── */
   .exp-content {
@@ -1239,10 +1232,6 @@ body.scrolled .hint { opacity: 0; }
 }
 
 /* táctil: no hay hover que revele la flecha, siempre visible */
-@media (hover: none) {
-  .card-arrow { opacity: 1; transform: none; }
-}
-
 /* ===================== /apps (T-017) ===================== */
 .foot-link { color: inherit; text-underline-offset: .2em; }
 .foot-link:hover { color: var(--fg); }

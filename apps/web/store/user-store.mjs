@@ -59,9 +59,9 @@ export function buildInitialState(data) {
         toNum(a?.id) - toNum(b?.id) ||
         0
     ),
-    // Más viejo → más nuevo
+    // Más nuevo → más viejo: el trabajo actual abre la lista
     experiences: [...(data?.restOfData?.experiences ?? [])].sort(
-      (a, b) => parseExpDate(a?.startDate_exp) - parseExpDate(b?.startDate_exp)
+      (a, b) => parseExpDate(b?.startDate_exp) - parseExpDate(a?.startDate_exp)
     ),
     skill: data?.restOfData?.skills ?? [],
     phrases: {

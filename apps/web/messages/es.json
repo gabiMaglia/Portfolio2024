@@ -26,9 +26,8 @@
     "headlineEnd": "bien.",
     "para1": "Soy Gabriel, desarrollador fullstack con foco en frontend. Me obsesiona la interfaz: el ritmo, el tipo, el milisegundo de transición que hace que algo se sienta vivo.",
     "para2": "Trabajo de punta a punta — pienso el producto, lo diseño, lo construyo y lo pongo en producción.",
-    "statYearsLabel": "años construyendo para la web",
-    "statLearnLabel": "ganas de aprender lo próximo",
-    "stackLabel": "Stack"
+    "stackLabel": "Stack",
+    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Datos e infra" }
   },
   "Work": {
     "portfolio": "Mi portafolio",
@@ -45,10 +44,10 @@
   "Experience": {
     "subtitle": "Mi historial laboral",
     "title": "Experiencia",
-    "headlinePt1": "Dónde dejé",
-    "headlineAccent": "huella",
+    "headlinePt1": "Dónde he",
+    "headlineAccent": "trabajado",
     "description": "Aquí están algunas de las empresas para las que he trabajado",
-    "empty": "No hay experiencias en la base de datos todavía.",
+    "empty": "Todavía no hay experiencia para mostrar.",
     "present": "Presente"
   },
   "Contact": {

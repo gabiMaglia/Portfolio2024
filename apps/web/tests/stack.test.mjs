@@ -17,5 +17,5 @@ test('groupStack agrupa, ordena y excluye skills sin grupo o soft', () => {
 });
 
 test('groupStack sin grupos en la DB usa el fallback completo', () => {
-  assert.deepEqual(groupStack([{ type: 'hard', name: 'Angular' }]).map((g) => g.group), ['frontend', 'backend', 'data']);
+  assert.deepEqual(groupStack([{ type: 'hard', name: 'Angular' }]).map((g) => g.group), ['frontend', 'backend', 'data', 'ai']);
 });

@@ -1,10 +1,11 @@
 // El panel muestra solo los skills con grupo asignado, en este orden de columnas.
-export const STACK_GROUPS = ['frontend', 'backend', 'data'];
+export const STACK_GROUPS = ['frontend', 'backend', 'data', 'ai'];
 
 const FALLBACK = {
   frontend: ['React', 'Next.js', 'TypeScript', 'React Native'],
   backend: ['Node', 'NestJS', 'Express'],
   data: ['PostgreSQL', 'Docker', 'AWS', 'Azure DevOps'],
+  ai: ['Claude Code', 'Claude Design', 'Agent Skills', 'Agentic AI'],
 };
 
 export function groupStack(skills = []) {

@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { db } from '@/lib/db';
 import {
   experience,
@@ -10,15 +11,25 @@ import {
   userPhrasesEs,
 } from '@portfolio/db';
 
-export const fetchExperiences = async (locale = 'en') =>
-  locale === 'es' ? db.select().from(experienceEs) : db.select().from(experience);
+// D-19: la base (alpha.mkdb.sh) tiene pocas conexiones y cada deploy levanta funciones nuevas
+// mientras las viejas siguen conectadas → "too many connections" (53300) y 500 en /es, /en y
+// /api/*. Los datos cambian solo cuando el PO corre SQL, así que se cachean (Data Cache de Next,
+// compartido entre funciones): la base se consulta como mucho una vez cada REVALIDATE segundos
+// por tabla e idioma, no en cada request. Un cambio en la DB tarda hasta REVALIDATE en verse.
+export const REVALIDATE = 300;
+export const DB_CACHE_TAG = 'portfolio-db';
 
-export const fetchProyects = async (locale = 'en') =>
-  locale === 'es' ? db.select().from(proyectEs) : db.select().from(proyect);
+const cached = (key, fn) => unstable_cache(fn, ['portfolio', key], { revalidate: REVALIDATE, tags: [DB_CACHE_TAG] });
 
-export const fetchSkills = async () => db.select().from(skills);
-export const fetchSocials = async () => db.select().from(social);
+// El idioma es argumento de la función cacheada, así que forma parte de la clave.
+export const fetchExperiences = cached('experiences', async (locale = 'en') =>
+  locale === 'es' ? db.select().from(experienceEs) : db.select().from(experience));
 
-export const fetchUserPhrases = async (locale = 'en') =>
-  locale === 'es' ? db.select().from(userPhrasesEs) : db.select().from(userPhrases);
+export const fetchProyects = cached('proyects', async (locale = 'en') =>
+  locale === 'es' ? db.select().from(proyectEs) : db.select().from(proyect));
 
+export const fetchSkills = cached('skills', async () => db.select().from(skills));
+export const fetchSocials = cached('socials', async () => db.select().from(social));
+
+export const fetchUserPhrases = cached('phrases', async (locale = 'en') =>
+  locale === 'es' ? db.select().from(userPhrasesEs) : db.select().from(userPhrases));

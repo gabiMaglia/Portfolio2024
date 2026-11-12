@@ -48,6 +48,9 @@ const ProjectsPanel = ({ index }) => {
                       />
                     ) : null
                   )}
+                  <span className="work-plate-fig">
+                    Fig. {String(projects.indexOf(active) + 1).padStart(2, "0")} — {active.title_pro}
+                  </span>
                 </Plate>
                 <div className="work-plate-caption">
                   <span className="display work-plate-title">{active.title_pro}</span>

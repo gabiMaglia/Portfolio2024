@@ -849,16 +849,33 @@ body.scrolled .hint { opacity: 0; }
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  background: var(--ink-a8);
+  /* Lámina montada: la captura entera (sin recorte) sobre un paspartú de papel, con pie de figura */
+  --mat: clamp(18px, 1.8vw, 32px);
+  background: var(--paper-2);
   outline: 1px solid var(--ink-a16);
   outline-offset: -1px;
 }
 
 .work-plate-image img {
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
+  object-position: center;
+  box-sizing: border-box;
+  padding: var(--mat) var(--mat) calc(var(--mat) + var(--fig-space, 14px));
+  filter: drop-shadow(0 14px 22px var(--ink-a16)) drop-shadow(0 1px 1px var(--ink-a16));
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease);
+}
+
+.work-plate-fig {
+  position: absolute;
+  left: var(--mat);
+  bottom: clamp(8px, .8vw, 14px);
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .work-plate-image img[data-on] { opacity: 1; }
@@ -874,6 +891,17 @@ body.scrolled .hint { opacity: 0; }
 .work-plate-title { grid-row: span 2; font-size: var(--fs-lg); }
 .work-plate-text { font-size: var(--fs-sm); line-height: 1.45; text-wrap: pretty; }
 .work-plate-text .ser { font-size: var(--fs-body); }
+
+/* Columna angosta o ventana baja: el pie apilado a todo el ancho ocupa menos alto y deja aire
+   a la lámina; muy bajo, el paspartú se achica y el pie de figura se va. */
+@media (max-width: 1400px), (max-height: 760px) {
+  .work-plate-caption { grid-template-columns: minmax(0, 1fr); }
+  .work-plate-title { grid-row: auto; }
+}
+@media (max-height: 700px) {
+  .work-plate-image { --mat: 10px; --fig-space: 0px; }
+  .work-plate-fig { display: none; }
+}
 
 .work-index {
   list-style: none;

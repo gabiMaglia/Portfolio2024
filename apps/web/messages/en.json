@@ -27,7 +27,12 @@
     "para1": "I'm Gabriel, a fullstack developer focused on frontend. I'm obsessed with the interface: the rhythm, the type, the millisecond of transition that makes something feel alive.",
     "para2": "I work end to end — I think through the product, design it, build it, and ship it to production.",
     "stackLabel": "Stack",
-    "stackGroups": { "frontend": "Frontend", "backend": "Backend", "data": "Data & infra", "ai": "AI" }
+    "stackGroups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "data": "Data & infra",
+      "ai": "AI"
+    }
   },
   "Work": {
     "portfolio": "My portfolio",
@@ -103,5 +108,12 @@
     "hushsplit": "Split expenses with your people. End-to-end encrypted, free and ad-free.",
     "open": "Open",
     "back": "Back to portfolio"
+  },
+  "Meta": {
+    "title": "Gabriel Maglia — Fullstack Developer · Argentina",
+    "description": "Fullstack developer based in Argentina. I design and build web and mobile applications end to end, from prototype to production.",
+    "jobTitle": "Fullstack Developer",
+    "ogAlt": "Gabriel Maglia — Fullstack Developer. I design and build applications from start to finish.",
+    "projectImage": "Screenshot of {title}"
   }
 }

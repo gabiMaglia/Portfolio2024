@@ -6,7 +6,9 @@ import { APPS, pickAppsLocale } from "@/lib/apps.mjs";
 
 export const metadata = {
   title: "Apps — Gabriel Maglia",
-  description: "Apps · Gabriel Maglia",
+  description:
+    "Productos de Gabriel Maglia: listBuddy (playlists de DJ), NetGauge (consumo de red por app) y HushSplit (gastos compartidos cifrados).",
+  alternates: { canonical: "/apps" },
 };
 
 // Fuera de [locale] y del middleware next-intl: el idioma sale de Accept-Language

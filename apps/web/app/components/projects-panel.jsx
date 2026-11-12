@@ -11,6 +11,7 @@ const linkProps = (href) => (href ? { href, target: "_blank", rel: "noreferrer" 
 
 const ProjectsPanel = ({ index }) => {
   const t = useTranslations("Work");
+  const tMeta = useTranslations("Meta");
   const projects = useUserStore((state) => state.proyects) || [];
   const [activeId, setActiveId] = useState(null);
   const active = projects.find((project) => project.id === activeId) ?? projects[0];
@@ -40,7 +41,9 @@ const ProjectsPanel = ({ index }) => {
                       <Image
                         key={project.id}
                         src={thumbOf(project)}
-                        alt=""
+                        // la lámina es aria-hidden (no se anuncia doble); el alt queda para
+                        // Google Imágenes (T-028)
+                        alt={tMeta("projectImage", { title: project.title_pro })}
                         fill
                         sizes="58vw"
                         quality={75}

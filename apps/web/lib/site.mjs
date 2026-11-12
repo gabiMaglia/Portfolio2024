@@ -45,7 +45,7 @@ export function personJsonLd({ locale, meta, socials = [], skills = [], projects
       '@type': 'CreativeWork',
       name: p.title_pro,
       description: p.description_pro || undefined,
-      url: p.deployLink_pro || p.githubLink_pro || undefined,
+      url: (p.deployLink_pro || p.githubLink_pro || '').trim() || undefined,
       image: absolute(p.img1_pro || p.img2_pro || p.img3_pro),
       dateCreated: p.year_pro ? String(p.year_pro) : undefined,
       keywords: p.technologies_pro || undefined,

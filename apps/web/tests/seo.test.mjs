@@ -14,7 +14,7 @@ const msgs = (l) => JSON.parse(read(`messages/${l}.json`));
 test('T-028: archivos de metadatos presentes', () => {
   for (const f of [
     'app/robots.js', 'app/sitemap.js', 'app/manifest.js', 'app/icon.png', 'app/apple-icon.png', 'app/favicon.ico',
-    'app/[locale]/opengraph-image.jsx', 'app/[locale]/twitter-image.jsx', 'public/llms.txt',
+    'app/[locale]/opengraph-image.jsx', 'app/[locale]/twitter-image.jsx', 'app/llms.txt/route.js',
     'assets/og/archivo-800.ttf', 'assets/og/instrument-serif-italic.ttf', 'assets/og/space-mono-400.ttf',
   ]) assert.ok(existsSync(join(root, f)), f);
 });
@@ -80,7 +80,7 @@ test('serializeJsonLd no deja cerrar el <script>', () => {
 
 test('public/ sin assets huérfanos: cada archivo suelto se referencia en el código', () => {
   const sources = ['app', 'lib', 'providers', 'store'].flatMap((d) => walk(join(root, d))).map((f) => readFileSync(f, 'utf8')).join('\n');
-  const allowed = new Set(['llms.txt', 'work']);
+  const allowed = new Set(['work']);
   for (const f of readdirSync(join(root, 'public'))) {
     if (allowed.has(f)) continue;
     assert.ok(sources.includes(f), `public/${f} no se usa`);
